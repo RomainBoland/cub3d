@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   libft.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rboland <romain.boland@hotmail.com>        +#+  +:+       +#+        */
+/*   By: rboland <rboland@student.s19.be>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/14 11:20:55 by rboland           #+#    #+#             */
-/*   Updated: 2025/01/20 14:00:00 by rboland          ###   ########.fr       */
+/*   Updated: 2025/07/17 00:39:00 by rboland          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,7 @@ char	*ft_itoa(int n);
 void	ft_striteri(char *s, void (*f)(unsigned int, char*));
 char	*ft_strmapi(const char *s, char (*f)(unsigned int, char));
 void	ft_putchar_fd(char c, int fd);
-void	ft_putstr_fd(char *str, int fd);
+void	ft_putstr_fd(const char *str, int fd);
 void	ft_putendl_fd(char *str, int fd);
 void	ft_putnbr_fd(int nb, int fd);
 t_list	*ft_lstnew(void *content);

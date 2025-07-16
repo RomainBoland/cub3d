@@ -21,7 +21,8 @@ MINECRAFT_GREEN = \033[38;5;70m
 RESET		= \033[0m
 BOLD		= \033[1m
 
-SRC			= srcs/main.c
+SRC			= srcs/main.c \
+			  srcs/parsing/parse_file.c
 
 SRC_BONUS	= 
 
