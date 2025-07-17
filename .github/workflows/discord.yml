@@ -10,11 +10,17 @@ on:
 jobs:
   notify:
     runs-on: ubuntu-latest
+
     steps:
-      - name: Send Discord notification
-        uses: rtCamp/action-slack-notify@v2.2.0
+      - name: Send message to Discord
         env:
-          SLACK_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK }}
-          SLACK_MESSAGE: |
-            🔔 **${{ github.actor }}** a pushé sur **${{ github.ref_name }}**
-            📄 `${{ github.event.head_commit.message }}`
+          DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK }}
+        run: |
+          COMMIT_MESSAGE="${{ github.event.head_commit.message }}"
+          AUTHOR="${{ github.actor }}"
+          BRANCH="${{ github.ref_name }}"
+          
+          curl -H "Content-Type: application/json" \
+          -X POST \
+          -d "{\"content\": \"🔔 **$AUTHOR** a pushé sur **$BRANCH** : \`$COMMIT_MESSAGE\`\"}" \
+          $DISCORD_WEBHOOK
