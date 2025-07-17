@@ -3,7 +3,7 @@ name: Discord Notification
 on:
   push:
     branches:
-      - main  # ou master selon ta branche
+      - main   # ou master, selon ta branche par défaut
   pull_request:
     types: [opened, closed]
 
@@ -11,8 +11,10 @@ jobs:
   notify:
     runs-on: ubuntu-latest
     steps:
-      - name: Send message to Discord
+      - name: Notify Discord
         uses: Ilshidur/action-discord@master
         with:
           webhook_url: ${{ secrets.DISCORD_WEBHOOK }}
-          message: "🔔 **${{ github.actor }}** a pushé sur **${{ github.ref }}** : `${{ github.event.head_commit.message }}`"
+          message: |
+            🔔 **${{ github.actor }}** a pushé sur **${{ github.ref_name }}**
+            Dernier commit : `${{ github.event.head_commit.message }}`
