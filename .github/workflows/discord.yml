@@ -4,9 +4,15 @@ on:
   push:
     branches:
       - main
+      - dev
+      - rboland
+      - nsaillez
   pull_request:
-    types: [opened, closed]
-
+    branches:
+      - main
+      - dev
+      - rboland
+      - nsaillez
 jobs:
   notify:
     runs-on: ubuntu-latest
