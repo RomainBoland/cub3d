@@ -14,14 +14,12 @@
 
 int	main(int argc, char **argv)
 {
-	// Definition des structures
+	t_config config;
 
 	// Appel aux fonctions de parsing et d'initialisation
 
 	if (file_checker(argv[1], argc))
 		return (1);
-
-
 	// main game loop
 
 	// Cleanup and exit
