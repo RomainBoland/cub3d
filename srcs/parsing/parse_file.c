@@ -63,7 +63,7 @@ int	parse_file(int fd)
 		{
 			free(line);
 			line = get_next_line(fd);
-			continue;
+			continue ;
 		}
 		printf("Line: %s", line);
 		// process_line(line);
