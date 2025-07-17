@@ -11,10 +11,10 @@ jobs:
   notify:
     runs-on: ubuntu-latest
     steps:
-      - name: Notify Discord
-        uses: Ilshidur/action-discord@v2.0.0
-        with:
-          webhook_url: ${{ secrets.DISCORD_WEBHOOK }}
-          message: |
+      - name: Send Discord notification
+        uses: rtCamp/action-slack-notify@v2.2.0
+        env:
+          SLACK_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK }}
+          SLACK_MESSAGE: |
             🔔 **${{ github.actor }}** a pushé sur **${{ github.ref_name }}**
-            Dernier commit : `${{ github.event.head_commit.message }}`
+            📄 `${{ github.event.head_commit.message }}`
