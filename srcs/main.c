@@ -11,7 +11,7 @@
 /* ************************************************************************** */
 
 #include "cub3d.h"
-
+//test
 int	main(int argc, char **argv)
 {
 	// Definition des structures
