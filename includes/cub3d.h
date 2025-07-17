@@ -27,16 +27,22 @@
 /* 	FUNCTIONS	*/
 /* ------------ */
 
+// main.c
+int		main(int argc, char **argv);
+
+/*	ERROR	*/
+
+// print_error.c
+void	print_error(const char *message);
+int		exit_error(const char *message);
+
 /*	PARSING	*/
 
-// main.c
-int	main(int argc, char **argv);
-
 // parse_file.c
-int	parse_file(const char *file_path);
-int	str_ends_with(const char *str, const char *suffix);
-int	arg_checker(int argc, const char *file_path);
-int	file_checker(const char *file_path, int argc);
+int		open_map(const char *file_path);
+int		str_ends_with(const char *str, const char *suffix);
+int		arg_checker(int argc, const char *file_path);
+int		file_checker(const char *file_path, int argc);
 
 // 
 

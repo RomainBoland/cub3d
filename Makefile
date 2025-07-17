@@ -22,7 +22,8 @@ RESET		= \033[0m
 BOLD		= \033[1m
 
 SRC			= srcs/main.c \
-			  srcs/parsing/parse_file.c
+			  srcs/parsing/parse_file.c \
+			  srcs/error/print_error.c
 
 SRC_BONUS	= 
 
@@ -86,6 +87,10 @@ $(OBJ_DIR)%.o: srcs/%.c includes/cub3d.h
 	$(call update_progress)
 
 $(OBJ_DIR)%.o: srcs/parsing/%.c includes/cub3d.h
+	@$(CC) $(CFLAGS) $(INCLUDES) -c $< -o $@
+	$(call update_progress)
+
+$(OBJ_DIR)%.o: srcs/error/%.c includes/cub3d.h
 	@$(CC) $(CFLAGS) $(INCLUDES) -c $< -o $@
 	$(call update_progress)
 
