@@ -18,10 +18,11 @@ int add_line_to_map(const char *line, t_config *config)
 	int i;
 	int j;
 
+	printf("Adding line to map: %s\n", line);
 	i = 0;
 	while (config->map[i])
 		i++;
-
+	printf("Current map height: %d\n", i);
 	new_map = malloc(sizeof(char *) * (i + 2));
 	if (!new_map)
 		return (0);
@@ -61,11 +62,20 @@ int start_map_parsing(const char *line, t_config *config)
 
 int parse_file2(char *line, t_config *config, int fd)
 {
-    while ((line = get_next_line(fd)))
+	start_map_parsing(line, config);
+    while (line)
     {
+		printf("Processing map line: %s\n", line);
         if (is_empty_line(line))
+		{
+			free(line);
+			line = get_next_line(fd);
             continue ;
+		}
         add_line_to_map(line, config);
+		free(line);
+		line = get_next_line(fd);
+		printf("Next line...\n");
     }
     return (validate_complete_config(config));
 }
@@ -105,9 +115,8 @@ int parse_file(int fd, t_config *config, t_parse_state *state)
                 return (print_error("Missing configuration elements"), 0);
             }
 			printf("Initializing map with line: %s", line);
-            start_map_parsing(line, config);
             free(line);
-            break;
+            break ;
         }
         else
         {
@@ -118,6 +127,7 @@ int parse_file(int fd, t_config *config, t_parse_state *state)
         line = get_next_line(fd);
 		printf("Line processed successfuly...\n");
     }
+	printf("End of file reached or all config found.\n");
     return (parse_file2(line, config, fd));
 }
 
