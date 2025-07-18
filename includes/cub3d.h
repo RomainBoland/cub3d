@@ -27,19 +27,32 @@
 /* 	STRUCTURES 	*/
 /* ------------	*/
 
+// contient les configurations du jeu
 typedef struct s_config
 {
-    char    *north_texture;
-    char    *south_texture;
-    char    *west_texture;
-    char    *east_texture;
-    int     floor_color[3];     // RGB
-    int     ceiling_color[3];   // RGB
-    char    **map;
+    char    *north_texture;		// A FREE
+    char    *south_texture;		// A FREE
+    char    *west_texture;		// A FREE
+    char    *east_texture;		// A FREE
+    int     floor_color[3];     // RGB, A FREE
+    int     ceiling_color[3];   // RGB, A FREE
+    char    **map;				// A FREE
     int     map_width;
     int     map_height;
     // player start position and orientation
 }   t_config;
+
+// contient l'état du parsing
+typedef struct s_parse_state
+{
+    int north_found;
+    int south_found;
+    int west_found;
+    int east_found;
+    int floor_found;
+    int ceiling_found;
+    int all_config_found;
+}   t_parse_state;
 
 /* ------------	*/
 /* 	FUNCTIONS	*/
@@ -51,15 +64,44 @@ int		main(int argc, char **argv);
 /*	ERROR	*/
 // print_error.c
 void	print_error(const char *message);
-int		exit_error(const char *message);
+int		exit_error(const char *message, t_config *config);
+// cleanup.c
+void	cleanup_config(t_config *config);
+void	ft_free_split(char **split);
+
+/*	UTILS	*/
+// utils1.c
+int		ft_isspace(int c);
+
+/*	INIT	*/
+// init.c
+void	init_config(t_config *config);
+void	init_parse_state(t_parse_state *state);
 
 /*	PARSING	*/
 // parse_file.c
+int		add_line_to_map(const char *line, t_config *config);
+int		start_map_parsing(const char *line, t_config *config);
+int		parse_file(int fd, t_config *config, t_parse_state *state);
+int		parse_file2(char *line, t_config *config, int fd);
+int		file_checker(const char *file_path, int argc, t_config *config);
+
+// parse_config_line.c
+int		validate_rgb(int r, int g, int b);
+int		parse_config_line(char *line, t_config *config, t_parse_state *state);
+int		parse_config_line2(char **tokens, t_config *config, t_parse_state *	state);
+int		parse_config_line3(char **tokens, t_config *config, t_parse_state *state, char **rgb);
+
+// parse_arg.c
 int		open_map(const char *file_path);
 int		str_ends_with(const char *str, const char *suffix);
 int		arg_checker(int argc, const char *file_path);
-int		file_checker(const char *file_path, int argc);
 
-// 
+// parse_utils.c
+int		is_config_line(const char *line);
+int		is_empty_line(const char *line);
+int		is_map_line(const char *line);
+int		all_config_complete(t_parse_state *state);
+int		validate_complete_config(t_config *config);
 
 # endif

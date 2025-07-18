@@ -19,8 +19,9 @@ void	print_error(const char *message)
 	ft_putchar_fd('\n', 2);
 }
 
-int	exit_error(const char *message)
+int	exit_error(const char *message, t_config *config)
 {
+	cleanup_config(config);
 	print_error(message);
 	return (0);
 }

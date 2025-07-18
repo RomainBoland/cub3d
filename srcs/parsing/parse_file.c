@@ -12,86 +12,131 @@
 
 #include "cub3d.h"
 
-int	open_map(const char *file_path)
+int add_line_to_map(const char *line, t_config *config)
 {
-	int fd;
+	char **new_map;
+	int i;
+	int j;
 
-	fd = open(file_path, O_RDONLY);
-	if (fd < 0)
+	i = 0;
+	while (config->map[i])
+		i++;
+
+	new_map = malloc(sizeof(char *) * (i + 2));
+	if (!new_map)
+		return (0);
+	j = 0;
+	while (j < i)
 	{
-		exit_error("Failed to open map file");
-		return (1);
+		new_map[j] = config->map[j];
+		j++;
 	}
-	return (fd);
+	new_map[i] = ft_strdup(line);
+	new_map[i + 1] = NULL;
+	free(config->map);
+	config->map = new_map;
+	config->map_height++;
+	return (1);
 }
 
-int	str_ends_with(const char *str, const char *suffix)
+int start_map_parsing(const char *line, t_config *config)
 {
-	size_t str_len;
-	size_t suffix_len;
-
-	str_len = ft_strlen(str);
-	suffix_len = ft_strlen(suffix);
-	if (suffix_len > str_len)
-		return 0;
-	return (ft_strncmp(str + str_len - suffix_len, suffix, 4) == 0);
+    config->map = malloc(sizeof(char *) * 2); // Space for 1 line + NULL
+    if (!config->map)
+        return (0);
+    
+    config->map[0] = ft_strdup(line);
+    if (!config->map[0])
+    {
+        free(config->map);
+        config->map = NULL;
+        return (0);
+    }
+    
+    config->map[1] = NULL;
+    config->map_width = ft_strlen(line);
+    config->map_height = 1;
+    return (1);
 }
 
-int	arg_checker(int argc, const char *file_path)
+int parse_file2(char *line, t_config *config, int fd)
 {
-	if (argc != 2)
-	{
-		exit_error("Usage: ./cub3d <map_file.cub>");
-		return (1);
-	}
-	if (!str_ends_with(file_path, ".cub"))
-	{
-		exit_error("File must have a .cub extension");
-		return (1);
-	}
-	return (0);
+    while ((line = get_next_line(fd)))
+    {
+        if (is_empty_line(line))
+            continue ;
+        add_line_to_map(line, config);
+    }
+    return (validate_complete_config(config));
 }
 
-int	parse_file(int fd)
+int parse_file(int fd, t_config *config, t_parse_state *state)
 {
-	char *line;
-
-	line = get_next_line(fd);
-	while (line)
-	{
-		if (ft_strlen(line) == 0 || line[0] == '\n')
-		{
-			free(line);
-			line = get_next_line(fd);
-			continue ;
-		}
-		printf("Line: %s", line);
-		// process_line(line);
-		free(line);
-		line = get_next_line(fd);
-	}
-	printf("\n");
-	if (line)
-		free(line);
-	close(fd);
-	return (0);
+    char *line;
+    
+    line = get_next_line(fd);
+    while (line && !state->all_config_found)
+    {
+		printf("Parsing line: %s", line);
+        if (is_empty_line(line))
+        {
+			printf("Skipping empty line\n");
+            free(line);
+            line = get_next_line(fd);
+            continue;
+        }
+        if (is_config_line(line))
+        {
+			printf("Parsing config line: %s", line);
+            if (!parse_config_line(line, config, state))
+            {
+				printf("Error parsing config line: %s", line);
+                free(line);
+                cleanup_config(config);
+                return (0);
+            }
+        }
+        else if (is_map_line(line))
+        {
+            if (!all_config_complete(state))
+            {
+                free(line);
+                cleanup_config(config);
+                return (print_error("Missing configuration elements"), 0);
+            }
+			printf("Initializing map with line: %s", line);
+            start_map_parsing(line, config);
+            free(line);
+            break;
+        }
+        else
+        {
+            free(line);
+            return (exit_error("Invalid line format", config));
+        }
+        free(line);
+        line = get_next_line(fd);
+		printf("Line processed successfuly...\n");
+    }
+    return (parse_file2(line, config, fd));
 }
 
-int	file_checker(const char *file_path, int argc)
+int	file_checker(const char *file_path, int argc, t_config *config)
 {
-	int	fd;
+	int				fd;
+	t_parse_state	state;
 
 	if (arg_checker(argc, file_path))
-		return (1);
+		return (0);
 	fd = open_map(file_path);
 	if (!fd)
-		return (1);
-	parse_file(fd);
+		return (0);
+	printf("Initializing parse state...\n");
+	init_parse_state(&state);
+	printf("Initializing configuration...\n");
+	init_config(config);
+	printf("Parsing file: %s\n", file_path);
+	parse_file(fd, config, &state);
 
-
-	// ft_putstr_fd("Game started with map: ", 1);
-	// ft_putstr_fd(file_path, 1);
-	// ft_putchar_fd('\n', 1);
-
-	return (0);
+	return (1);
 }

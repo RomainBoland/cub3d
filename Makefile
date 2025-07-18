@@ -23,7 +23,14 @@ BOLD		= \033[1m
 
 SRC			= srcs/main.c \
 			  srcs/parsing/parse_file.c \
-			  srcs/error/print_error.c
+			  srcs/parsing/parse_arg.c \
+			  srcs/parsing/parse_config_line.c \
+			  srcs/parsing/parse_utils.c \
+			  srcs/error/print_error.c \
+			  srcs/error/cleanup.c \
+			  srcs/init/init.c \
+			  srcs/utils/utils1.c
+			  
 
 SRC_BONUS	= 
 
@@ -99,6 +106,10 @@ $(OBJ_DIR)%.o: srcs/raycasting/%.c includes/cub3d.h
 	$(call update_progress)
 
 $(OBJ_DIR)%.o: srcs/rendering/%.c includes/cub3d.h
+	@$(CC) $(CFLAGS) $(INCLUDES) -c $< -o $@
+	$(call update_progress)
+
+$(OBJ_DIR)%.o: srcs/init/%.c includes/cub3d.h
 	@$(CC) $(CFLAGS) $(INCLUDES) -c $< -o $@
 	$(call update_progress)
 
