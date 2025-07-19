@@ -27,27 +27,38 @@
 /* 	STRUCTURES 	*/
 /* ------------	*/
 
-// contient les configurations du jeu
-typedef struct s_texture
+typedef struct s_player
+{
+    int     x;          // Player grid position
+    int     y;
+    char    direction;  // N, S, E, W
+    float   pos_x;      // Actual position for raycasting
+    float   pos_y;
+    float   angle;      // Viewing angle in radians
+}   t_player;
+
+typedef struct s_tex
 {
 	void	*north_img;		// A FREE
 	void	*south_img;		// A FREE
 	void	*west_img;		// A FREE
 	void	*east_img;		// A FREE
-}	t_texture;
+}	t_tex;
+
+// contient les configurations du jeu
 
 typedef struct s_config
 {
-    char    *north_texture;		// A FREE
-    char    *south_texture;		// A FREE
-    char    *west_texture;		// A FREE
-    char    *east_texture;		// A FREE
-    int     floor_color[3];     // RGB, A FREE
-    int     ceiling_color[3];   // RGB, A FREE
-    char    **map;				// A FREE
-    size_t     map_width;
-    size_t     map_height;
-    // player start position and orientation
+    char		*north_texture;		// A FREE
+    char		*south_texture;		// A FREE
+    char		*west_texture;		// A FREE
+    char		*east_texture;		// A FREE
+    int			floor_color[3];     // RGB, A FREE
+    int			ceiling_color[3];   // RGB, A FREE
+    char		**map;				// A FREE
+    size_t		map_width;
+    size_t		map_height;
+    t_player	player;
 }   t_config;
 
 // contient l'état du parsing
