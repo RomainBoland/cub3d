@@ -55,7 +55,7 @@ int start_map_parsing(const char *line, t_config *config)
     }
     
     config->map[1] = NULL;
-    config->map_width = ft_strlen(line);
+    config->map_width = get_line_width(line);
 	printf("Map width initialized to %ld\n", config->map_width);
     config->map_height = 1;
     return (1);
@@ -79,8 +79,8 @@ int parse_file2(char *first_line, t_config *config, int fd)
                 return (0);
             }
         }
-		if (ft_strlen(line) > config->map_width)
-			config->map_width = ft_strlen(line);
+		if (get_line_width(line) > config->map_width)
+			config->map_width = get_line_width(line);
         free(line);
         line = get_next_line(fd);
     }

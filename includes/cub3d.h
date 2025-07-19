@@ -28,6 +28,14 @@
 /* ------------	*/
 
 // contient les configurations du jeu
+typedef struct s_texture
+{
+	void	*north_img;		// A FREE
+	void	*south_img;		// A FREE
+	void	*west_img;		// A FREE
+	void	*east_img;		// A FREE
+}	t_texture;
+
 typedef struct s_config
 {
     char    *north_texture;		// A FREE
@@ -72,6 +80,7 @@ void	ft_free_split(char **split);
 /*	UTILS	*/
 // utils1.c
 int		ft_isspace(int c);
+size_t get_line_width(const char *line);
 
 /*	INIT	*/
 // init.c
@@ -90,7 +99,7 @@ int		file_checker(const char *file_path, int argc, t_config *config);
 int		validate_rgb(int r, int g, int b);
 int		parse_config_line(char *line, t_config *config, t_parse_state *state);
 int		parse_config_line2(char **tokens, t_config *config, t_parse_state *	state);
-int		parse_config_line3(char **tokens, t_config *config, t_parse_state *state, char **rgb);
+int		parse_config_line3(char **tokens, t_config *config, t_parse_state *state);
 
 // parse_arg.c
 int		open_map(const char *file_path);

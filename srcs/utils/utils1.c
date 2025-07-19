@@ -12,6 +12,15 @@
 
 #include "cub3d.h"
 
+size_t get_line_width(const char *line)
+{
+	size_t len = ft_strlen(line);
+	while (len > 0 && ft_isspace((unsigned char)line[len - 1]))
+		len--;
+	
+	return len;
+}
+
 int	ft_isspace(int c)
 {
 	return (c == ' ' || c == '\t' || c == '\n' || c == '\v' || c == '\f' || c == '\r');

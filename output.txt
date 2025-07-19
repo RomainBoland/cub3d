@@ -40,7 +40,7 @@ Skipping empty line
 Parsing line:         1111111111111111111111111
 Initializing map with line:         1111111111111111111111111
 End of file reached or all config found.
-Map width initialized to 35
+Map width initialized to 33
 Adding line to map:         1000000000110000000000001
 
 Current map height: 1
@@ -79,7 +79,7 @@ Adding line to map: 11110111 1110101 101111010001
 Current map height: 12
 Adding line to map: 11111111 1111111 111111111111
 Current map height: 13
-Map (35 x 14):
+Map (33 x 14):
         1111111111111111111111111
         1000000000110000000000001
         1011000001110000000000001

@@ -35,29 +35,30 @@ int validate_rgb(int r, int g, int b)
             b >= 0 && b <= 255);
 }
 
-int parse_config_line3(char **tokens, t_config *config, t_parse_state *state, char **rgb)
+int parse_config_line3(char **tokens, t_config *config, t_parse_state *state)
 {
+	char **c_rgb;
+
 	if (ft_strncmp(tokens[0], "C", 1) == 0)
 	{
-		rgb = ft_split(tokens[1], ',');
-		if (!rgb || !rgb[0] || !rgb[1] || !rgb[2])
+		c_rgb = ft_split(tokens[1], ',');
+		if (!c_rgb || !c_rgb[0] || !c_rgb[1] || !c_rgb[2])
 		{
 			ft_free_split(tokens);
-			ft_free_split(rgb);
+			ft_free_split(c_rgb);
 			return (0);
 		}
-		printf("Parsing ceiling color: %s %s %s\n", rgb[0], rgb[1], rgb[2]);
-		affect_rgb(1, config, rgb);
+		printf("Parsing ceiling color: %s %s %s\n", c_rgb[0], c_rgb[1], c_rgb[2]);
+		affect_rgb(1, config, c_rgb);
 		if (!validate_rgb(config->ceiling_color[0], config->ceiling_color[1], config->ceiling_color[2]))
 		{
 			printf("Invalid RGB values for ceiling color\n");
-			ft_free_split(rgb);
+			ft_free_split(c_rgb);
 			return (0);
 		}
 		state->ceiling_found = 1;
+		ft_free_split(c_rgb);
 	}
-	if (ft_strncmp(tokens[0], "C", 1) == 0 || ft_strncmp(tokens[0], "F", 1) == 0)
-		ft_free_split(rgb);
 	ft_free_split(tokens);
 	state->all_config_found = state->north_found && state->south_found &&
 							  state->west_found && state->east_found &&
@@ -67,7 +68,7 @@ int parse_config_line3(char **tokens, t_config *config, t_parse_state *state, ch
 
 int parse_config_line2(char **tokens, t_config *config, t_parse_state *state)
 {
-	char **rgb;
+	char **f_rgb;
 	
 	if (ft_strncmp(tokens[0], "EA", 2) == 0 || ft_strncmp(tokens[0], "E", 1) == 0)
 	{
@@ -77,24 +78,25 @@ int parse_config_line2(char **tokens, t_config *config, t_parse_state *state)
 	}
 	else if (ft_strncmp(tokens[0], "F", 1) == 0)
 	{
-		rgb = ft_split(tokens[1], ',');
-		if (!rgb || !rgb[0] || !rgb[1] || !rgb[2])
+		f_rgb = ft_split(tokens[1], ',');
+		if (!f_rgb || !f_rgb[0] || !f_rgb[1] || !f_rgb[2])
 		{
 			ft_free_split(tokens);
-			ft_free_split(rgb);
+			ft_free_split(f_rgb);
 			return (0);
 		}
-		printf("Parsing floor color: %s %s %s\n", rgb[0], rgb[1], rgb[2]);
-		affect_rgb(0, config, rgb);
+		printf("Parsing floor color: %s %s %s\n", f_rgb[0], f_rgb[1], f_rgb[2]);
+		affect_rgb(0, config, f_rgb);
 		if (!validate_rgb(config->floor_color[0], config->floor_color[1], config->floor_color[2]))
 		{
 			printf("Invalid RGB values for floor color\n");
-			ft_free_split(rgb);
+			ft_free_split(f_rgb);
 			return (0);
 		}
 		state->floor_found = 1;
+		ft_free_split(f_rgb);
 	}
-	return (parse_config_line3(tokens, config, state, rgb));
+	return (parse_config_line3(tokens, config, state));
 }
 
 int parse_config_line(char *line, t_config *config, t_parse_state *state)
