@@ -29,7 +29,9 @@ SRC			= srcs/main.c \
 			  srcs/error/print_error.c \
 			  srcs/error/cleanup.c \
 			  srcs/init/init.c \
-			  srcs/utils/utils1.c
+			  srcs/utils/utils1.c \
+			  srcs/game/game_loop.c \
+			  srcs/game/raycasting.c
 			  
 
 SRC_BONUS	= 

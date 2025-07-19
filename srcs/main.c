@@ -18,9 +18,10 @@ int	main(int argc, char **argv)
 
 	// Appel aux fonctions de parsing et d'initialisation
 
-	if (file_checker(argv[1], argc, &config))
+	if (!file_checker(argv[1], argc, &config))
 		return (1);
 	// main game loop
+	game_loop(config);
 
 	// Cleanup and exit
 

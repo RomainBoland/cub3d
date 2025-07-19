@@ -104,4 +104,7 @@ int		is_map_line(const char *line);
 int		all_config_complete(t_parse_state *state);
 int		validate_complete_config(t_config *config);
 
+// game_loop.c
+void     game_loop();
+
 # endif
