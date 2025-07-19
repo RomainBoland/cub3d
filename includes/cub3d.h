@@ -73,6 +73,14 @@ typedef struct s_parse_state
     int all_config_found;
 }   t_parse_state;
 
+typedef struct	s_data {
+	void	*img;
+	char	*addr;
+	int		bits_per_pixel;
+	int		line_length;
+	int		endian;
+}	t_data;
+
 /* ------------	*/
 /* 	FUNCTIONS	*/
 /* ------------ */
@@ -139,5 +147,12 @@ int		is_empty_line(const char *line);
 int		is_map_line(const char *line);
 int		all_config_complete(t_parse_state *state);
 int		validate_complete_config(t_config *config);
+
+/*	GAME	*/
+// game_loop.c
+void	game_loop(t_config *config);
+void	my_mlx_pixel_put(t_data *data, int x, int y, int color);
+
+// raycasting.c
 
 #endif
