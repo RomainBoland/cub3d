@@ -26,6 +26,10 @@ SRC			= srcs/main.c \
 			  srcs/parsing/parse_arg.c \
 			  srcs/parsing/parse_config_line.c \
 			  srcs/parsing/parse_utils.c \
+			  srcs/parsing/parse_map.c \
+			  srcs/parsing/parse_map_utils.c \
+			  srcs/parsing/map_validation.c \
+			  srcs/normalize_line.c \
 			  srcs/error/print_error.c \
 			  srcs/error/cleanup.c \
 			  srcs/init/init.c \

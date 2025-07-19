@@ -12,27 +12,32 @@
 
 #include "cub3d.h"
 
-int add_line_to_map(const char *line, t_config *config)
+int	add_line_to_map(const char *line, t_config *config)
 {
-	char **new_map;
-	int i;
-	int j;
+	char	**new_map;
+	char	*normalized;
+	int		i;
+	int		j;
 
-	printf("Adding line to map: %s\n", line);
+	normalized = normalize_line(line);
+	if (!normalized)
+		return (0);
 	i = 0;
 	while (config->map[i])
 		i++;
-	printf("Current map height: %d\n", i);
 	new_map = malloc(sizeof(char *) * (i + 2));
 	if (!new_map)
+	{
+		free(normalized);
 		return (0);
+	}
 	j = 0;
 	while (j < i)
 	{
 		new_map[j] = config->map[j];
 		j++;
 	}
-	new_map[i] = ft_strdup(line);
+	new_map[i] = normalized;
 	new_map[i + 1] = NULL;
 	free(config->map);
 	config->map = new_map;
@@ -40,25 +45,26 @@ int add_line_to_map(const char *line, t_config *config)
 	return (1);
 }
 
-int start_map_parsing(const char *line, t_config *config)
+int	start_map_parsing(const char *line, t_config *config)
 {
-    config->map = malloc(sizeof(char *) * 2); // Space for 1 line + NULL
-    if (!config->map)
-        return (0);
-    
-    config->map[0] = ft_strdup(line);
-    if (!config->map[0])
-    {
-        free(config->map);
-        config->map = NULL;
-        return (0);
-    }
-    
-    config->map[1] = NULL;
-    config->map_width = get_line_width(line);
-	printf("Map width initialized to %ld\n", config->map_width);
-    config->map_height = 1;
-    return (1);
+	char	*normalized;
+
+	config->map = malloc(sizeof(char *) * 2);
+	if (!config->map)
+		return (0);
+	normalized = normalize_line(line);
+	if (!normalized)
+	{
+		free(config->map);
+		config->map = NULL;
+		return (0);
+	}
+	config->map[0] = normalized;
+	config->map[1] = NULL;
+	config->map_width = get_line_width(normalized);
+	printf("Map width initialized to %u\n", config->map_width);
+	config->map_height = 1;
+	return (1);
 }
 
 int parse_file2(char *first_line, t_config *config, int fd)
@@ -79,8 +85,8 @@ int parse_file2(char *first_line, t_config *config, int fd)
                 return (0);
             }
         }
-		if (get_line_width(line) > config->map_width)
-			config->map_width = get_line_width(line);
+		if ((int)get_line_width(line) > config->map_width)
+			config->map_width = (int)get_line_width(line);
         free(line);
         line = get_next_line(fd);
     }
@@ -92,22 +98,18 @@ int parse_file(int fd, t_config *config, t_parse_state *state)
     char *line;
     
     line = get_next_line(fd);
-    while (line) //&& !state->all_config_found)
+    while (line)
     {
-		printf("Parsing line: %s", line);
         if (is_empty_line(line))
         {
-			printf("Skipping empty line\n");
             free(line);
             line = get_next_line(fd);
             continue ;
         }
         if (is_config_line(line))
         {
-			printf("Parsing config line: %s", line);
             if (!parse_config_line(line, config, state))
             {
-				printf("Error parsing config line: %s", line);
                 free(line);
                 cleanup_config(config);
                 return (0);
@@ -121,7 +123,6 @@ int parse_file(int fd, t_config *config, t_parse_state *state)
                 cleanup_config(config);
                 return (print_error("Missing configuration elements"), 0);
             }
-			printf("Initializing map with line: %s", line);
             break ;
         }
         else
@@ -131,9 +132,7 @@ int parse_file(int fd, t_config *config, t_parse_state *state)
         }
         free(line);
         line = get_next_line(fd);
-		printf("Line processed successfuly...\n");
     }
-	printf("End of file reached or all config found.\n");
     return (parse_file2(line, config, fd));
 }
 
@@ -147,11 +146,8 @@ int	file_checker(const char *file_path, int argc, t_config *config)
 	fd = open_map(file_path);
 	if (!fd)
 		return (0);
-	printf("Initializing parse state...\n");
 	init_parse_state(&state);
-	printf("Initializing configuration...\n");
 	init_config(config);
-	printf("Parsing file: %s\n", file_path);
 	parse_file(fd, config, &state);
 
 	return (1);

@@ -56,8 +56,8 @@ typedef struct s_config
     int			floor_color[3];     // RGB, A FREE
     int			ceiling_color[3];   // RGB, A FREE
     char		**map;				// A FREE
-    size_t		map_width;
-    size_t		map_height;
+    int			map_width;
+    int			map_height;
     t_player	player;
 }   t_config;
 
@@ -93,6 +93,9 @@ void	ft_free_split(char **split);
 int		ft_isspace(int c);
 size_t get_line_width(const char *line);
 
+// normalize_line.c
+char	*normalize_line(const char *line);
+
 /*	INIT	*/
 // init.c
 void	init_config(t_config *config);
@@ -117,6 +120,19 @@ int		open_map(const char *file_path);
 int		str_ends_with(const char *str, const char *suffix);
 int		arg_checker(int argc, const char *file_path);
 
+// parse_map.c
+int		validate_map(t_config *config);
+int		validate_map_characters(t_config *config);
+int		find_player(t_config *config);
+
+// map_validation.c
+int		check_walls_around_spaces(t_config *config);
+
+// parse_map_utils.c
+int		is_valid_char(char c);
+int		is_position_valid(t_config *config, int x, int y);
+// int		set_player_angle(t_config *config);
+
 // parse_utils.c
 int		is_config_line(const char *line);
 int		is_empty_line(const char *line);
@@ -124,4 +140,4 @@ int		is_map_line(const char *line);
 int		all_config_complete(t_parse_state *state);
 int		validate_complete_config(t_config *config);
 
-# endif
+#endif

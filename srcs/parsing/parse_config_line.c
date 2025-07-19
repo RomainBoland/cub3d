@@ -48,11 +48,9 @@ int parse_config_line3(char **tokens, t_config *config, t_parse_state *state)
 			ft_free_split(c_rgb);
 			return (0);
 		}
-		printf("Parsing ceiling color: %s %s %s\n", c_rgb[0], c_rgb[1], c_rgb[2]);
 		affect_rgb(1, config, c_rgb);
 		if (!validate_rgb(config->ceiling_color[0], config->ceiling_color[1], config->ceiling_color[2]))
 		{
-			printf("Invalid RGB values for ceiling color\n");
 			ft_free_split(c_rgb);
 			return (0);
 		}
@@ -72,7 +70,6 @@ int parse_config_line2(char **tokens, t_config *config, t_parse_state *state)
 	
 	if (ft_strncmp(tokens[0], "EA", 2) == 0 || ft_strncmp(tokens[0], "E", 1) == 0)
 	{
-		printf("Parsing east texture: %s %s\n", tokens[0], tokens[1]);
 		config->east_texture = ft_strdup(tokens[1]);
 		state->east_found = 1;
 	}
@@ -85,11 +82,9 @@ int parse_config_line2(char **tokens, t_config *config, t_parse_state *state)
 			ft_free_split(f_rgb);
 			return (0);
 		}
-		printf("Parsing floor color: %s %s %s\n", f_rgb[0], f_rgb[1], f_rgb[2]);
 		affect_rgb(0, config, f_rgb);
 		if (!validate_rgb(config->floor_color[0], config->floor_color[1], config->floor_color[2]))
 		{
-			printf("Invalid RGB values for floor color\n");
 			ft_free_split(f_rgb);
 			return (0);
 		}
@@ -111,20 +106,16 @@ int parse_config_line(char *line, t_config *config, t_parse_state *state)
 	}
 	if ((ft_strncmp(tokens[0], "NO", 2) == 0 || ft_strncmp(tokens[0], "N", 1) == 0))
 	{
-		printf("Parsing north texture: %s %s\n", tokens[0], tokens[1]);
 		config->north_texture = ft_strdup(tokens[1]);
 		state->north_found = 1;
-		printf("North texture set: %s\n", config->north_texture);
 	}
 	else if ((ft_strncmp(tokens[0], "SO", 2) == 0 || ft_strncmp(tokens[0], "S", 1) == 0))
 	{
-		printf("Parsing south texture: %s %s\n", tokens[0], tokens[1]);
 		config->south_texture = ft_strdup(tokens[1]);
 		state->south_found = 1;
 	}
 	else if ((ft_strncmp(tokens[0], "WE", 2) == 0 || ft_strncmp(tokens[0], "W", 1) == 0))
 	{
-		printf("Parsing west texture: %s %s\n", tokens[0], tokens[1]);
 		config->west_texture = ft_strdup(tokens[1]);
 		state->west_found = 1;
 	}

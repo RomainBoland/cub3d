@@ -57,21 +57,6 @@ int all_config_complete(t_parse_state *state)
 			state->floor_found && state->ceiling_found);
 }
 
-void print_map(char **map, int width, int height)
-{
-	int i;
-
-	printf("Map (%d x %d):\n", width, height);
-	for (i = 0; i < height; i++)
-	{
-		if (map[i])
-			printf("%s", map[i]);
-		else
-			printf("(null)\n");
-	}
-	printf("\n");
-}
-
 int validate_complete_config(t_config *config)
 {
 	if (!config->north_texture || !config->south_texture ||
@@ -84,6 +69,10 @@ int validate_complete_config(t_config *config)
 		cleanup_config(config);
 		return (print_error("Incomplete configuration"), 0);
 	}
-	print_map(config->map, config->map_width, config->map_height);
+	if (!validate_map(config))
+	{
+		cleanup_config(config);
+		return (0);
+	}
 	return (1);
 }
