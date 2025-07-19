@@ -48,7 +48,7 @@ int parse_config_line3(char **tokens, t_config *config, t_parse_state *state, ch
 		}
 		printf("Parsing ceiling color: %s %s %s\n", rgb[0], rgb[1], rgb[2]);
 		affect_rgb(1, config, rgb);
-		if (!validate_rgb(config->floor_color[0], config->floor_color[1], config->floor_color[2]))
+		if (!validate_rgb(config->ceiling_color[0], config->ceiling_color[1], config->ceiling_color[2]))
 		{
 			printf("Invalid RGB values for ceiling color\n");
 			ft_free_split(rgb);
