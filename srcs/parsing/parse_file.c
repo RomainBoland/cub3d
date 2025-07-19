@@ -56,26 +56,33 @@ int start_map_parsing(const char *line, t_config *config)
     
     config->map[1] = NULL;
     config->map_width = ft_strlen(line);
+	printf("Map width initialized to %ld\n", config->map_width);
     config->map_height = 1;
     return (1);
 }
 
-int parse_file2(char *line, t_config *config, int fd)
+int parse_file2(char *first_line, t_config *config, int fd)
 {
-	start_map_parsing(line, config);
+    char *line;
+    
+    if (!start_map_parsing(first_line, config))
+        return (0);
+    
+    line = get_next_line(fd);
     while (line)
     {
-		printf("Processing map line: %s\n", line);
-        if (is_empty_line(line))
-		{
-			free(line);
-			line = get_next_line(fd);
-            continue ;
-		}
-        add_line_to_map(line, config);
-		free(line);
-		line = get_next_line(fd);
-		printf("Next line...\n");
+        if (!is_empty_line(line))
+        {
+            if (!add_line_to_map(line, config))
+            {
+                free(line);
+                return (0);
+            }
+        }
+		if (ft_strlen(line) > config->map_width)
+			config->map_width = ft_strlen(line);
+        free(line);
+        line = get_next_line(fd);
     }
     return (validate_complete_config(config));
 }
@@ -85,7 +92,7 @@ int parse_file(int fd, t_config *config, t_parse_state *state)
     char *line;
     
     line = get_next_line(fd);
-    while (line && !state->all_config_found)
+    while (line) //&& !state->all_config_found)
     {
 		printf("Parsing line: %s", line);
         if (is_empty_line(line))
@@ -93,7 +100,7 @@ int parse_file(int fd, t_config *config, t_parse_state *state)
 			printf("Skipping empty line\n");
             free(line);
             line = get_next_line(fd);
-            continue;
+            continue ;
         }
         if (is_config_line(line))
         {
@@ -115,7 +122,6 @@ int parse_file(int fd, t_config *config, t_parse_state *state)
                 return (print_error("Missing configuration elements"), 0);
             }
 			printf("Initializing map with line: %s", line);
-            free(line);
             break ;
         }
         else

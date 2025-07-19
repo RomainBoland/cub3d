@@ -1,0 +1,96 @@
+Initializing parse state...
+Initializing configuration...
+Parsing file: maps/test.cub
+Parsing line: NO ./path_to_the_north_texture
+Parsing config line: NO ./path_to_the_north_texture
+Parsing north texture: NO ./path_to_the_north_texture
+
+North texture set: ./path_to_the_north_texture
+
+Line processed successfuly...
+Parsing line: SO ./path_to_the_south_texture
+Parsing config line: SO ./path_to_the_south_texture
+Parsing south texture: SO ./path_to_the_south_texture
+
+Line processed successfuly...
+Parsing line: WE ./path_to_the_west_texture
+Parsing config line: WE ./path_to_the_west_texture
+Parsing west texture: WE ./path_to_the_west_texture
+
+Line processed successfuly...
+Parsing line: EA ./path_to_the_east_texture
+Parsing config line: EA ./path_to_the_east_texture
+Parsing east texture: EA ./path_to_the_east_texture
+
+Line processed successfuly...
+Parsing line: 
+Skipping empty line
+Parsing line: F 220,100,0
+Parsing config line: F 220,100,0
+Parsing floor color: 220 100 0
+
+Line processed successfuly...
+Parsing line: C 225,30,0
+Parsing config line: C 225,30,0
+Parsing ceiling color: 225 30 0
+
+Line processed successfuly...
+Parsing line: 
+Skipping empty line
+Parsing line:         1111111111111111111111111
+Initializing map with line:         1111111111111111111111111
+End of file reached or all config found.
+Map width initialized to 35
+Adding line to map:         1000000000110000000000001
+
+Current map height: 1
+Adding line to map:         1011000001110000000000001
+
+Current map height: 2
+Adding line to map:         1001000000000000000000001
+
+Current map height: 3
+Adding line to map: 111111111011000001110000000000001
+
+Current map height: 4
+Adding line to map: 100000000011000001110111111111111
+
+Current map height: 5
+Adding line to map: 11110111111111011100000010001
+
+Current map height: 6
+Adding line to map: 11110111111111011101010010001
+
+Current map height: 7
+Adding line to map: 11000000110101011100000010001
+
+Current map height: 8
+Adding line to map: 10000000000000001100000010001
+
+Current map height: 9
+Adding line to map: 10000000000000001101010010001
+
+Current map height: 10
+Adding line to map: 11000001110101011111011110N0111
+
+Current map height: 11
+Adding line to map: 11110111 1110101 101111010001
+
+Current map height: 12
+Adding line to map: 11111111 1111111 111111111111
+Current map height: 13
+Map (35 x 14):
+        1111111111111111111111111
+        1000000000110000000000001
+        1011000001110000000000001
+        1001000000000000000000001
+111111111011000001110000000000001
+100000000011000001110111111111111
+11110111111111011100000010001
+11110111111111011101010010001
+11000000110101011100000010001
+10000000000000001100000010001
+10000000000000001101010010001
+11000001110101011111011110N0111
+11110111 1110101 101111010001
+11111111 1111111 111111111111

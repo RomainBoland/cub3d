@@ -37,8 +37,8 @@ typedef struct s_config
     int     floor_color[3];     // RGB, A FREE
     int     ceiling_color[3];   // RGB, A FREE
     char    **map;				// A FREE
-    int     map_width;
-    int     map_height;
+    size_t     map_width;
+    size_t     map_height;
     // player start position and orientation
 }   t_config;
 
