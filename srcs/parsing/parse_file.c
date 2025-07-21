@@ -148,7 +148,11 @@ int	file_checker(const char *file_path, int argc, t_config *config)
 		return (0);
 	init_parse_state(&state);
 	init_config(config);
-	parse_file(fd, config, &state);
+	if (!parse_file(fd, config, &state))
+	{
+		close(fd);
+		return (0);
+	}
 
 	return (1);
 }
