@@ -75,8 +75,5 @@ int	validate_map(t_config *config)
 
 	if (!check_walls_around_spaces(config))
 		return (print_error("Walkable areas cant be surrounded by holes"), 0);
-	
-	printf("\nPlayer found at (%d, %d) facing %c\n", 
-			config->player.x, config->player.y, config->player.direction);
 	return (1);
 }

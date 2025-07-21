@@ -55,7 +55,6 @@ int	check_walls_around_spaces(t_config *config)
 		x = 0;
 		while (x < (int)ft_strlen(config->map[y]))
 		{
-			printf("%c", config->map[y][x]);
 			if (is_walkable(config->map[y][x]))
 			{
 				if (!check_cell_neighbors(config, x, y))

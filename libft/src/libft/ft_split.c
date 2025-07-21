@@ -6,13 +6,27 @@
 /*   By: rboland <rboland@student.s19.be>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/20 09:43:52 by rboland           #+#    #+#             */
-/*   Updated: 2025/01/04 15:57:45 by rboland          ###   ########.fr       */
+/*   Updated: 2025/07/21 14:58:02 by rboland          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-static int	ft_count_words(char *str, char charset)
+static int	is_delimiter(char c, char *charset)
+{
+	int	i;
+
+	i = 0;
+	while (charset[i])
+	{
+		if (c == charset[i])
+			return (1);
+		i++;
+	}
+	return (0);
+}
+
+static int	count_words(char *str, char *charset)
 {
 	int	i;
 	int	count;
@@ -23,19 +37,19 @@ static int	ft_count_words(char *str, char charset)
 	in_word = 0;
 	while (str[i])
 	{
-		if (str[i] != charset && !in_word)
+		if (!is_delimiter(str[i], charset) && !in_word)
 		{
 			in_word = 1;
 			count++;
 		}
-		else if (str[i] == charset)
+		else if (is_delimiter(str[i], charset))
 			in_word = 0;
 		i++;
 	}
 	return (count);
 }
 
-static char	*ft_get_word(char *str, char charset, int *index)
+static char	*get_word(char *str, char *charset, int *index)
 {
 	int		start;
 	int		word_size;
@@ -44,10 +58,10 @@ static char	*ft_get_word(char *str, char charset, int *index)
 
 	i = 0;
 	word_size = 0;
-	while (str[*index] && str[*index] == charset)
+	while (str[*index] && is_delimiter(str[*index], charset))
 		(*index)++;
 	start = *index;
-	while (str[*index] && str[*index] != charset)
+	while (str[*index] && !is_delimiter(str[*index], charset))
 	{
 		word_size++;
 		(*index)++;
@@ -74,16 +88,16 @@ static void	ft_free(char **str, int len)
 	free(str);
 }
 
-char	**ft_split(char *str, char charset)
+char	**ft_split(char *str, char *charset)
 {
 	int		i;
 	int		index;
 	char	**split_tab;
 	int		words;
 
-	if (!str)
+	if (!str || !charset)
 		return (NULL);
-	words = ft_count_words(str, charset);
+	words = count_words(str, charset);
 	split_tab = (char **)malloc(sizeof(char *) * (words + 1));
 	if (!split_tab)
 		return (NULL);
@@ -91,7 +105,7 @@ char	**ft_split(char *str, char charset)
 	index = 0;
 	while (i < words)
 	{
-		split_tab[i] = ft_get_word(str, charset, &index);
+		split_tab[i] = get_word(str, charset, &index);
 		if (!split_tab[i])
 		{
 			ft_free(split_tab, i);
@@ -99,32 +113,6 @@ char	**ft_split(char *str, char charset)
 		}
 		i++;
 	}
-	split_tab[i] = (NULL);
+	split_tab[i] = NULL;
 	return (split_tab);
 }
-/*
-#include <stdio.h>
-int main(void)
-{
-    char    *str = NULL;
-	char	charset = 'x';
-    char    **result;
-    size_t i;
-
-    result = ft_split(str, charset);
-	if (!result)
-	{
-		printf("tab = NULL");
-		return (1);
-	}
-	i = 0;
-    while (result[i])
-    {
-        printf("result[%zu] : %s\n", i, result[i]);
-        free(result[i]);
-        i++;
-    }
-    free(result);
-    return (0);
-}
-*/

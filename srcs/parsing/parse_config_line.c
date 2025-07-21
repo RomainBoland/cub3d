@@ -41,7 +41,7 @@ int parse_config_line3(char **tokens, t_config *config, t_parse_state *state)
 
 	if (ft_strncmp(tokens[0], "C", 1) == 0)
 	{
-		c_rgb = ft_split(tokens[1], ',');
+		c_rgb = ft_split(tokens[1], ", \t");
 		if (!c_rgb || !c_rgb[0] || !c_rgb[1] || !c_rgb[2])
 		{
 			ft_free_split(tokens);
@@ -75,7 +75,7 @@ int parse_config_line2(char **tokens, t_config *config, t_parse_state *state)
 	}
 	else if (ft_strncmp(tokens[0], "F", 1) == 0)
 	{
-		f_rgb = ft_split(tokens[1], ',');
+		f_rgb = ft_split(tokens[1], ", \t");
 		if (!f_rgb || !f_rgb[0] || !f_rgb[1] || !f_rgb[2])
 		{
 			ft_free_split(tokens);
@@ -98,7 +98,7 @@ int parse_config_line(char *line, t_config *config, t_parse_state *state)
 {
 	char **tokens;
 
-	tokens = ft_split(line, ' ');
+	tokens = ft_split(line, " \t");
 	if (!tokens || !tokens[0] || !tokens[1])
 	{
 		ft_free_split(tokens);

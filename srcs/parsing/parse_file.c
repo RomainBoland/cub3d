@@ -62,7 +62,6 @@ int	start_map_parsing(const char *line, t_config *config)
 	config->map[0] = normalized;
 	config->map[1] = NULL;
 	config->map_width = get_line_width(normalized);
-	printf("Map width initialized to %u\n", config->map_width);
 	config->map_height = 1;
 	return (1);
 }
