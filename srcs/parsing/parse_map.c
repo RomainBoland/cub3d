@@ -68,11 +68,9 @@ int	validate_map_characters(t_config *config)
 int	validate_map(t_config *config)
 {
 	if (!validate_map_characters(config))
-		return (print_error("Invalid characters in map"), 0);
-	
+		return (print_error("Invalid characters in map"), 0);	
 	if (!find_player(config))
 		return (print_error("Map must have exactly one player"), 0);
-
 	if (!check_walls_around_spaces(config))
 		return (print_error("Walkable areas cant be surrounded by holes"), 0);
 	return (1);
