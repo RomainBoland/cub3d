@@ -100,6 +100,7 @@ void	ft_free_split(char **split);
 // utils1.c
 int		ft_isspace(int c);
 size_t get_line_width(const char *line);
+int		is_valid_rgb_format(char **rgb);
 
 // normalize_line.c
 char	*normalize_line(const char *line);

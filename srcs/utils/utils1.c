@@ -25,3 +25,15 @@ int	ft_isspace(int c)
 {
 	return (c == ' ' || c == '\t' || c == '\n' || c == '\v' || c == '\f' || c == '\r');
 }
+
+int	is_valid_rgb_format(char **rgb)
+{
+	int i;
+
+	i = 0;
+	while(rgb[i])
+		i++;
+	if (i != 2)
+		return (0);
+	return (1);
+}
