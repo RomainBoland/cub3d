@@ -135,6 +135,7 @@ int		arg_checker(int argc, const char *file_path);
 int		validate_map(t_config *config);
 int		validate_map_characters(t_config *config);
 int		find_player(t_config *config);
+void	set_player_angle(t_config *config);
 
 // map_validation.c
 int		check_walls_around_spaces(t_config *config);
@@ -142,7 +143,6 @@ int		check_walls_around_spaces(t_config *config);
 // parse_map_utils.c
 int		is_valid_char(char c);
 int		is_position_valid(t_config *config, int x, int y);
-// int		set_player_angle(t_config *config);
 
 // parse_utils.c
 int		is_config_line(const char *line);

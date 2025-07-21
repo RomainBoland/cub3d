@@ -12,6 +12,22 @@
 
 #include "cub3d.h"
 
+void	set_player_angle(t_config *config)
+{
+    if (config->player.direction == 'N')
+        config->player.angle = 3 * PI / 2;  // 270 degrees (up)
+    else if (config->player.direction == 'S')
+        config->player.angle = PI / 2;      // 90 degrees (down)
+    else if (config->player.direction == 'E')
+        config->player.angle = 0;           // 0 degrees (right)
+    else if (config->player.direction == 'W')
+        config->player.angle = PI;          // 180 degrees (left)
+    
+    // Set floating point position (center of the grid cell)
+    config->player.pos_x = (float)config->player.x + 0.5f;
+    config->player.pos_y = (float)config->player.y + 0.5f;
+}
+
 int find_player(t_config *config)
 {
 	int	x;
@@ -33,7 +49,7 @@ int find_player(t_config *config)
 				config->player.x = x;
 				config->player.y = y;
 				config->player.direction = config->map[y][x];
-				// set_player_angle(config);
+				set_player_angle(config);
 				player_count++;
 			}
 			x++;
