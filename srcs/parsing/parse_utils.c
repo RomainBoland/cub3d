@@ -69,6 +69,11 @@ int validate_complete_config(t_config *config)
 		cleanup_config(config);
 		return (print_error("Incomplete configuration"), 0);
 	}
+	if (!validate_all_textures(config))
+	{
+		cleanup_config(config);
+		return (0);
+	}
 	if (!validate_map(config))
 	{
 		cleanup_config(config);

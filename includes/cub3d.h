@@ -23,6 +23,8 @@
 # include <math.h>
 # include <stdio.h>
 
+#define PI 3.14159265359
+
 /* ------------	*/
 /* 	STRUCTURES 	*/
 /* ------------	*/
@@ -100,7 +102,7 @@ void	ft_free_split(char **split);
 // utils1.c
 int		ft_isspace(int c);
 size_t get_line_width(const char *line);
-int		is_valid_rgb_format(char **rgb);
+int		is_valid_tab_format(char **rgb);
 
 // normalize_line.c
 char	*normalize_line(const char *line);
@@ -148,6 +150,10 @@ int		is_empty_line(const char *line);
 int		is_map_line(const char *line);
 int		all_config_complete(t_parse_state *state);
 int		validate_complete_config(t_config *config);
+
+// validate_textures.c
+int		validate_all_textures(t_config *config);
+int		validate_texture_path(void *mlx, char *path);
 
 /*	GAME	*/
 // game_loop.c

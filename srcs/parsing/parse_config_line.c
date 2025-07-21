@@ -41,7 +41,7 @@ int parse_config_line3(char **tokens, t_config *config, t_parse_state *state)
 
 	if (ft_strncmp(tokens[0], "C", 1) == 0)
 	{
-		if (!is_valid_rgb_format(tokens))
+		if (!is_valid_tab_format(tokens))
 		{
 			ft_free_split(tokens);
 			return (print_error("Invalid RGB format for ceiling color"), 0);
@@ -80,7 +80,7 @@ int parse_config_line2(char **tokens, t_config *config, t_parse_state *state)
 	}
 	else if (ft_strncmp(tokens[0], "F", 1) == 0)
 	{
-		if (!is_valid_rgb_format(tokens))
+		if (!is_valid_tab_format(tokens))
 		{
 			ft_free_split(tokens);
 			return (print_error("Invalid RGB format for floor color"), 0);
@@ -108,7 +108,7 @@ int parse_config_line(char *line, t_config *config, t_parse_state *state)
 {
 	char **tokens;
 
-	tokens = ft_split(line, " \t");
+	tokens = ft_split(line, " \t\n\r");
 	if (!tokens || !tokens[0] || !tokens[1])
 	{
 		ft_free_split(tokens);

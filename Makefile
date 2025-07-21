@@ -29,6 +29,7 @@ SRC			= srcs/main.c \
 			  srcs/parsing/parse_map.c \
 			  srcs/parsing/parse_map_utils.c \
 			  srcs/parsing/map_validation.c \
+			  srcs/parsing/validate_textures.c \
 			  srcs/normalize_line.c \
 			  srcs/error/print_error.c \
 			  srcs/error/cleanup.c \

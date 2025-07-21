@@ -26,7 +26,7 @@ int	ft_isspace(int c)
 	return (c == ' ' || c == '\t' || c == '\n' || c == '\v' || c == '\f' || c == '\r');
 }
 
-int	is_valid_rgb_format(char **rgb)
+int	is_valid_tab_format(char **rgb)
 {
 	int i;
 
