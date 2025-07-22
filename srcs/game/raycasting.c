@@ -43,8 +43,17 @@ t_ray dda_cast_ray(t_config *config, float ray_angle)
     float side_dist_y;
 
     // Prevent division by zero
-    float delta_dist_x = (ray_dir_x == 0) ? 1e30 : fabs(1 / ray_dir_x);
-    float delta_dist_y = (ray_dir_y == 0) ? 1e30 : fabs(1 / ray_dir_y);
+	float delta_dist_x;
+	if (ray_dir_x == 0)
+		delta_dist_x = 1e30;
+	else
+		delta_dist_x = fabs(1 / ray_dir_x);
+
+	float delta_dist_y;
+	if (ray_dir_y == 0)
+		delta_dist_y = 1e30;
+	else
+		delta_dist_y = fabs(1 / ray_dir_y);
 
     // Which direction to step in
     int step_x;
@@ -104,21 +113,30 @@ t_ray dda_cast_ray(t_config *config, float ray_angle)
         perp_wall_dist = (map_x - ray_x + (1 - step_x) / 2) / ray_dir_x;
         result.wall_x = ray_y + perp_wall_dist * ray_dir_y;
         // Determine wall direction for texture selection
-        result.wall_dir = (step_x == 1) ? 3 : 2; // West : East
+        if (step_x == 1)
+			result.wall_dir = 3; // West
+		else
+			result.wall_dir = 2; // East
     }
     else // horizontal wall
     {
         perp_wall_dist = (map_y - ray_y + (1 - step_y) / 2) / ray_dir_y;
         result.wall_x = ray_x + perp_wall_dist * ray_dir_x;
         // Determine wall direction for texture selection
-        result.wall_dir = (step_y == 1) ? 0 : 1; // North : South
+		if (step_y == 1)
+			result.wall_dir = 0; // North
+		else
+			result.wall_dir = 1; // South
     }
     
     result.wall_x = result.wall_x - floor(result.wall_x); // Get fractional part
     if (result.wall_x < 0)
-        result.wall_x += 1.0;
+		result.wall_x += 1.0;
     
-    result.distance = (perp_wall_dist <= 0) ? 0.1 : perp_wall_dist;
+	if (perp_wall_dist <= 0)
+		result.distance = 0.1;
+	else
+		result.distance = perp_wall_dist;
     result.side = side;
     
     return (result);
@@ -141,17 +159,27 @@ void render_textured_wall(t_config *config, t_data *img, int x, t_ray ray)
     int f_color = (config->floor_color[0] << 16) | (config->floor_color[1] << 8) | config->floor_color[2];
     int c_color = (config->ceiling_color[0] << 16) | (config->ceiling_color[1] << 8) | config->ceiling_color[2];
     
-    // Calculate wall height
+    // Calculate wall height - ADD MAXIMUM LIMIT
     int wall_height = (int)(WINDOW_HEIGHT / ray.distance);
-    if (wall_height > WINDOW_HEIGHT)
-        wall_height = WINDOW_HEIGHT;
+    if (wall_height > WINDOW_HEIGHT * 3)  // Limit maximum wall height
+        wall_height = WINDOW_HEIGHT * 3;
+    if (wall_height < 1)
+        wall_height = 1;
     
     int wall_start = (WINDOW_HEIGHT - wall_height) / 2;
     int wall_end = wall_start + wall_height;
     
-    // Clamp values
-    if (wall_start < 0) wall_start = 0;
-    if (wall_end >= WINDOW_HEIGHT) wall_end = WINDOW_HEIGHT - 1;
+    // Clamp values to screen bounds
+    int draw_start;
+	if (wall_start < 0)
+		draw_start = 0;
+	else
+		draw_start = wall_start;
+	int draw_end;
+	if (wall_end >= WINDOW_HEIGHT)
+		draw_end = WINDOW_HEIGHT - 1;
+	else
+		draw_end = wall_end;
     
     // Get the appropriate texture
     t_texture *texture = get_wall_texture(config, ray.wall_dir);
@@ -162,29 +190,39 @@ void render_textured_wall(t_config *config, t_data *img, int x, t_ray ray)
     if (tex_x < 0) tex_x = 0;
     
     // Draw ceiling
-    for (int y = 0; y < wall_start; y++)
+    for (int y = 0; y < draw_start; y++)
         my_mlx_pixel_put(img, x, y, c_color);
     
+    // FIXED TEXTURE CALCULATION - prevents overflow and distortion
+    float step = (float)texture->height / wall_height;  // How much to increase tex_y per pixel
+    float tex_pos = 0.0;
+    
+    // If wall starts above screen, adjust starting texture position
+    if (wall_start < 0)
+        tex_pos = (-wall_start) * step;
+    
     // Draw textured wall
-    for (int y = wall_start; y <= wall_end; y++)
+    for (int y = draw_start; y <= draw_end; y++)
     {
-        // Calculate texture Y coordinate
-        int tex_y = ((y - wall_start) * texture->height) / wall_height;
+        // Calculate texture Y coordinate using floating point precision
+        int tex_y = (int)tex_pos;
+        
+        // Ensure tex_y is within bounds
         if (tex_y >= texture->height) tex_y = texture->height - 1;
         if (tex_y < 0) tex_y = 0;
         
         // Get pixel color from texture
         unsigned int color = get_texture_pixel(texture, tex_x, tex_y);
         
-        // Apply distance-based shading (optional - makes walls darker when far)
+        // OPTIONAL: Apply distance-based shading (remove if you don't want shadows)
         if (ray.distance > 5.0)
         {
             int r = (color >> 16) & 0xFF;
             int g = (color >> 8) & 0xFF;
             int b = color & 0xFF;
             
-            float shade = 1.0 - (ray.distance - 5.0) / 10.0;
-            if (shade < 0.3) shade = 0.3; // Don't make it too dark
+            float shade = 1.0 - (ray.distance - 5.0) / 15.0;  // Made falloff more gradual
+            if (shade < 0.4) shade = 0.5; // Don't make it too dark
             if (shade > 1.0) shade = 1.0;
             
             r = (int)(r * shade);
@@ -195,10 +233,13 @@ void render_textured_wall(t_config *config, t_data *img, int x, t_ray ray)
         }
         
         my_mlx_pixel_put(img, x, y, color);
+        
+        // Move to next texture pixel
+        tex_pos += step;
     }
     
     // Draw floor
-    for (int y = wall_end + 1; y < WINDOW_HEIGHT; y++)
+    for (int y = draw_end + 1; y < WINDOW_HEIGHT; y++)
         my_mlx_pixel_put(img, x, y, f_color);
 }
 
