@@ -162,5 +162,7 @@ void	game_loop(t_config *config);
 void	my_mlx_pixel_put(t_data *data, int x, int y, int color);
 
 // raycasting.c
+float	dda_cast_ray(t_config *config, float ray_angle);
+void	render_raycast(t_config *config, t_data *img);
 
 #endif
