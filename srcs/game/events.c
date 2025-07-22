@@ -51,19 +51,32 @@ int handle_keyrelease(int keycode, t_game *game)
     return (0);
 }
 
-// Close window and exit
+// Close window and exit with proper cleanup
 int close_window(t_game *game)
 {
-    mlx_destroy_image(game->mlx, game->img.img);
-    mlx_destroy_window(game->mlx, game->win);
-    mlx_destroy_display(game->mlx);
-    free(game->mlx);
+    // Clean up textures
+    cleanup_textures(game->mlx, game->config);
+    
+    // Clean up MLX resources
+    if (game->img.img)
+        mlx_destroy_image(game->mlx, game->img.img);
+    if (game->win)
+        mlx_destroy_window(game->mlx, game->win);
+    if (game->mlx)
+    {
+        mlx_destroy_display(game->mlx);
+        free(game->mlx);
+    }
+    
+    // Clean up config
     cleanup_config(game->config);
+    
+    printf("Game closed successfully!\n");
     exit(0);
     return (0);
 }
 
-// Update game state based on key presses
+// Update game state based on key presses (unchanged)
 void update_game(t_game *game)
 {
     t_config *config = game->config;

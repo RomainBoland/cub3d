@@ -12,15 +12,17 @@
 
 #include "cub3d.h"
 
-void	my_mlx_pixel_put(t_data *data, int x, int y, int color)
+void my_mlx_pixel_put(t_data *data, int x, int y, int color)
 {
-	char	*dst;
+    char *dst;
 
-	dst = data->addr + (y * data->line_length + x * (data->bits_per_pixel / 8));
-	*(unsigned int*)dst = color;
+    if (x < 0 || x >= WINDOW_WIDTH || y < 0 || y >= WINDOW_HEIGHT)
+        return;
+    
+    dst = data->addr + (y * data->line_length + x * (data->bits_per_pixel / 8));
+    *(unsigned int*)dst = color;
 }
 
-// Game loop function that handles rendering
 int game_loop_hook(t_game *game)
 {
     // Update game state based on key presses
@@ -35,25 +37,59 @@ int game_loop_hook(t_game *game)
     return (0);
 }
 
-void	game_loop(t_config *config)
+void game_loop(t_config *config)
 {
     t_game game;
     
     // Initialize game structure
     game.config = config;
     game.mlx = mlx_init();
-    game.win = mlx_new_window(game.mlx, WINDOW_WIDTH, WINDOW_HEIGHT, "Cub3D - Use WASD + Arrows");
+    if (!game.mlx)
+    {
+        print_error("Failed to initialize MLX");
+        return;
+    }
+    
+    // Load all textures BEFORE creating the window
+    if (!load_all_textures(game.mlx, config))
+    {
+        print_error("Failed to load textures");
+        mlx_destroy_display(game.mlx);
+        free(game.mlx);
+        return;
+    }
+    
+    game.win = mlx_new_window(game.mlx, WINDOW_WIDTH, WINDOW_HEIGHT, "Cub3D - Textured Raycaster");
+    if (!game.win)
+    {
+        cleanup_textures(game.mlx, config);
+        mlx_destroy_display(game.mlx);
+        free(game.mlx);
+        print_error("Failed to create window");
+        return;
+    }
+    
     game.img.img = mlx_new_image(game.mlx, WINDOW_WIDTH, WINDOW_HEIGHT);
+    if (!game.img.img)
+    {
+        cleanup_textures(game.mlx, config);
+        mlx_destroy_window(game.mlx, game.win);
+        mlx_destroy_display(game.mlx);
+        free(game.mlx);
+        print_error("Failed to create image");
+        return;
+    }
+    
     game.img.addr = mlx_get_data_addr(game.img.img, &game.img.bits_per_pixel, 
                                       &game.img.line_length, &game.img.endian);
     
     // Initialize key states
     game.key_w = 0;
-	game.key_a = 0;
-	game.key_s = 0;
-	game.key_d = 0;
-	game.key_left = 0;
-	game.key_right = 0;
+    game.key_a = 0;
+    game.key_s = 0;
+    game.key_d = 0;
+    game.key_left = 0;
+    game.key_right = 0;
 
     // Set up event hooks
     mlx_hook(game.win, 17, 1L<<17, close_window, &game);          // Window close (X button)
@@ -65,7 +101,7 @@ void	game_loop(t_config *config)
     render_raycast(config, &game.img);
     mlx_put_image_to_window(game.mlx, game.win, game.img.img, 0, 0);
     
-    printf("🎮 Game Controls:\n");
+    printf("🎮 Cub3D - Textured Raycaster Controls:\n");
     printf("   WASD: Move player\n");
     printf("   Arrow Keys: Rotate view\n");
     printf("   ESC: Exit\n\n");

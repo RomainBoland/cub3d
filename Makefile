@@ -33,6 +33,7 @@ SRC			= srcs/main.c \
 			  srcs/error/print_error.c \
 			  srcs/error/cleanup.c \
 			  srcs/init/init.c \
+			  srcs/init/texture_loading.c \
 			  srcs/game/game_loop.c \
 			  srcs/game/raycasting.c \
 			  srcs/game/movement.c \

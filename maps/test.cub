@@ -1,9 +1,9 @@
-NO textures/texture_base.xpm
-SO textures/texture_base.xpm
+NO textures/texture_north.xpm
+SO textures/texture_south.xpm
 WE textures/texture_base.xpm
 EA textures/texture_base.xpm
 
-F 6,23,61
+F 30,15,129
 C 1,5,14
 
 		1111111111111111111111111

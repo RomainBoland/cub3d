@@ -29,6 +29,7 @@
 # define PI 3.14159265359
 # define MOVE_SPEED 0.04f
 # define ROT_SPEED 0.03f
+# define TEXTURE_SIZE 64
 
 # define ESC_KEY 65307
 # define W_KEY 119
@@ -37,7 +38,6 @@
 # define D_KEY 100
 # define LEFT_ARROW 65361
 # define RIGHT_ARROW 65363
-
 
 /* ------------	*/
 /* 	STRUCTURES 	*/
@@ -53,13 +53,24 @@ typedef struct s_player
     float   angle;      // Viewing angle in radians
 }   t_player;
 
+typedef struct s_texture
+{
+    void    *img;
+    char    *addr;
+    int     bits_per_pixel;
+    int     line_length;
+    int     endian;
+    int     width;
+    int     height;
+}	t_texture;
+
 typedef struct s_tex
 {
-	void	*north_img;		// A FREE
-	void	*south_img;		// A FREE
-	void	*west_img;		// A FREE
-	void	*east_img;		// A FREE
-}	t_tex;
+    t_texture   north;
+    t_texture   south;
+    t_texture   west;
+    t_texture   east;
+}   t_tex;
 
 // contient les configurations du jeu
 typedef struct s_config
@@ -89,7 +100,8 @@ typedef struct s_parse_state
     int all_config_found;
 }   t_parse_state;
 
-typedef struct	s_data {
+typedef struct	s_data
+{
 	void	*img;
 	char	*addr;
 	int		bits_per_pixel;
@@ -97,7 +109,16 @@ typedef struct	s_data {
 	int		endian;
 }	t_data;
 
-typedef struct s_game {
+typedef struct s_ray
+{
+    float   distance;
+    int     side;           // 0 = vertical wall, 1 = horizontal wall
+    float   wall_x;         // where exactly the wall was hit
+    int     wall_dir;       // which direction: 0=North, 1=South, 2=East, 3=West
+}	t_ray;
+
+typedef struct s_game
+{
     void        *mlx;
     void        *win;
     t_data      img;
@@ -115,92 +136,102 @@ typedef struct s_game {
 /* ------------ */
 
 // main.c
-int		main(int argc, char **argv);
+int				main(int argc, char **argv);
 
 /*	ERROR	*/
 // print_error.c
-void	print_error(const char *message);
-int		exit_error(const char *message, t_config *config);
+void			print_error(const char *message);
+int				exit_error(const char *message, t_config *config);
 // cleanup.c
-void	cleanup_config(t_config *config);
-void	ft_free_split(char **split);
+void			cleanup_config(t_config *config);
+void			ft_free_split(char **split);
 
 /*	UTILS	*/
 // utils1.c
-int		ft_isspace(int c);
-size_t	get_line_width(const char *line);
-int		is_valid_tab_format(char **rgb);
+int				ft_isspace(int c);
+size_t			get_line_width(const char *line);
+int				is_valid_tab_format(char **rgb);
 
 // normalize_line.c
-char	*normalize_line(const char *line);
+char			*normalize_line(const char *line);
 
 /*	INIT	*/
 // init.c
-void	init_config(t_config *config);
-void	init_parse_state(t_parse_state *state);
+void			init_config(t_config *config);
+void			init_parse_state(t_parse_state *state);
+
+// texture_loading.c
+int				load_texture(void *mlx, t_texture *texture, char *path);
+int				load_all_textures(void *mlx, t_config *config);
+void			cleanup_textures(void *mlx, t_config *config);
+unsigned int	get_texture_pixel(t_texture *texture, int x, int y);
 
 /*	PARSING	*/
 // parse_file.c
-int		add_line_to_map(const char *line, t_config *config);
-int		start_map_parsing(const char *line, t_config *config);
-int		parse_file(int fd, t_config *config, t_parse_state *state);
-int		parse_file2(char *line, t_config *config, int fd);
-int		file_checker(const char *file_path, int argc, t_config *config);
+int				add_line_to_map(const char *line, t_config *config);
+int				start_map_parsing(const char *line, t_config *config);
+int				parse_file(int fd, t_config *config, t_parse_state *state);
+int				parse_file2(char *line, t_config *config, int fd);
+int				file_checker(const char *file_path, int argc, t_config *config);
 
 // parse_config_line.c
-int		validate_rgb(int r, int g, int b);
-int		parse_config_line(char *line, t_config *config, t_parse_state *state);
-int		parse_config_line2(char **tokens, t_config *config, t_parse_state *	state);
-int		parse_config_line3(char **tokens, t_config *config, t_parse_state *state);
+int				validate_rgb(int r, int g, int b);
+int				parse_config_line(char *line, t_config *config, t_parse_state *state);
+int				parse_config_line2(char **tokens, t_config *config, t_parse_state *	state);
+int				parse_config_line3(char **tokens, t_config *config, t_parse_state *state);
 
 // parse_arg.c
-int		open_map(const char *file_path);
-int		str_ends_with(const char *str, const char *suffix);
-int		arg_checker(int argc, const char *file_path);
+int				open_map(const char *file_path);
+int				str_ends_with(const char *str, const char *suffix);
+int				arg_checker(int argc, const char *file_path);
 
 // parse_map.c
-int		validate_map(t_config *config);
-int		validate_map_characters(t_config *config);
-int		find_player(t_config *config);
-void	set_player_angle(t_config *config);
+int				validate_map(t_config *config);
+int				validate_map_characters(t_config *config);
+int				find_player(t_config *config);
+void			set_player_angle(t_config *config);
 
 // map_validation.c
-int		check_walls_around_spaces(t_config *config);
+int				check_walls_around_spaces(t_config *config);
 
 // parse_map_utils.c
-int		is_valid_char(char c);
-int		is_position_valid(t_config *config, int x, int y);
+int				is_valid_char(char c);
+int				is_position_valid(t_config *config, int x, int y);
 
 // parse_utils.c
-int		is_config_line(const char *line);
-int		is_empty_line(const char *line);
-int		is_map_line(const char *line);
-int		all_config_complete(t_parse_state *state);
-int		validate_complete_config(t_config *config);
+int				is_config_line(const char *line);
+int				is_empty_line(const char *line);
+int				is_map_line(const char *line);
+int				all_config_complete(t_parse_state *state);
+int				validate_complete_config(t_config *config);
 
 // validate_textures.c
-int		validate_all_textures(t_config *config);
-int		validate_texture_path(void *mlx, char *path);
+int				validate_all_textures(t_config *config);
+int				validate_texture_path(void *mlx, char *path);
 
 /*	GAME	*/
 // game_loop.c
-void	game_loop(t_config *config);
-void	my_mlx_pixel_put(t_data *data, int x, int y, int color);
-int 	game_loop_hook(t_game *game);
+void			game_loop(t_config *config);
+void			my_mlx_pixel_put(t_data *data, int x, int y, int color);
+int 			game_loop_hook(t_game *game);
 
 // raycasting.c
-float	dda_cast_ray(t_config *config, float ray_angle);
-void	render_raycast(t_config *config, t_data *img);
+int				is_wall(t_config *config, int map_x, int map_y);
+t_ray			dda_cast_ray(t_config *config, float ray_angle);
+t_texture		*get_wall_texture(t_config *config, int wall_dir);
+void 			render_textured_wall(t_config *config, t_data *img, int x, t_ray ray);
+float			normalize_angle(float angle);
+void			render_raycast(t_config *config, t_data *img);
 
 // movement.c
-int		is_valid_position(t_config *config, float x, float y);
-void	move_player(t_config *config, float move_x, float move_y);
-void	rotate_player(t_config *config, float rotation);
+int				is_valid_position(t_config *config, float x, float y);
+void			move_player(t_config *config, float move_x, float move_y);
+void			rotate_player(t_config *config, float rotation);
 
 // events.c
-int		handle_keypress(int keycode, t_game *game);
-int		handle_keyrelease(int keycode, t_game *game);
-int		close_window(t_game *game);
-void	update_game(t_game *game);
+int				handle_keypress(int keycode, t_game *game);
+int				handle_keyrelease(int keycode, t_game *game);
+int				close_window(t_game *game);
+void			update_game(t_game *game);
 
 #endif
