@@ -30,13 +30,15 @@ SRC			= srcs/main.c \
 			  srcs/parsing/parse_map_utils.c \
 			  srcs/parsing/map_validation.c \
 			  srcs/parsing/validate_textures.c \
-			  srcs/normalize_line.c \
 			  srcs/error/print_error.c \
 			  srcs/error/cleanup.c \
 			  srcs/init/init.c \
 			  srcs/game/game_loop.c \
 			  srcs/game/raycasting.c \
-			  srcs/utils/utils1.c
+			  srcs/game/movement.c \
+			  srcs/game/events.c \
+			  srcs/utils/utils1.c \
+			  srcs/utils/normalize_line.c
 			  
 
 SRC_BONUS	= 

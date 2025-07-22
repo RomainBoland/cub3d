@@ -12,14 +12,27 @@
 
 #include "cub3d.h"
 
+int	is_wall(t_config *config, int map_x, int map_y)
+{
+	// Check Y bounds FIRST - this is critical!
+	if (map_y < 0 || map_y >= config->map_height)
+		return (1);
+	
+	// Now it's safe to check X bounds
+	if (map_x < 0 || map_x >= (int)ft_strlen(config->map[map_y]))
+		return (1);
+	
+	return (config->map[map_y][map_x] == '1');
+}
+
 float	dda_cast_ray(t_config *config, float ray_angle)
 {
 	// direction du rayon
-	float ray_dir_x = cos(ray_angle); // donne l'angle en chiffre au lieu de l'angle en degres
+	float ray_dir_x = cos(ray_angle);
 	float ray_dir_y = sin(ray_angle);
 
 	// position actuelle du rayon
-	float ray_x = config->player.pos_x; // milieu de la case
+	float ray_x = config->player.pos_x;
 	float ray_y = config->player.pos_y;
 
 	// Quelle case du grid on est
@@ -30,18 +43,15 @@ float	dda_cast_ray(t_config *config, float ray_angle)
 	float side_dist_x;
 	float side_dist_y;
 
-	// longueur du rayon dans la direction x ou y jusqu'a la prochaine case
-	// fabs (ou arc tangente) donne la taille reelle (ici la distance parcourue) d'un rayon a l'angle A (A = ray_dir_x ou ray_dir_y) 
-	// jusqu'a une certaine distance (ici 1, car on avance une case par une case)
-	// par exemple, si ray_dir_x = 0.5, alors delta_dist_x = 2, car on avance de 2 cases en x pour chaque case en y
-	float delta_dist_x = fabs(1 / ray_dir_x);
-	float delta_dist_y = fabs(1 / ray_dir_y);
+	// Prevent division by zero
+	float delta_dist_x = (ray_dir_x == 0) ? 1e30 : fabs(1 / ray_dir_x);
+	float delta_dist_y = (ray_dir_y == 0) ? 1e30 : fabs(1 / ray_dir_y);
 
 	// Quelle direction on avance ?
 	int step_x;
 	int step_y;
 
-	// calculer le prochain pas (CF -1 ou +1 en x ou y) et la distance initiale
+	// calculer le prochain pas et la distance initiale
 	if (ray_dir_x < 0)
 	{
 		step_x = -1;
@@ -63,42 +73,55 @@ float	dda_cast_ray(t_config *config, float ray_angle)
 		side_dist_y = (map_y + 1.0 - ray_y) * delta_dist_y;
 	}
 
-	// Maintenant qu'on a toutes les infos, on peut faire le DDA
-	int hit; // est ce qu on a touche un mur ?
-	int side; // est ce qu'on a touche un mur vertical ou horizontal ?
+	
+	int hit = 0;
+	int side;
+	int max_iterations = config->map_width + config->map_height;
 
-	hit = 0;
-	while (hit == 0)
+	while (hit == 0 && max_iterations > 0)
 	{
-		// jump vers la prochaine intersection, soit x ou y
-		if (side_dist_x < side_dist_y) // SI la distance en x jusqu a la prochaine case, on avance en x
+		// jump vers la prochaine intersection
+		if (side_dist_x < side_dist_y)
 		{
 			side_dist_x += delta_dist_x;
 			map_x += step_x;
-			side = 0; // vertical
+			side = 0; // vertical wall
 		}
-		else // SI la distance en y jusqu a la prochaine case, on avance en y
+		else
 		{
 			side_dist_y += delta_dist_y;
 			map_y += step_y;
-			side = 1; // horizontal
+			side = 1; // horizontal wall
 		}
-		// Check si on a touche un mur
-		if (map_y >= 0 && map_y < config->map_height &&
-			map_x >= 0 && map_x < (int)ft_strlen(config->map[map_y]) &&
-			config->map[map_y][map_x] == '1') // 1 = mur
-			hit = 1; // on a touche un mur
+		
+		// Check for wall hit with proper bounds checking
+		if (is_wall(config, map_x, map_y))
+			hit = 1;
+		
+		max_iterations--;
 	}
 
-	// ENFIN, on calcule la distance du rayon
+	// Calculate perpendicular wall distance
 	float perp_wall_dist;
-	if (side == 0) // SI vertical
-		perp_wall_dist = (map_x - ray_x + (1 - step_x) / 2) / ray_dir_x; // correction pour le pas
-	else // SI horizontal
-		perp_wall_dist = (map_y - ray_y + (1 - step_y) / 2) / ray_dir_y; // correction pour le pas
+	if (side == 0) // vertical wall
+		perp_wall_dist = (map_x - ray_x + (1 - step_x) / 2) / ray_dir_x;
+	else // horizontal wall
+		perp_wall_dist = (map_y - ray_y + (1 - step_y) / 2) / ray_dir_y;
 	
-	return perp_wall_dist; // retourne la distance du mur
-	// Note: on pourrait aussi retourner le type de mur, mais pour l'instant on s'en fiche
+	// Ensure we don't return negative or zero distances
+	if (perp_wall_dist <= 0)
+		perp_wall_dist = 0.1;
+	
+	return perp_wall_dist;
+}
+
+float normalize_angle(float angle)
+{
+    while (angle < 0)
+        angle += 2 * PI;
+    while (angle >= 2 * PI)
+        angle -= 2 * PI;
+    return angle;
 }
 
 void	render_raycast(t_config *config, t_data *img)
@@ -111,34 +134,50 @@ void	render_raycast(t_config *config, t_data *img)
 	c_color = (config->ceiling_color[0] << 16) | (config->ceiling_color[1] << 8) | config->ceiling_color[2];
 	x = 0;
 
-	while (x < 1920)
+	while (x < WINDOW_WIDTH)
 	{
-		// premiere etape : calculer la largeur du FOV
-		float camera_x = 2 * x / (float)1920 - 1; // coordonnee en x de la camera
-		float ray_angle = config->player.angle + atan(camera_x * tan(PI / 6)); // FOV = 60 degrees
-
-		// deuxieme etape : calculer la distance jusqu'au mur par rayon
-		float distance = dda_cast_ray(config, ray_angle);
-
-		// calculer la hauteur du mur
-		int wall_height = (int)(1080 / distance); // 1080 est la hauteur de la fenetre
-		if (wall_height > 1080)
-			wall_height = 1080;
+		// Calculate camera X coordinate (-1 to 1)
+		float camera_x = 2 * x / (float)WINDOW_WIDTH - 1;
 		
-		int wall_start = (1080 - wall_height) / 2; // position de depart du mur
-		int wall_end = wall_start + wall_height; // position de fin du mur
+		// Calculate ray angle with proper FOV
+		float ray_angle = normalize_angle(config->player.angle + atan(camera_x * tan(PI / 4))); // 60 degree FOV
+		
+		// Normalize angle to [0, 2π]
+		while (ray_angle < 0)
+			ray_angle += 2 * PI;
+		while (ray_angle >= 2 * PI)
+			ray_angle -= 2 * PI;
 
-		// Dessiner le plafond
-        for (int y = 0; y < wall_start; y++)
-            my_mlx_pixel_put(img, x, y, c_color);
-        
-        // Dessiner le mur (gris pour l'instant)
-        for (int y = wall_start; y < wall_end; y++)
-            my_mlx_pixel_put(img, x, y, 0x808080); // Gray
-        
-        // Dessiner le sol
-        for (int y = wall_end; y < 1080; y++)
-            my_mlx_pixel_put(img, x, y, f_color);
+		// Cast ray and get distance
+		float distance = dda_cast_ray(config, ray_angle);
+		
+		// Apply fish-eye correction
+		distance = distance * cos(ray_angle - config->player.angle);
+
+		// Calculate wall height
+		int wall_height = (int)(WINDOW_HEIGHT / distance);
+		if (wall_height > WINDOW_HEIGHT)
+			wall_height = WINDOW_HEIGHT;
+		
+		int wall_start = (WINDOW_HEIGHT - wall_height) / 2;
+		int wall_end = wall_start + wall_height;
+		
+		// Clamp values to screen bounds
+		if (wall_start < 0) wall_start = 0;
+		if (wall_end >= WINDOW_HEIGHT) wall_end = WINDOW_HEIGHT - 1;
+
+		// Draw ceiling
+		for (int y = 0; y < wall_start; y++)
+			my_mlx_pixel_put(img, x, y, c_color);
+		
+		// Draw wall
+		for (int y = wall_start; y <= wall_end; y++)
+			my_mlx_pixel_put(img, x, y, 0x808080); // Gray
+		
+		// Draw floor
+		for (int y = wall_end + 1; y < WINDOW_HEIGHT; y++)
+			my_mlx_pixel_put(img, x, y, f_color);
+		
 		x++;
 	}
 }

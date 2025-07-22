@@ -23,7 +23,21 @@
 # include <math.h>
 # include <stdio.h>
 
-#define PI 3.14159265359
+
+# define WINDOW_WIDTH 1920
+# define WINDOW_HEIGHT 1080
+# define PI 3.14159265359
+# define MOVE_SPEED 0.04f
+# define ROT_SPEED 0.03f
+
+# define ESC_KEY 65307
+# define W_KEY 119
+# define A_KEY 97
+# define S_KEY 115  
+# define D_KEY 100
+# define LEFT_ARROW 65361
+# define RIGHT_ARROW 65363
+
 
 /* ------------	*/
 /* 	STRUCTURES 	*/
@@ -48,7 +62,6 @@ typedef struct s_tex
 }	t_tex;
 
 // contient les configurations du jeu
-
 typedef struct s_config
 {
     char		*north_texture;		// A FREE
@@ -84,6 +97,19 @@ typedef struct	s_data {
 	int		endian;
 }	t_data;
 
+typedef struct s_game {
+    void        *mlx;
+    void        *win;
+    t_data      img;
+    t_config    *config;
+    int         key_w;
+    int         key_a;
+    int         key_s;
+    int         key_d;
+    int         key_left;
+    int         key_right;
+}	t_game;
+
 /* ------------	*/
 /* 	FUNCTIONS	*/
 /* ------------ */
@@ -102,7 +128,7 @@ void	ft_free_split(char **split);
 /*	UTILS	*/
 // utils1.c
 int		ft_isspace(int c);
-size_t get_line_width(const char *line);
+size_t	get_line_width(const char *line);
 int		is_valid_tab_format(char **rgb);
 
 // normalize_line.c
@@ -160,9 +186,21 @@ int		validate_texture_path(void *mlx, char *path);
 // game_loop.c
 void	game_loop(t_config *config);
 void	my_mlx_pixel_put(t_data *data, int x, int y, int color);
+int 	game_loop_hook(t_game *game);
 
 // raycasting.c
 float	dda_cast_ray(t_config *config, float ray_angle);
 void	render_raycast(t_config *config, t_data *img);
+
+// movement.c
+int		is_valid_position(t_config *config, float x, float y);
+void	move_player(t_config *config, float move_x, float move_y);
+void	rotate_player(t_config *config, float rotation);
+
+// events.c
+int		handle_keypress(int keycode, t_game *game);
+int		handle_keyrelease(int keycode, t_game *game);
+int		close_window(t_game *game);
+void	update_game(t_game *game);
 
 #endif
