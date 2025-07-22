@@ -60,6 +60,7 @@ typedef struct s_config
     char		**map;				// A FREE
     int			map_width;
     int			map_height;
+	t_tex		tex;
     t_player	player;
 }   t_config;
 

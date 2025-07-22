@@ -27,6 +27,7 @@ void	init_config(t_config *config)
 	config->map = NULL;
 	config->map_width = 0;
 	config->map_height = 0;
+	
 }
 
 void	init_parse_state(t_parse_state *state)
