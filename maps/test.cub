@@ -1,10 +1,10 @@
-NO textures/wall.xpm
-SO textures/wall.xpm
-WE textures/wall.xpm
-EA textures/wall.xpm
+NO textures/texture_base.xpm
+SO textures/texture_base.xpm
+WE textures/texture_base.xpm
+EA textures/texture_base.xpm
 
-F 80,135,26
-C 53,120,196
+F 6,23,61
+C 1,5,14
 
 		1111111111111111111111111
 		1000000000110000000000001
