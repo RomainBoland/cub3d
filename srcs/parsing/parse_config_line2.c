@@ -55,6 +55,7 @@ int	parse_ceiling_color(char **tokens, t_config *config,
 			config->ceiling_color[2]))
 	{
 		ft_free_split(c_rgb);
+		ft_free_split(tokens);
 		return (print_error("RGB value must be between 0 and 255"), 0);
 	}
 	state->ceiling_found = 1;

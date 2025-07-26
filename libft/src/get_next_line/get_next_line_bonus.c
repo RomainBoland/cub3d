@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   get_next_line_bonus.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rboland <romain.boland@hotmail.com>        +#+  +:+       +#+        */
+/*   By: rboland <rboland@student.s19.be>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/01 09:47:42 by rboland           #+#    #+#             */
-/*   Updated: 2025/03/06 14:02:13 by rboland          ###   ########.fr       */
+/*   Updated: 2025/07/26 16:25:23 by rboland          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,7 +86,7 @@ static char	*get_line_and_update_stash(char **stash, char *newline_pos)
 
 char	*free_stash_error(int fd, char **stash)
 {
-    if (fd == -42)  // Magic value for cleanup
+    if (fd == -42)
     {
         int i;
         for (i = 0; i < OPEN_MAX; i++)

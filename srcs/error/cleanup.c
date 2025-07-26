@@ -42,6 +42,7 @@ void	cleanup_config(t_config *config)
 		ft_free_split(config->map);
 		config->map = NULL;
 	}
+	get_next_line(-42);
 	config->map_width = 0;
 	config->map_height = 0;
 }

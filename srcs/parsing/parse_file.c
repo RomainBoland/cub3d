@@ -17,7 +17,8 @@ static int	parse_remaining_lines(char *first_line, t_config *config, int fd)
 	char	*line;
 
 	if (!start_map_parsing(first_line, config))
-		return (0);
+		return (free(first_line),0);
+	free(first_line);
 	line = get_next_line(fd);
 	while (line)
 	{
