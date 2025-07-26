@@ -27,9 +27,9 @@ int	validate_texture_path(void *mlx, char *path)
 	return (1);
 }
 
-static int is_valid_texture(void *mlx, t_config *config)
+static int	is_valid_texture(void *mlx, t_config *config)
 {
-	int valid;
+	int	valid;
 
 	valid = 1;
 	if (!validate_texture_path(mlx, config->north_texture))
@@ -57,8 +57,8 @@ static int is_valid_texture(void *mlx, t_config *config)
 
 int	validate_all_textures(t_config *config)
 {
-	void *mlx;
-	int valid;
+	void	*mlx;
+	int		valid;
 
 	valid = 1;
 	mlx = mlx_init();

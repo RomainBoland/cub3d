@@ -14,16 +14,16 @@
 
 int	is_config_line(const char *line)
 {
-	return (ft_strncmp(line, "N ", 2) == 0 ||
-			ft_strncmp(line, "S ", 2) == 0 ||
-			ft_strncmp(line, "W ", 2) == 0 ||
-			ft_strncmp(line, "E ", 2) == 0 ||
-			ft_strncmp(line, "NO ", 3) == 0 ||
-			ft_strncmp(line, "SO ", 3) == 0 ||
-			ft_strncmp(line, "EA ", 3) == 0 ||
-			ft_strncmp(line, "WE ", 3) == 0 ||
-			ft_strncmp(line, "F ", 2) == 0 ||
-			ft_strncmp(line, "C ", 2) == 0);
+	return (ft_strncmp(line, "N ", 2) == 0
+		|| ft_strncmp(line, "S ", 2) == 0
+		|| ft_strncmp(line, "W ", 2) == 0
+		|| ft_strncmp(line, "E ", 2) == 0
+		|| ft_strncmp(line, "NO ", 3) == 0
+		|| ft_strncmp(line, "SO ", 3) == 0
+		|| ft_strncmp(line, "EA ", 3) == 0
+		|| ft_strncmp(line, "WE ", 3) == 0
+		|| ft_strncmp(line, "F ", 2) == 0
+		|| ft_strncmp(line, "C ", 2) == 0);
 }
 
 int	is_empty_line(const char *line)
@@ -37,38 +37,32 @@ int	is_empty_line(const char *line)
 	return (1);
 }
 
-int is_map_line(const char *line)
+int	all_config_complete(t_parse_state *state)
 {
-    while (*line)
-    {
-        if (*line != '1' && *line != '0' && *line != 'N' &&
-            *line != 'S' && *line != 'E' && *line != 'W' &&
-            !ft_isspace((unsigned char)*line))
-            return (0);
-        line++;
-    }
-    return (1);
+	return (state->north_found && state->south_found
+		&& state->west_found && state->east_found
+		&& state->floor_found && state->ceiling_found);
 }
 
-int all_config_complete(t_parse_state *state)
+static int	validate_config_completeness(t_config *config)
 {
-	return (state->north_found && state->south_found &&
-			state->west_found && state->east_found &&
-			state->floor_found && state->ceiling_found);
-}
-
-int validate_complete_config(t_config *config)
-{
-	if (!config->north_texture || !config->south_texture ||
-		!config->west_texture || !config->east_texture ||
-		config->floor_color[0] < 0 || config->floor_color[1] < 0 ||
-		config->floor_color[2] < 0 || config->ceiling_color[0] < 0 ||
-		config->ceiling_color[1] < 0 || config->ceiling_color[2] < 0 ||
-		config->map == NULL)
+	if (!config->north_texture || !config->south_texture
+		|| !config->west_texture || !config->east_texture
+		|| config->floor_color[0] < 0 || config->floor_color[1] < 0
+		|| config->floor_color[2] < 0 || config->ceiling_color[0] < 0
+		|| config->ceiling_color[1] < 0 || config->ceiling_color[2] < 0
+		|| config->map == NULL)
 	{
 		cleanup_config(config);
 		return (print_error("Incomplete configuration"), 0);
 	}
+	return (1);
+}
+
+int	validate_complete_config(t_config *config)
+{
+	if (!validate_config_completeness(config))
+		return (0);
 	if (!validate_all_textures(config))
 	{
 		cleanup_config(config);

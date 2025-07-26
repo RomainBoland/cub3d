@@ -25,7 +25,9 @@ SRC			= srcs/main.c \
 			  srcs/parsing/parse_file.c \
 			  srcs/parsing/parse_arg.c \
 			  srcs/parsing/parse_config_line.c \
+			  srcs/parsing/parse_config_line2.c \
 			  srcs/parsing/parse_utils.c \
+			  srcs/parsing/fill_map.c \
 			  srcs/parsing/parse_map.c \
 			  srcs/parsing/parse_map_utils.c \
 			  srcs/parsing/map_validation.c \

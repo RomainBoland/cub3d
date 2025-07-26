@@ -12,18 +12,47 @@
 
 #include "cub3d.h"
 
-static int	is_walkable(char c)
-{
-	return (c == '0' || c == 'N' || c == 'S' || c == 'E' || c == 'W');
-}
-
-static int	check_neighbor(t_config *config, int x, int y, int dx, int dy)
+static int	check_neighbor_up(t_config *config, int x, int y)
 {
 	int	nx;
 	int	ny;
 
-	nx = x + dx;
-	ny = y + dy;
+	nx = x;
+	ny = y - 1;
+	if (!is_position_valid(config, nx, ny))
+		return (0);
+	if (ft_isspace(config->map[ny][nx]))
+		return (0);
+	return (1);
+}
+
+static int	check_neighbor_down(t_config *config, int x, int y)
+{
+	int	nx;
+	int	ny;
+
+	nx = x;
+	ny = y + 1;
+	if (!is_position_valid(config, nx, ny))
+		return (0);
+	if (ft_isspace(config->map[ny][nx]))
+		return (0);
+	return (1);
+}
+
+static int	check_neighbor_sides(t_config *config, int x, int y)
+{
+	int	nx;
+	int	ny;
+
+	nx = x + 1;
+	ny = y;
+	if (!is_position_valid(config, nx, ny))
+		return (0);
+	if (ft_isspace(config->map[ny][nx]))
+		return (0);
+	nx = x - 1;
+	ny = y;
 	if (!is_position_valid(config, nx, ny))
 		return (0);
 	if (ft_isspace(config->map[ny][nx]))
@@ -33,13 +62,11 @@ static int	check_neighbor(t_config *config, int x, int y, int dx, int dy)
 
 static int	check_cell_neighbors(t_config *config, int x, int y)
 {
-	if (!check_neighbor(config, x, y, 0, 1))
+	if (!check_neighbor_up(config, x, y))
 		return (0);
-	if (!check_neighbor(config, x, y, 0, -1))
+	if (!check_neighbor_down(config, x, y))
 		return (0);
-	if (!check_neighbor(config, x, y, 1, 0))
-		return (0);
-	if (!check_neighbor(config, x, y, -1, 0))
+	if (!check_neighbor_sides(config, x, y))
 		return (0);
 	return (1);
 }
@@ -55,7 +82,9 @@ int	check_walls_around_spaces(t_config *config)
 		x = 0;
 		while (x < (int)ft_strlen(config->map[y]))
 		{
-			if (is_walkable(config->map[y][x]))
+			if (config->map[y][x] == '0' || config->map[y][x] == 'N'
+				|| config->map[y][x] == 'S' || config->map[y][x] == 'E'
+				|| config->map[y][x] == 'W')
 			{
 				if (!check_cell_neighbors(config, x, y))
 					return (0);

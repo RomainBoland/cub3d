@@ -14,25 +14,31 @@
 
 void	set_player_angle(t_config *config)
 {
-    if (config->player.direction == 'N')
-        config->player.angle = 3 * PI / 2;  // 270 degrees (up)
-    else if (config->player.direction == 'S')
-        config->player.angle = PI / 2;      // 90 degrees (down)
-    else if (config->player.direction == 'E')
-        config->player.angle = 0;           // 0 degrees (right)
-    else if (config->player.direction == 'W')
-        config->player.angle = PI;          // 180 degrees (left)
-    
-    // Set floating point position (center of the grid cell)
-    config->player.pos_x = (float)config->player.x + 0.5f;
-    config->player.pos_y = (float)config->player.y + 0.5f;
+	if (config->player.direction == 'N')
+		config->player.angle = 3 * PI / 2;
+	else if (config->player.direction == 'S')
+		config->player.angle = PI / 2;
+	else if (config->player.direction == 'E')
+		config->player.angle = 0;
+	else if (config->player.direction == 'W')
+		config->player.angle = PI;
+	config->player.pos_x = (float)config->player.x + 0.5f;
+	config->player.pos_y = (float)config->player.y + 0.5f;
 }
 
-int find_player(t_config *config)
+void	find_player_utils(t_config *config, int x, int y)
+{
+	config->player.x = x;
+	config->player.y = y;
+	config->player.direction = config->map[y][x];
+	set_player_angle(config);
+}
+
+int	find_player(t_config *config)
 {
 	int	x;
 	int	y;
-	int player_count;
+	int	player_count;
 
 	player_count = 0;
 	y = 0;
@@ -46,10 +52,7 @@ int find_player(t_config *config)
 			{
 				if (player_count > 0)
 					return (0);
-				config->player.x = x;
-				config->player.y = y;
-				config->player.direction = config->map[y][x];
-				set_player_angle(config);
+				find_player_utils(config, x, y);
 				player_count++;
 			}
 			x++;
@@ -84,7 +87,7 @@ int	validate_map_characters(t_config *config)
 int	validate_map(t_config *config)
 {
 	if (!validate_map_characters(config))
-		return (print_error("Invalid characters in map"), 0);	
+		return (print_error("Invalid characters in map"), 0);
 	if (!find_player(config))
 		return (print_error("Map must have exactly one player"), 0);
 	if (!check_walls_around_spaces(config))

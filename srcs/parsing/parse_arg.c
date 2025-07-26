@@ -14,7 +14,7 @@
 
 int	open_map(const char *file_path)
 {
-	int fd;
+	int	fd;
 
 	fd = open(file_path, O_RDONLY);
 	if (fd < 0)
@@ -27,13 +27,13 @@ int	open_map(const char *file_path)
 
 int	str_ends_with(const char *str, const char *suffix)
 {
-	size_t str_len;
-	size_t suffix_len;
+	size_t	str_len;
+	size_t	suffix_len;
 
 	str_len = ft_strlen(str);
 	suffix_len = ft_strlen(suffix);
 	if (suffix_len > str_len)
-		return 0;
+		return (0);
 	return (ft_strncmp(str + str_len - suffix_len, suffix, 4) == 0);
 }
 

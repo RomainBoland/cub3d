@@ -168,17 +168,31 @@ unsigned int	get_texture_pixel(t_texture *texture, int x, int y);
 
 /*	PARSING	*/
 // parse_file.c
-int				add_line_to_map(const char *line, t_config *config);
-int				start_map_parsing(const char *line, t_config *config);
-int				parse_file(int fd, t_config *config, t_parse_state *state);
-int				parse_file2(char *line, t_config *config, int fd);
 int				file_checker(const char *file_path, int argc, t_config *config);
+int				parse_file(int fd, t_config *config, t_parse_state *state);
+
+// fill_map.c
+int				start_map_parsing(const char *line, t_config *config);
+int				add_line_to_map(const char *line, t_config *config);
+int				is_map_line(const char *line);
 
 // parse_config_line.c
-int				validate_rgb(int r, int g, int b);
 int				parse_config_line(char *line, t_config *config, t_parse_state *state);
-int				parse_config_line2(char **tokens, t_config *config, t_parse_state *	state);
-int				parse_config_line3(char **tokens, t_config *config, t_parse_state *state);
+int				parse_config_line2(char **tokens, t_config *config,
+				t_parse_state *state);
+int				parse_config_line3(char **tokens, t_config *config,
+				t_parse_state *state);
+int				parse_floor_color(char **tokens, t_config *config,
+				t_parse_state *state);
+void			handle_config_line(char *key, char *value, t_config *config,
+				t_parse_state *state);
+
+// parse_config_line2.c
+void			affect_rgb(int marker, t_config *config, char **rgb);
+int				validate_rgb(int r, int g, int b);
+int				parse_ceiling_color(char **tokens, t_config *config,
+				t_parse_state *state);
+void			update_config_status(t_parse_state *state);
 
 // parse_arg.c
 int				open_map(const char *file_path);
@@ -201,7 +215,6 @@ int				is_position_valid(t_config *config, int x, int y);
 // parse_utils.c
 int				is_config_line(const char *line);
 int				is_empty_line(const char *line);
-int				is_map_line(const char *line);
 int				all_config_complete(t_parse_state *state);
 int				validate_complete_config(t_config *config);
 
