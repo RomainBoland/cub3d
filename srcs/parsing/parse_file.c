@@ -71,7 +71,10 @@ int parse_file2(char *first_line, t_config *config, int fd)
     char *line;
     
     if (!start_map_parsing(first_line, config))
+	{
+		free(first_line);
         return (0);
+	}
     
     line = get_next_line(fd);
     while (line)
@@ -81,6 +84,7 @@ int parse_file2(char *first_line, t_config *config, int fd)
             if (!add_line_to_map(line, config))
             {
                 free(line);
+				free(first_line);
                 return (0);
             }
         }
@@ -89,6 +93,7 @@ int parse_file2(char *first_line, t_config *config, int fd)
         free(line);
         line = get_next_line(fd);
     }
+	free(first_line);
     return (validate_complete_config(config));
 }
 
