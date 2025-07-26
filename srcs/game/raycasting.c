@@ -215,14 +215,14 @@ void render_textured_wall(t_config *config, t_data *img, int x, t_ray ray)
         unsigned int color = get_texture_pixel(texture, tex_x, tex_y);
         
         // OPTIONAL: Apply distance-based shading (remove if you don't want shadows)
-        if (ray.distance > 5.0)
+        if (ray.distance > 3.0)
         {
             int r = (color >> 16) & 0xFF;
             int g = (color >> 8) & 0xFF;
             int b = color & 0xFF;
             
-            float shade = 1.0 - (ray.distance - 5.0) / 15.0;  // Made falloff more gradual
-            if (shade < 0.4) shade = 0.5; // Don't make it too dark
+            float shade = 1.0 - (ray.distance - 3.0) / 7.5;  // Made falloff more gradual
+            if (shade < 0.3) shade = 0.3; // Don't make it too dark
             if (shade > 1.0) shade = 1.0;
             
             r = (int)(r * shade);
@@ -260,7 +260,7 @@ void render_raycast(t_config *config, t_data *img)
         float camera_x = 2 * x / (float)WINDOW_WIDTH - 1;
         
         // Calculate ray angle with 60-degree FOV
-        float ray_angle = normalize_angle(config->player.angle + atan(camera_x * tan(PI / 6)));
+        float ray_angle = normalize_angle(config->player.angle + atan(camera_x * tan(PI / 3.5)));
         
         // Cast ray and get detailed information
         t_ray ray = dda_cast_ray(config, ray_angle);
