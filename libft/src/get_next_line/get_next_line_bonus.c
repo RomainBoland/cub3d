@@ -6,7 +6,7 @@
 /*   By: rboland <rboland@student.s19.be>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/01 09:47:42 by rboland           #+#    #+#             */
-/*   Updated: 2025/07/26 16:25:23 by rboland          ###   ########.fr       */
+/*   Updated: 2025/07/27 16:38:21 by rboland          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,18 +86,21 @@ static char	*get_line_and_update_stash(char **stash, char *newline_pos)
 
 char	*free_stash_error(int fd, char **stash)
 {
-    if (fd == -42)
-    {
-        int i;
-        for (i = 0; i < OPEN_MAX; i++)
-        {
-            if (stash[i])
-            {
-                free(stash[i]);
-                stash[i] = NULL;
-            }
-        }
-    }
+	int	i;
+
+	i = 0;
+	if (fd == -42)
+	{
+		while (i < OPEN_MAX)
+		{
+			if (stash[i])
+			{
+				free(stash[i]);
+				stash[i] = NULL;
+			}
+			i++;
+		}
+	}
 	return (NULL);
 }
 

@@ -49,34 +49,12 @@ static int	get_texture_x(t_texture *texture, float wall_x)
 	return (tex_x);
 }
 
-unsigned int	apply_distance_shading(unsigned int color, float distance)
-{
-	int		r;
-	int		g;
-	int		b;
-	float	shade;
-
-	if (distance <= 3.0)
-		return (color);
-	r = (color >> 16) & 0xFF;
-	g = (color >> 8) & 0xFF;
-	b = color & 0xFF;
-	shade = 1.0 - (distance - 3.0) / 7.5;
-	if (shade < 0.1)
-		shade = 0.1;
-	if (shade > 1.0)
-		shade = 1.0;
-	r = (int)(r * shade);
-	g = (int)(g * shade);
-	b = (int)(b * shade);
-	return ((r << 16) | (g << 8) | b);
-}
-
 void	render_textured_wall(t_config *config, t_data *img, int x, t_ray ray)
 {
-	t_wall_draw	draw;
-	t_texture	*texture;
-	t_colors	colors;
+	t_wall_draw		draw;
+	t_texture		*texture;
+	t_colors		colors;
+	t_column_params	params;
 
 	colors.f_color = (config->floor_color[0] << 16)
 		| (config->floor_color[1] << 8) | config->floor_color[2];
@@ -89,5 +67,10 @@ void	render_textured_wall(t_config *config, t_data *img, int x, t_ray ray)
 	texture = get_wall_texture(config, ray.wall_dir);
 	draw.tex_x = get_texture_x(texture, ray.wall_x);
 	draw_ceiling_and_floor(img, x, &draw, &colors);
-	draw_textured_column(img, x, &draw, texture, ray.distance);
+	params.img = img;
+	params.x = x;
+	params.draw = &draw;
+	params.texture = texture;
+	params.distance = ray.distance;
+	draw_textured_column(&params);
 }

@@ -23,7 +23,6 @@
 # include <math.h>
 # include <stdio.h>
 
-
 # define WINDOW_WIDTH 1920
 # define WINDOW_HEIGHT 1080
 # define PI 3.14159265359
@@ -45,126 +44,137 @@
 
 typedef struct s_player
 {
-    int     x;          // Player grid position
-    int     y;
-    char    direction;  // N, S, E, W
-    float   pos_x;      // Actual position for raycasting
-    float   pos_y;
-    float   angle;      // Viewing angle in radians
-}   t_player;
+	int			x;
+	int			y;
+	char		direction;
+	float		pos_x;
+	float		pos_y;
+	float		angle;
+}	t_player;
 
 typedef struct s_texture
 {
-    void    *img;
-    char    *addr;
-    int     bits_per_pixel;
-    int     line_length;
-    int     endian;
-    int     width;
-    int     height;
+	void		*img;
+	char		*addr;
+	int			bits_per_pixel;
+	int			line_length;
+	int			endian;
+	int			width;
+	int			height;
 }	t_texture;
 
 typedef struct s_tex
 {
-    t_texture   north;
-    t_texture   south;
-    t_texture   west;
-    t_texture   east;
-}   t_tex;
+	t_texture	north;
+	t_texture	south;
+	t_texture	west;
+	t_texture	east;
+}	t_tex;
 
-typedef struct s_wall_draw {
-	int	wall_height;
-	int	wall_start;
-	int	wall_end;
-	int	draw_start;
-	int	draw_end;
-	int	tex_x;
-}	t_wall_draw;
-
-typedef struct s_colors {
-	int	f_color;
-	int	c_color;
-}	t_colors;
-
-typedef struct s_texture_draw {
-	float	step;
-	float	tex_pos;
-}	t_texture_draw;
-
-// contient les configurations du jeu
 typedef struct s_config
 {
-    char		*north_texture;		// A FREE
-    char		*south_texture;		// A FREE
-    char		*west_texture;		// A FREE
-    char		*east_texture;		// A FREE
-    int			floor_color[3];     // RGB, A FREE
-    int			ceiling_color[3];   // RGB, A FREE
-    char		**map;				// A FREE
-    int			map_width;
-    int			map_height;
+	char		*north_texture;
+	char		*south_texture;
+	char		*west_texture;
+	char		*east_texture;
+	int			floor_color[3];
+	int			ceiling_color[3];
+	char		**map;
+	int			map_width;
+	int			map_height;
 	t_tex		tex;
-    t_player	player;
-}   t_config;
+	t_player	player;
+}	t_config;
 
-// contient l'état du parsing
 typedef struct s_parse_state
 {
-    int north_found;
-    int south_found;
-    int west_found;
-    int east_found;
-    int floor_found;
-    int ceiling_found;
-    int all_config_found;
-}   t_parse_state;
+	int			north_found;
+	int			south_found;
+	int			west_found;
+	int			east_found;
+	int			floor_found;
+	int			ceiling_found;
+	int			all_config_found;
+}	t_parse_state;
 
-typedef struct	s_data
+typedef struct s_data
 {
-	void	*img;
-	char	*addr;
-	int		bits_per_pixel;
-	int		line_length;
-	int		endian;
+	void		*img;
+	char		*addr;
+	int			bits_per_pixel;
+	int			line_length;
+	int			endian;
 }	t_data;
+
+typedef struct s_wall_draw
+{
+	int			wall_height;
+	int			wall_start;
+	int			wall_end;
+	int			draw_start;
+	int			draw_end;
+	int			tex_x;
+}	t_wall_draw;
+
+typedef struct s_colors
+{
+	int			f_color;
+	int			c_color;
+}	t_colors;
+
+typedef struct s_texture_draw
+{
+	float		step;
+	float		tex_pos;
+}	t_texture_draw;
+
+typedef struct s_column_params
+{
+	t_data		*img;
+	int			x;
+	t_wall_draw	*draw;
+	t_texture	*texture;
+	float		distance;
+}	t_column_params;
 
 typedef struct s_ray
 {
-    float   distance;
-    int     side;           // 0 = vertical wall, 1 = horizontal wall
-    float   wall_x;         // where exactly the wall was hit
-    int     wall_dir;       // which direction: 0=North, 1=South, 2=East, 3=West
+	float		distance;
+	int			side;
+	float		wall_x;
+	int			wall_dir;
 }	t_ray;
 
-typedef struct s_ray_data {
-	float	ray_dir_x;
-	float	ray_dir_y;
-	float	ray_x;
-	float	ray_y;
-	int		map_x;
-	int		map_y;
-	float	side_dist_x;
-	float	side_dist_y;
-	float	delta_dist_x;
-	float	delta_dist_y;
-	int		step_x;
-	int		step_y;
-	int		hit;
-	int		side;
+typedef struct s_ray_data
+{
+	float		ray_dir_x;
+	float		ray_dir_y;
+	float		ray_x;
+	float		ray_y;
+	int			map_x;
+	int			map_y;
+	float		side_dist_x;
+	float		side_dist_y;
+	float		delta_dist_x;
+	float		delta_dist_y;
+	int			step_x;
+	int			step_y;
+	int			hit;
+	int			side;
 }	t_ray_data;
 
 typedef struct s_game
 {
-    void        *mlx;
-    void        *win;
-    t_data      img;
-    t_config    *config;
-    int         key_w;
-    int         key_a;
-    int         key_s;
-    int         key_d;
-    int         key_left;
-    int         key_right;
+	void		*mlx;
+	void		*win;
+	t_data		img;
+	t_config	*config;
+	int			key_w;
+	int			key_a;
+	int			key_s;
+	int			key_d;
+	int			key_left;
+	int			key_right;
 }	t_game;
 
 /* ------------	*/
@@ -213,21 +223,22 @@ int				add_line_to_map(const char *line, t_config *config);
 int				is_map_line(const char *line);
 
 // parse_config_line.c
-int				parse_config_line(char *line, t_config *config, t_parse_state *state);
+int				parse_config_line(char *line, t_config *config,
+					t_parse_state *state);
 int				parse_config_line2(char **tokens, t_config *config,
-				t_parse_state *state);
+					t_parse_state *state);
 int				parse_config_line3(char **tokens, t_config *config,
-				t_parse_state *state);
+					t_parse_state *state);
 int				parse_floor_color(char **tokens, t_config *config,
-				t_parse_state *state);
+					t_parse_state *state);
 void			handle_config_line(char *key, char *value, t_config *config,
-				t_parse_state *state);
+					t_parse_state *state);
 
 // parse_config_line2.c
 void			affect_rgb(int marker, t_config *config, char **rgb);
 int				validate_rgb(int r, int g, int b);
 int				parse_ceiling_color(char **tokens, t_config *config,
-				t_parse_state *state);
+					t_parse_state *state);
 void			update_config_status(t_parse_state *state);
 
 // parse_arg.c
@@ -277,19 +288,20 @@ void			render_raycast(t_config *config, t_data *img);
 t_ray			dda_cast_ray(t_config *config, float ray_angle);
 
 // dda_calculation_utils.c
-void			init_ray_data(t_ray_data *data, t_config *config, float ray_angle);
+void			init_ray_data(t_ray_data *data,
+					t_config *config, float ray_angle);
 void			calculate_delta_dist(t_ray_data *data);
 void			calculate_step_and_side_dist_x(t_ray_data *data);
 
 // render_wall.c
-void			render_textured_wall(t_config *config, t_data *img, int x, t_ray ray);
-unsigned int	apply_distance_shading(unsigned int color, float distance);
+void			render_textured_wall(t_config *config,
+					t_data *img, int x, t_ray ray);
 
 // render_wall_utils.c
-void			draw_textured_column(t_data *img, int x, t_wall_draw *draw,
-	t_texture *texture, float distance);
+unsigned int	apply_distance_shading(unsigned int color, float distance);
+void			draw_textured_column(t_column_params *params);
 void			draw_ceiling_and_floor(t_data *img, int x, t_wall_draw *draw,
-	t_colors *colors);
+					t_colors *colors);
 
 // movement.c
 int				is_valid_position(t_config *config, float x, float y);
