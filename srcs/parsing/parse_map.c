@@ -50,8 +50,6 @@ int	find_player(t_config *config)
 			if (config->map[y][x] == 'N' || config->map[y][x] == 'S' ||
 				config->map[y][x] == 'E' || config->map[y][x] == 'W')
 			{
-				if (player_count > 0)
-					return (0);
 				find_player_utils(config, x, y);
 				player_count++;
 			}
@@ -59,6 +57,8 @@ int	find_player(t_config *config)
 		}
 		y++;
 	}
+	if (player_count <= 0 || player_count > 1)
+		return (0);
 	return (1);
 }
 
