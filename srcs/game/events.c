@@ -12,7 +12,6 @@
 
 #include "cub3d.h"
 
-// Handle key press events
 int	handle_keypress(int keycode, t_game *game)
 {
 	if (keycode == W_KEY)
@@ -49,7 +48,6 @@ int	handle_keyrelease(int keycode, t_game *game)
 	return (0);
 }
 
-// Close window and exit with proper cleanup
 int	close_window(t_game *game)
 {
 	cleanup_textures(game->mlx, game->config);
@@ -88,7 +86,6 @@ void	update_game2(t_game *game, float *move, float *angle, t_config *config)
 		rotate_player(config, ROT_SPEED);
 }
 
-// Update game state based on key presses (unchanged)
 void	update_game(t_game *game)
 {
 	t_config	*config;

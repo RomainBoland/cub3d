@@ -72,6 +72,25 @@ typedef struct s_tex
     t_texture   east;
 }   t_tex;
 
+typedef struct s_wall_draw {
+	int	wall_height;
+	int	wall_start;
+	int	wall_end;
+	int	draw_start;
+	int	draw_end;
+	int	tex_x;
+}	t_wall_draw;
+
+typedef struct s_colors {
+	int	f_color;
+	int	c_color;
+}	t_colors;
+
+typedef struct s_texture_draw {
+	float	step;
+	float	tex_pos;
+}	t_texture_draw;
+
 // contient les configurations du jeu
 typedef struct s_config
 {
@@ -116,6 +135,23 @@ typedef struct s_ray
     float   wall_x;         // where exactly the wall was hit
     int     wall_dir;       // which direction: 0=North, 1=South, 2=East, 3=West
 }	t_ray;
+
+typedef struct s_ray_data {
+	float	ray_dir_x;
+	float	ray_dir_y;
+	float	ray_x;
+	float	ray_y;
+	int		map_x;
+	int		map_y;
+	float	side_dist_x;
+	float	side_dist_y;
+	float	delta_dist_x;
+	float	delta_dist_y;
+	int		step_x;
+	int		step_y;
+	int		hit;
+	int		side;
+}	t_ray_data;
 
 typedef struct s_game
 {
@@ -225,16 +261,35 @@ int				validate_texture_path(void *mlx, char *path);
 /*	GAME	*/
 // game_loop.c
 void			game_loop(t_config *config);
+
+// game_loop2.c
 void			my_mlx_pixel_put(t_data *data, int x, int y, int color);
-int 			game_loop_hook(t_game *game);
+int				game_loop_hook(t_game *game);
+void			print_game_info(t_config *config);
 
 // raycasting.c
 int				is_wall(t_config *config, int map_x, int map_y);
-t_ray			dda_cast_ray(t_config *config, float ray_angle);
 t_texture		*get_wall_texture(t_config *config, int wall_dir);
-void 			render_textured_wall(t_config *config, t_data *img, int x, t_ray ray);
 float			normalize_angle(float angle);
 void			render_raycast(t_config *config, t_data *img);
+
+// dda_calculation.c
+t_ray			dda_cast_ray(t_config *config, float ray_angle);
+
+// dda_calculation_utils.c
+void			init_ray_data(t_ray_data *data, t_config *config, float ray_angle);
+void			calculate_delta_dist(t_ray_data *data);
+void			calculate_step_and_side_dist_x(t_ray_data *data);
+
+// render_wall.c
+void			render_textured_wall(t_config *config, t_data *img, int x, t_ray ray);
+unsigned int	apply_distance_shading(unsigned int color, float distance);
+
+// render_wall_utils.c
+void			draw_textured_column(t_data *img, int x, t_wall_draw *draw,
+	t_texture *texture, float distance);
+void			draw_ceiling_and_floor(t_data *img, int x, t_wall_draw *draw,
+	t_colors *colors);
 
 // movement.c
 int				is_valid_position(t_config *config, float x, float y);

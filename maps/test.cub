@@ -4,7 +4,7 @@ WE textures/texture_base.xpm
 EA textures/texture_base.xpm
 
 F 30,15,120
-C 1,5,14
+C 32,32,32
 
 		1111111111111111111111111
 		1000000000110000000000001

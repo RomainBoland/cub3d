@@ -37,7 +37,12 @@ SRC			= srcs/main.c \
 			  srcs/init/init.c \
 			  srcs/init/texture_loading.c \
 			  srcs/game/game_loop.c \
+			  srcs/game/game_loop2.c \
 			  srcs/game/raycasting.c \
+			  srcs/game/dda_calculation.c \
+			  srcs/game/dda_calculation_utils.c \
+			  srcs/game/render_wall.c \
+			  srcs/game/render_wall_utils.c \
 			  srcs/game/movement.c \
 			  srcs/game/events.c \
 			  srcs/utils/utils1.c \
