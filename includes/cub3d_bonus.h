@@ -26,8 +26,8 @@
 # define WINDOW_WIDTH 1920
 # define WINDOW_HEIGHT 1080
 # define PI 3.14159265359
-# define MOVE_SPEED 0.06f
-# define ROT_SPEED 0.04f
+# define MOVE_SPEED 0.07f
+# define ROT_SPEED 0.05f
 # define TEXTURE_SIZE 64
 # define FOV_HALF_TAN 1.25396033766f
 

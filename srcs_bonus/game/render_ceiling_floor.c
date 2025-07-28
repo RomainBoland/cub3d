@@ -14,18 +14,25 @@
 
 static unsigned int get_safe_texture_pixel(t_texture *texture, int x, int y)
 {
-
     x = x & (texture->width - 1);
     y = y & (texture->height - 1);
-    
     return get_texture_pixel(texture, x, y);
+}
+
+static float	abs_val(float x)
+{
+	if (x < 0)
+		return (-x);
+	return (x);
 }
 
 static float fast_distance_approximation(float dx, float dy)
 {
-    float abs_dx = dx < 0 ? -dx : dx;
-    float abs_dy = dy < 0 ? -dy : dy;
-    
+    float abs_dx;
+    float abs_dy;
+
+	abs_dx = abs_val(dx);
+	abs_dy = abs_val(dy);
     if (abs_dx > abs_dy)
         return abs_dx + 0.5f * abs_dy;
     else
