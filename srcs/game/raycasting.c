@@ -54,7 +54,7 @@ void	render_raycast(t_config *config, t_data *img)
 	{
 		camera_x = 2 * x / (float)WINDOW_WIDTH - 1;
 		ray_angle = normalize_angle(config->player.angle
-				+ atan(camera_x * tan(PI / 3.5)));
+				+ atan(camera_x * tan(PI / 3)));
 		ray = dda_cast_ray(config, ray_angle);
 		ray.distance = ray.distance * cos(ray_angle - config->player.angle);
 		render_textured_wall(config, img, x, ray);
