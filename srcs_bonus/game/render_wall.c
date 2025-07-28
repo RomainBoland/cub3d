@@ -54,20 +54,19 @@ void render_textured_wall(t_config *config, t_data *img, int x, t_ray ray)
     t_wall_draw     draw;
     t_texture       *texture;
     t_column_params params;
-    int             y;
 
     calculate_wall_bounds(ray, &draw.wall_height, &draw.wall_start, &draw.wall_end);
     calculate_draw_bounds(draw.wall_start, draw.wall_end, &draw.draw_start, &draw.draw_end);
     texture = get_wall_texture(config, ray.wall_dir);
     draw.tex_x = get_texture_x(texture, ray.wall_x);
     
-    // SIMPLE: Draw solid colors instead of textures
-    for (y = 0; y < draw.draw_start; y++)
-        my_mlx_pixel_put(img, x, y, 0x87CEEB); // Sky blue ceiling
+    // // SIMPLE: Draw solid colors instead of textures
+    // for (y = 0; y < draw.draw_start; y++)
+    //     my_mlx_pixel_put(img, x, y, 0x87CEEB); // Sky blue ceiling
     
-    for (y = draw.draw_end + 1; y < WINDOW_HEIGHT; y++)
-        my_mlx_pixel_put(img, x, y, 0x228B22); // Forest green floor
-    
+    // for (y = draw.draw_end + 1; y < WINDOW_HEIGHT; y++)
+    //     my_mlx_pixel_put(img, x, y, 0x228B22); // Forest green floor
+    render_floor_ceiling_column(config, img, x, draw.draw_start, draw.draw_end);
     // Draw wall
     params.img = img;
     params.x = x;

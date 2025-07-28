@@ -26,8 +26,8 @@
 # define WINDOW_WIDTH 1920
 # define WINDOW_HEIGHT 1080
 # define PI 3.14159265359
-# define MOVE_SPEED 0.04f
-# define ROT_SPEED 0.03f
+# define MOVE_SPEED 0.06f
+# define ROT_SPEED 0.04f
 # define TEXTURE_SIZE 64
 # define FOV_HALF_TAN 1.25396033766f
 
@@ -306,6 +306,7 @@ int				close_window(t_game *game);
 void			update_game(t_game *game);
 
 // floor_ceiling_render.c
-
+void    render_floor_ceiling_column(t_config *config, t_data *img, int x, 
+                                  int wall_start, int wall_end);
 
 #endif
