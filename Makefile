@@ -18,9 +18,13 @@ CFLAGS		= -Wall -Wextra -Werror -g
 INCLUDES	= -I includes/ -I libft/includes/ -I mlx/
 MLX_FLAGS	= -Lmlx -lmlx -L/usr/lib -Imlx -lXext -lX11 -lm -lz
 MINECRAFT_GREEN = \033[38;5;70m
+BLUE		= \033[0;34m
+YELLOW		= \033[0;33m
+RED			= \033[0;31m
 RESET		= \033[0m
 BOLD		= \033[1m
 
+# Original mandatory sources
 SRC			= srcs/main.c \
 			  srcs/parsing/parse_file.c \
 			  srcs/parsing/parse_arg.c \
@@ -47,9 +51,33 @@ SRC			= srcs/main.c \
 			  srcs/game/events.c \
 			  srcs/utils/utils1.c \
 			  srcs/utils/normalize_line.c
-			  
 
-SRC_BONUS	= 
+SRC_BONUS	= srcs_bonus/main.c \
+			  srcs_bonus/parsing/parse_file.c \
+			  srcs_bonus/parsing/parse_arg.c \
+			  srcs_bonus/parsing/parse_config_line.c \
+			  srcs_bonus/parsing/parse_utils.c \
+			  srcs_bonus/parsing/fill_map.c \
+			  srcs_bonus/parsing/parse_map.c \
+			  srcs_bonus/parsing/parse_map_utils.c \
+			  srcs_bonus/parsing/map_validation.c \
+			  srcs_bonus/parsing/validate_textures.c \
+			  srcs_bonus/error/print_error.c \
+			  srcs_bonus/error/cleanup.c \
+			  srcs_bonus/init/init.c \
+			  srcs_bonus/init/texture_loading.c \
+			  srcs_bonus/game/game_loop.c \
+			  srcs_bonus/game/game_loop2.c \
+			  srcs_bonus/game/raycasting.c \
+			  srcs_bonus/game/dda_calculation.c \
+			  srcs_bonus/game/dda_calculation_utils.c \
+			  srcs_bonus/game/render_wall.c \
+			  srcs_bonus/game/render_wall_utils.c \
+			  srcs_bonus/game/render_ceiling_floor.c \
+			  srcs_bonus/game/movement.c \
+			  srcs_bonus/game/events.c \
+			  srcs_bonus/utils/utils1.c \
+			  srcs_bonus/utils/normalize_line.c
 
 OBJ_DIR		= objects/
 OBJ_BONUS_DIR = objects_bonus/
@@ -69,20 +97,30 @@ CURRENT_FILE = 0
 define update_progress
 	$(eval CURRENT_FILE=$(shell echo $$(($(CURRENT_FILE) + 1))))
 	$(eval PERCENTAGE=$(shell echo $$(($(CURRENT_FILE) * 100 / $(TOTAL_FILES)))))
-	@printf "\r$(MINECRAFT_GREEN)Progress: [%-50s] %3d%%$(RESET)" "$$(printf '#%.0s' $$(seq 1 $$(($(CURRENT_FILE) * 50 / $(TOTAL_FILES)))))" "$(PERCENTAGE)"
+	@printf "\r$(MINECRAFT_GREEN)Mandatory Progress: [%-50s] %3d%%$(RESET)" "$$(printf '#%.0s' $$(seq 1 $$(($(CURRENT_FILE) * 50 / $(TOTAL_FILES)))))" "$(PERCENTAGE)"
 endef
 
 define update_progress_bonus
 	$(eval CURRENT_FILE=$(shell echo $$(($(CURRENT_FILE) + 1))))
 	$(eval PERCENTAGE=$(shell echo $$(($(CURRENT_FILE) * 100 / $(TOTAL_FILES_BONUS)))))
-	@printf "\r$(MINECRAFT_GREEN)Progress: [%-50s] %3d%%$(RESET)" "$$(printf '#%.0s' $$(seq 1 $$(($(CURRENT_FILE) * 50 / $(TOTAL_FILES_BONUS)))))" "$(PERCENTAGE)"
+	@printf "\r$(BLUE)Bonus Progress: [%-50s] %3d%%$(RESET)" "$$(printf '#%.0s' $$(seq 1 $$(($(CURRENT_FILE) * 50 / $(TOTAL_FILES_BONUS)))))" "$(PERCENTAGE)"
 endef
 
 all: $(OBJ_DIR) $(LIBFT) $(MLX) $(NAME)
-	@printf "\n$(MINECRAFT_GREEN)$(BOLD)Compilation completed!$(RESET)\n"
+	@printf "\n$(MINECRAFT_GREEN)$(BOLD)✓ Mandatory compilation completed!$(RESET)\n"
+	@printf "$(YELLOW)Features: Basic raycasting, textures, movement$(RESET)\n"
 
-bonus: $(OBJ_DIR) $(OBJ_BONUS_DIR) $(LIBFT) $(MLX) $(NAME_BONUS)
-	@printf "\n$(MINECRAFT_GREEN)$(BOLD)Bonus compilation completed!$(RESET)\n"
+bonus: $(OBJ_BONUS_DIR) $(LIBFT) $(MLX) $(NAME_BONUS)
+	@printf "\n$(BLUE)$(BOLD)✓ Bonus compilation completed!$(RESET)\n"
+	@printf "$(YELLOW)Enhanced Features:$(RESET)\n"
+	@printf "  • Floor/Ceiling textures\n"
+	@printf "  • Sprint system with stamina\n"
+	@printf "  • Crouch/Jump mechanics\n"
+	@printf "  • Mouse control with pitch\n"
+	@printf "  • Interactive doors\n"
+	@printf "  • Animated sprites (enemies/items)\n"
+	@printf "  • Real-time minimap\n"
+	@printf "  • Enhanced HUD\n"
 
 $(OBJ_DIR):
 	@mkdir -p $(OBJ_DIR)
@@ -92,20 +130,21 @@ $(OBJ_BONUS_DIR):
 
 $(LIBFT):
 	@printf "$(MINECRAFT_GREEN)Building libft...$(RESET)\n"
-	@$(MAKE) -C $(LIBFT_DIR)
+	@$(MAKE) -C $(LIBFT_DIR) --no-print-directory
 
 $(MLX):
 	@printf "$(MINECRAFT_GREEN)Building MinilibX...$(RESET)\n"
-	@$(MAKE) -C $(MLX_DIR)
+	@$(MAKE) -C $(MLX_DIR) --no-print-directory
 
 $(NAME): $(OBJ)
-	@printf "\n$(MINECRAFT_GREEN)$(BOLD)Linking objects...$(RESET)\n"
+	@printf "\n$(MINECRAFT_GREEN)$(BOLD)Linking mandatory objects...$(RESET)\n"
 	@$(CC) $(CFLAGS) $(INCLUDES) -o $(NAME) $(OBJ) $(LIBFT) $(MLX_FLAGS)
 
 $(NAME_BONUS): $(OBJ_BONUS)
-	@printf "\n$(MINECRAFT_GREEN)$(BOLD)Linking bonus objects...$(RESET)\n"
+	@printf "\n$(BLUE)$(BOLD)Linking bonus objects...$(RESET)\n"
 	@$(CC) $(CFLAGS) $(INCLUDES) -o $(NAME_BONUS) $(OBJ_BONUS) $(LIBFT) $(MLX_FLAGS)
 
+# Mandatory compilation rules
 $(OBJ_DIR)%.o: srcs/%.c includes/cub3d.h
 	@$(CC) $(CFLAGS) $(INCLUDES) -c $< -o $@
 	$(call update_progress)
@@ -115,14 +154,6 @@ $(OBJ_DIR)%.o: srcs/parsing/%.c includes/cub3d.h
 	$(call update_progress)
 
 $(OBJ_DIR)%.o: srcs/error/%.c includes/cub3d.h
-	@$(CC) $(CFLAGS) $(INCLUDES) -c $< -o $@
-	$(call update_progress)
-
-$(OBJ_DIR)%.o: srcs/raycasting/%.c includes/cub3d.h
-	@$(CC) $(CFLAGS) $(INCLUDES) -c $< -o $@
-	$(call update_progress)
-
-$(OBJ_DIR)%.o: srcs/rendering/%.c includes/cub3d.h
 	@$(CC) $(CFLAGS) $(INCLUDES) -c $< -o $@
 	$(call update_progress)
 
@@ -138,6 +169,7 @@ $(OBJ_DIR)%.o: srcs/utils/%.c includes/cub3d.h
 	@$(CC) $(CFLAGS) $(INCLUDES) -c $< -o $@
 	$(call update_progress)
 
+# Bonus compilation rules
 $(OBJ_BONUS_DIR)%.o: srcs_bonus/%.c includes/cub3d_bonus.h
 	@$(CC) $(CFLAGS) $(INCLUDES) -c $< -o $@
 	$(call update_progress_bonus)
@@ -146,11 +178,11 @@ $(OBJ_BONUS_DIR)%.o: srcs_bonus/parsing/%.c includes/cub3d_bonus.h
 	@$(CC) $(CFLAGS) $(INCLUDES) -c $< -o $@
 	$(call update_progress_bonus)
 
-$(OBJ_BONUS_DIR)%.o: srcs_bonus/raycasting/%.c includes/cub3d_bonus.h
+$(OBJ_BONUS_DIR)%.o: srcs_bonus/error/%.c includes/cub3d_bonus.h
 	@$(CC) $(CFLAGS) $(INCLUDES) -c $< -o $@
 	$(call update_progress_bonus)
 
-$(OBJ_BONUS_DIR)%.o: srcs_bonus/rendering/%.c includes/cub3d_bonus.h
+$(OBJ_BONUS_DIR)%.o: srcs_bonus/init/%.c includes/cub3d_bonus.h
 	@$(CC) $(CFLAGS) $(INCLUDES) -c $< -o $@
 	$(call update_progress_bonus)
 
@@ -158,22 +190,63 @@ $(OBJ_BONUS_DIR)%.o: srcs_bonus/game/%.c includes/cub3d_bonus.h
 	@$(CC) $(CFLAGS) $(INCLUDES) -c $< -o $@
 	$(call update_progress_bonus)
 
+$(OBJ_BONUS_DIR)%.o: srcs_bonus/systems/%.c includes/cub3d_bonus.h
+	@$(CC) $(CFLAGS) $(INCLUDES) -c $< -o $@
+	$(call update_progress_bonus)
+
+$(OBJ_BONUS_DIR)%.o: srcs_bonus/rendering/%.c includes/cub3d_bonus.h
+	@$(CC) $(CFLAGS) $(INCLUDES) -c $< -o $@
+	$(call update_progress_bonus)
+
 $(OBJ_BONUS_DIR)%.o: srcs_bonus/utils/%.c includes/cub3d_bonus.h
 	@$(CC) $(CFLAGS) $(INCLUDES) -c $< -o $@
 	$(call update_progress_bonus)
 
+# Utility targets
+test: $(NAME)
+	@printf "$(YELLOW)Testing mandatory version...$(RESET)\n"
+	@./$(NAME) maps/test.cub
+
+test_bonus: $(NAME_BONUS)
+	@printf "$(BLUE)Testing bonus version...$(RESET)\n"
+	@./$(NAME_BONUS) maps/test_bonus.cub
+
+setup_bonus:
+	@printf "$(BLUE)Setting up bonus directory structure...$(RESET)\n"
+	@mkdir -p srcs_bonus/systems
+	@mkdir -p srcs_bonus/rendering
+	@mkdir -p includes
+	@printf "$(MINECRAFT_GREEN)✓ Bonus directories created$(RESET)\n"
+
+info:
+	@printf "$(BOLD)Cub3D Project Information:$(RESET)\n"
+	@printf "$(MINECRAFT_GREEN)Mandatory:$(RESET)\n"
+	@printf "  Sources: $(words $(SRC)) files\n"
+	@printf "  Executable: $(NAME)\n"
+	@printf "$(BLUE)Bonus:$(RESET)\n"
+	@printf "  Sources: $(words $(SRC_BONUS)) files\n"
+	@printf "  Executable: $(NAME_BONUS)\n"
+	@printf "$(YELLOW)Usage:$(RESET)\n"
+	@printf "  make          - Build mandatory version\n"
+	@printf "  make bonus    - Build enhanced version\n"
+	@printf "  make test     - Test mandatory version\n"
+	@printf "  make test_bonus - Test bonus version\n"
+
 clean:
-	@$(MAKE) -C $(LIBFT_DIR) clean
-	@$(MAKE) -C $(MLX_DIR) clean
+	@$(MAKE) -C $(LIBFT_DIR) clean --no-print-directory
+	@$(MAKE) -C $(MLX_DIR) clean --no-print-directory
 	@rm -rf $(OBJ_DIR) $(OBJ_BONUS_DIR)
-	@printf "$(MINECRAFT_GREEN)Objects cleaned$(RESET)\n"
+	@printf "$(MINECRAFT_GREEN)✓ Objects cleaned$(RESET)\n"
 
 fclean: clean
-	@$(MAKE) -C $(LIBFT_DIR) fclean
+	@$(MAKE) -C $(LIBFT_DIR) fclean --no-print-directory
 	@rm -f $(MLX)
 	@rm -f $(NAME) $(NAME_BONUS)
-	@printf "$(MINECRAFT_GREEN)Executables cleaned$(RESET)\n"
+	@printf "$(MINECRAFT_GREEN)✓ Executables cleaned$(RESET)\n"
 
 re: fclean all
 
-.PHONY: all bonus clean fclean re
+re_bonus: fclean bonus
+
+# Prevent issues with files named like targets
+.PHONY: all bonus clean fclean re re_bonus test test_bonus setup_bonus info

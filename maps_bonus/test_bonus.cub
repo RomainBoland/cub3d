@@ -1,10 +1,11 @@
 NO textures/texture_north.xpm
 SO textures/texture_south.xpm
-WE textures/texture_base.xpm
-EA textures/texture_base.xpm
+W textures/texture_base.xpm
+E textures/texture_base.xpm
 
-F 30,15,120
-C 32,32,32
+F textures/texture_floor.xpm
+C textures/texture_ceiling.xpm
+
 		1111111111111111111111111
 		1000000000110000000000001
 		1011000001110000000000001
