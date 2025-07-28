@@ -24,6 +24,7 @@ void	set_player_angle(t_config *config)
 		config->player.angle = PI;
 	config->player.pos_x = (float)config->player.x + 0.5f;
 	config->player.pos_y = (float)config->player.y + 0.5f;
+	config->player.pitch = 0.0f;
 }
 
 void	find_player_utils(t_config *config, int x, int y)

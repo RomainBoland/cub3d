@@ -65,6 +65,8 @@ static void	init_key_states(t_game *game)
 	game->key_d = 0;
 	game->key_left = 0;
 	game->key_right = 0;
+	game->key_down = 0;
+	game->key_up = 0;
 }
 
 static void	setup_hooks(t_game *game)

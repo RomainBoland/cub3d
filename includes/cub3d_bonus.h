@@ -30,6 +30,8 @@
 # define ROT_SPEED 0.05f
 # define TEXTURE_SIZE 64
 # define FOV_HALF_TAN 1.25396033766f
+# define MAX_PITCH 1.0f
+# define PITCH_SPEED 0.05f
 
 # define ESC_KEY 65307
 # define W_KEY 119
@@ -38,6 +40,8 @@
 # define D_KEY 100
 # define LEFT_ARROW 65361
 # define RIGHT_ARROW 65363
+# define UP_ARROW 65362
+# define DOWN_ARROW 65364
 
 /* ------------	*/
 /* 	STRUCTURES 	*/
@@ -51,6 +55,7 @@ typedef struct s_player
 	float		pos_x;
 	float		pos_y;
 	float		angle;
+	float		pitch;
 }	t_player;
 
 typedef struct s_texture
@@ -172,6 +177,8 @@ typedef struct s_game
 	int			key_d;
 	int			key_left;
 	int			key_right;
+	int			key_up;
+	int			key_down;
 }	t_game;
 
 typedef struct s_floor_cast
@@ -298,6 +305,7 @@ void			draw_textured_column(t_column_params *params);
 int				is_valid_position(t_config *config, float x, float y);
 void			move_player(t_config *config, float move_x, float move_y);
 void			rotate_player(t_config *config, float rotation);
+void			change_pitch(t_config *config, float pitch_change);
 
 // events.c
 int				handle_keypress(int keycode, t_game *game);
