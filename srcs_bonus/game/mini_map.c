@@ -6,11 +6,30 @@
 /*   By: nsaillez <nsaillez@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/29 09:46:37 by nsaillez          #+#    #+#             */
-/*   Updated: 2025/07/29 14:00:21 by nsaillez         ###   ########.fr       */
+/*   Updated: 2025/07/29 15:28:51 by nsaillez         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d_bonus.h"
+
+void draw_square(t_game *game, int sq_x, int sq_y)
+{
+	int x;
+	int y;
+	int size = 10;
+
+	y = 0;
+	while (y < size)
+	{
+		x = 0;
+		while (x < size)
+		{
+			my_mlx_pixel_put(&game->img, sq_x+x+5, sq_y+y+5, 0xff0000);
+			x++;
+		}
+		y++;
+	}
+}
 
 void	update_mini_map(t_game *game)
 {
@@ -35,11 +54,8 @@ void	update_mini_map(t_game *game)
 	//int is_inside;
 
 	float Angle;
-	
-	y =0;
-	x = 0;
-	printf("Angle :%f\n", angle);
 	y = 0;
+	x = 0;
 	Angle = atan2(y - r,x - r) * (180/PI);
 	while (y < size)
 	{
@@ -74,6 +90,9 @@ void	update_mini_map(t_game *game)
 			if ((x-r) * (x-r) + (y-r) * (y-r) <= 20)
 				my_mlx_pixel_put(&game->img, x+10, y+10, 0x00ff00);
 			x++;
+			//printf("player: %d %d\n", (int)player.pos_x,(int)player.pos_y);
+			// if ((x-r) * (x-r) + (y-r) * (y-r) <= r*r && game->config->map[(int)player.pos_y][(int)player.pos_x] == '0')
+			// 	draw_square(game, r, r);
 		}
 		//printf("Angle :%f, start: %f, end: %f\n",Angle, startAngle, endAngle);
 		y++;
