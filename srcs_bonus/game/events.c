@@ -14,46 +14,46 @@
 
 int	handle_keypress(int keycode, t_game *game)
 {
-    if (keycode == W_KEY)
-        game->key_w = 1;
-    else if (keycode == A_KEY)
-        game->key_a = 1;
-    else if (keycode == S_KEY)
-        game->key_s = 1;
-    else if (keycode == D_KEY)
-        game->key_d = 1;
-    else if (keycode == LEFT_ARROW)
-        game->key_left = 1;
-    else if (keycode == RIGHT_ARROW)
-        game->key_right = 1;
-    else if (keycode == UP_ARROW)
-        game->key_up = 1;
-    else if (keycode == DOWN_ARROW)
-        game->key_down = 1;
-    else if (keycode == ESC_KEY)
-        close_window(game);
-    return (0);
+	if (keycode == W_KEY)
+		game->key_w = 1;
+	else if (keycode == A_KEY)
+		game->key_a = 1;
+	else if (keycode == S_KEY)
+		game->key_s = 1;
+	else if (keycode == D_KEY)
+		game->key_d = 1;
+	else if (keycode == LEFT_ARROW)
+		game->key_left = 1;
+	else if (keycode == RIGHT_ARROW)
+		game->key_right = 1;
+	else if (keycode == UP_ARROW)
+		game->key_up = 1;
+	else if (keycode == DOWN_ARROW)
+		game->key_down = 1;
+	else if (keycode == ESC_KEY)
+		close_window(game);
+	return (0);
 }
 
 int	handle_keyrelease(int keycode, t_game *game)
 {
-    if (keycode == W_KEY)
-        game->key_w = 0;
-    else if (keycode == A_KEY)
-        game->key_a = 0;
-    else if (keycode == S_KEY)
-        game->key_s = 0;
-    else if (keycode == D_KEY)
-        game->key_d = 0;
-    else if (keycode == LEFT_ARROW)
-        game->key_left = 0;
-    else if (keycode == RIGHT_ARROW)
-        game->key_right = 0;
-    else if (keycode == UP_ARROW)
-        game->key_up = 0;
-    else if (keycode == DOWN_ARROW)
-        game->key_down = 0;
-    return (0);
+	if (keycode == W_KEY)
+		game->key_w = 0;
+	else if (keycode == A_KEY)
+		game->key_a = 0;
+	else if (keycode == S_KEY)
+		game->key_s = 0;
+	else if (keycode == D_KEY)
+		game->key_d = 0;
+	else if (keycode == LEFT_ARROW)
+		game->key_left = 0;
+	else if (keycode == RIGHT_ARROW)
+		game->key_right = 0;
+	else if (keycode == UP_ARROW)
+		game->key_up = 0;
+	else if (keycode == DOWN_ARROW)
+		game->key_down = 0;
+	return (0);
 }
 
 int	close_window(t_game *game)

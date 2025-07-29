@@ -314,7 +314,7 @@ int				close_window(t_game *game);
 void			update_game(t_game *game);
 
 // floor_ceiling_render.c
-void    render_floor_ceiling_column(t_config *config, t_data *img, int x, 
+void			render_floor_ceiling_column(t_config *config, t_data *img, int x, 
                                   int wall_start, int wall_end);
 
 #endif

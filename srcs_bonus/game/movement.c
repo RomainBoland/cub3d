@@ -31,7 +31,6 @@ int	is_valid_position(t_config *config, float x, float y)
 void	change_pitch(t_config *config, float pitch_change)
 {
 	config->player.pitch += pitch_change;
-
 	if (config->player.pitch > MAX_PITCH)
 		config->player.pitch = MAX_PITCH;
 	else if (config->player.pitch < -MAX_PITCH)

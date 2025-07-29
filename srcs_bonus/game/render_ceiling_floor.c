@@ -48,19 +48,14 @@ static void calculate_world_position(t_config *config, int screen_x, int screen_
 	float camera_x = 2.0f * screen_x / (float)WINDOW_WIDTH - 1.0f;
 	float ray_dir_x = cos_angle + plane_x * camera_x;
 	float ray_dir_y = sin_angle + plane_y * camera_x;
-	
-	// Row distance calculation (simplified)
 	float row_distance;
-	if (screen_y > WINDOW_HEIGHT / 2) {
+	if (screen_y > WINDOW_HEIGHT / 2)
 		row_distance = (0.5f * WINDOW_HEIGHT) / (screen_y - WINDOW_HEIGHT / 2);
-	} else {
+	else
 		row_distance = (0.5f * WINDOW_HEIGHT) / (WINDOW_HEIGHT / 2 - screen_y);
-	}
-	
-	// World position
 	*world_x = config->player.pos_x + row_distance * ray_dir_x;
 	*world_y = config->player.pos_y + row_distance * ray_dir_y;
-	*distance = row_distance; // Use row_distance as approximation
+	*distance = row_distance;
 }
 
 void render_floor_ceiling_column(t_config *config, t_data *img, int x, 

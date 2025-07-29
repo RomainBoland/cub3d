@@ -26,10 +26,11 @@ int	validate_texture_path(void *mlx, char *path)
 	mlx_destroy_image(mlx, img);
 	return (1);
 }
+
 static int	is_valid_texture2(void *mlx, t_config *config,
 	int valid)
 {
-	int is_valid;
+	int	is_valid;
 
 	is_valid = valid;
 	if (!validate_texture_path(mlx, config->floor_texture))

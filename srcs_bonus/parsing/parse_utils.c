@@ -54,13 +54,13 @@ static int	validate_config_completeness(t_config *config)
 		cleanup_config(config);
 		return (print_error("Missing texture configuration"), 0);
 	}
-    if (!*config->north_texture || !*config->south_texture
-        || !*config->west_texture || !*config->east_texture  
-        || !*config->floor_texture || !*config->ceiling_texture)
-    {
-        cleanup_config(config);
-        return (print_error("Empty texture path"), 0);
-    }
+	if (!*config->north_texture || !*config->south_texture
+		|| !*config->west_texture || !*config->east_texture
+		|| !*config->floor_texture || !*config->ceiling_texture)
+	{
+		cleanup_config(config);
+		return (print_error("Empty texture path"), 0);
+	}
 	return (1);
 }
 

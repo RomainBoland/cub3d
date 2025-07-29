@@ -28,15 +28,15 @@ static void	handle_config_line2(char *key, char *value, t_config *config,
 		config->east_texture = ft_strdup(value);
 		state->east_found = 1;
 	}
-    else if (!ft_strncmp(key, "F", 1))
-    {
-        config->floor_texture = ft_strdup(value);
-        state->floor_found = 1;
-    }
-    else if (!ft_strncmp(key, "C", 1))
-    {
-        config->ceiling_texture = ft_strdup(value);
-        state->ceiling_found = 1;
+	else if (!ft_strncmp(key, "F", 1))
+	{
+		config->floor_texture = ft_strdup(value);
+		state->floor_found = 1;
+	}
+	else if (!ft_strncmp(key, "C", 1))
+	{
+		config->ceiling_texture = ft_strdup(value);
+		state->ceiling_found = 1;
 	}
 }
 
