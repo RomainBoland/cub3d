@@ -23,8 +23,8 @@
 # include <math.h>
 # include <stdio.h>
 
-# define WINDOW_WIDTH 1920
-# define WINDOW_HEIGHT 1080
+# define WINDOW_WIDTH 720
+# define WINDOW_HEIGHT 480
 # define PI 3.14159265359
 # define MOVE_SPEED 0.07f
 # define ROT_SPEED 0.05f
@@ -170,6 +170,7 @@ typedef struct s_game
 	void		*mlx;
 	void		*win;
 	t_data		img;
+	t_data		minimap_img;
 	t_config	*config;
 	int			key_w;
 	int			key_a;
@@ -316,5 +317,8 @@ void			update_game(t_game *game);
 // floor_ceiling_render.c
 void    render_floor_ceiling_column(t_config *config, t_data *img, int x, 
                                   int wall_start, int wall_end);
+
+// mini_map.c
+void	update_mini_map(t_game *game);
 
 #endif

@@ -45,6 +45,7 @@ void	move_player(t_config *config, float move_x, float move_y)
 
 	new_x = config->player.pos_x + move_x;
 	new_y = config->player.pos_y + move_y;
+	//printf("x: %f, y: %f\n", config->player.pos_x, config->player.pos_y);
 	if (is_valid_position(config, new_x, config->player.pos_y))
 		config->player.pos_x = new_x;
 	if (is_valid_position(config, config->player.pos_x, new_y))
