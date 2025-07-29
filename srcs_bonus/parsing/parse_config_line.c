@@ -72,5 +72,6 @@ int	parse_config_line(char *line, t_config *config, t_parse_state *state)
 	}
 	handle_config_line(tokens[0], tokens[1], config, state);
 	handle_config_line2(tokens[0], tokens[1], config, state);
+	ft_free_split(tokens);
 	return (1);
 }
