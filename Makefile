@@ -59,6 +59,7 @@ SRC_BONUS	= srcs_bonus/main.c \
 			  srcs_bonus/parsing/parse_utils.c \
 			  srcs_bonus/parsing/fill_map.c \
 			  srcs_bonus/parsing/parse_map.c \
+			  srcs_bonus/parsing/parse_map2.c \
 			  srcs_bonus/parsing/parse_map_utils.c \
 			  srcs_bonus/parsing/map_validation.c \
 			  srcs_bonus/parsing/validate_textures.c \
@@ -68,6 +69,7 @@ SRC_BONUS	= srcs_bonus/main.c \
 			  srcs_bonus/init/texture_loading.c \
 			  srcs_bonus/game/game_loop.c \
 			  srcs_bonus/game/game_loop2.c \
+			  srcs_bonus/game/interactive.c \
 			  srcs_bonus/game/raycasting.c \
 			  srcs_bonus/game/dda_calculation.c \
 			  srcs_bonus/game/dda_calculation_utils.c \
@@ -108,19 +110,9 @@ endef
 
 all: $(OBJ_DIR) $(LIBFT) $(MLX) $(NAME)
 	@printf "\n$(MINECRAFT_GREEN)$(BOLD)✓ Mandatory compilation completed!$(RESET)\n"
-	@printf "$(YELLOW)Features: Basic raycasting, textures, movement$(RESET)\n"
 
 bonus: $(OBJ_BONUS_DIR) $(LIBFT) $(MLX) $(NAME_BONUS)
 	@printf "\n$(BLUE)$(BOLD)✓ Bonus compilation completed!$(RESET)\n"
-	@printf "$(YELLOW)Enhanced Features:$(RESET)\n"
-	@printf "  • Floor/Ceiling textures\n"
-	@printf "  • Sprint system with stamina\n"
-	@printf "  • Crouch/Jump mechanics\n"
-	@printf "  • Mouse control with pitch\n"
-	@printf "  • Interactive doors\n"
-	@printf "  • Animated sprites (enemies/items)\n"
-	@printf "  • Real-time minimap\n"
-	@printf "  • Enhanced HUD\n"
 
 $(OBJ_DIR):
 	@mkdir -p $(OBJ_DIR)

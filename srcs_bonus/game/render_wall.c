@@ -12,6 +12,36 @@
 
 #include "cub3d_bonus.h"
 
+t_texture *get_cell_texture(t_config *config, int map_x, int map_y, int wall_dir)
+{
+    char cell;
+    t_interactive *interactive;
+    
+    // Bounds check
+    if (map_y < 0 || map_y >= config->map_height ||
+        map_x < 0 || map_x >= (int)ft_strlen(config->map[map_y]))
+        return get_wall_texture(config, wall_dir);
+    
+    cell = config->map[map_y][map_x];
+    
+    // Handle interactive elements
+    if (cell == 'D') // Door
+    {
+        interactive = find_interactive_at(config, map_x, map_y);
+        if (interactive)
+            return get_door_texture(config, interactive);
+    }
+    else if (cell == 'L') // Lever
+    {
+        interactive = find_interactive_at(config, map_x, map_y);
+        if (interactive)
+            return get_lever_texture(config, interactive, wall_dir); // Use wall_dir instead of player_angle
+    }
+    
+    // Regular wall textures
+    return get_wall_texture(config, wall_dir);
+}
+
 static void	calculate_wall_bounds(t_ray ray, t_config *config,
 							int *wall_height, int *wall_start, int *wall_end)
 {
@@ -62,7 +92,7 @@ void	render_textured_wall(t_config *config, t_data *img, int x, t_ray ray)
 		&draw.wall_start, &draw.wall_end);
 	calculate_draw_bounds(draw.wall_start, draw.wall_end,
 		&draw.draw_start, &draw.draw_end);
-	texture = get_wall_texture(config, ray.wall_dir);
+	texture = get_cell_texture(config, ray.map_x, ray.map_y, ray.wall_dir);
 	draw.tex_x = get_texture_x(texture, ray.wall_x);
 	render_floor_ceiling_column(config, img, x, draw.draw_start, draw.draw_end);
 	params.img = img;

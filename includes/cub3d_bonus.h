@@ -38,6 +38,7 @@
 # define A_KEY 97
 # define S_KEY 115  
 # define D_KEY 100
+# define E_KEY 101
 # define LEFT_ARROW 65361
 # define RIGHT_ARROW 65363
 # define UP_ARROW 65362
@@ -47,152 +48,227 @@
 /* 	STRUCTURES 	*/
 /* ------------	*/
 
+typedef enum e_door_state
+{
+	DOOR_CLOSED_LOCKED,
+	DOOR_CLOSED_UNLOCKED,
+	DOOR_OPENED_UNLOCKED
+}	t_door_state;
+
+typedef enum e_interactive_type
+{
+	INTERACTIVE_LEVER,
+	INTERACTIVE_DOOR,
+	INTERACTIVE_SWITCH
+}	t_interactive_type;
+
+typedef enum e_texture_id
+{
+    TEX_NORTH,
+    TEX_SOUTH,
+    TEX_EAST,
+    TEX_WEST,
+    TEX_FLOOR,
+    TEX_CEILING,
+    TEX_DOOR_LOCKED,
+    TEX_DOOR_UNLOCKED,
+    TEX_DOOR_OPEN,
+    TEX_LEVER_OFF_NORTH,
+    TEX_LEVER_OFF_SOUTH,
+    TEX_LEVER_OFF_BASE,
+    TEX_LEVER_ON_NORTH,
+    TEX_LEVER_ON_SOUTH,
+    TEX_LEVER_ON_BASE,
+    TEX_COUNT
+}   t_texture_id;
+
+typedef struct s_interactive
+{
+	int						x;
+	int						y;
+	t_interactive_type		type;
+	int						is_activated;
+	t_door_state			door_state;
+	struct s_interactive	*next;
+}	t_interactive;
+
+typedef struct s_game_state
+{
+	int						total_levers;
+	int						activated_levers;
+	int						game_won;
+	t_interactive			*interactives;
+}	t_game_state;
+
 typedef struct s_player
 {
-	int			x;
-	int			y;
-	char		direction;
-	float		pos_x;
-	float		pos_y;
-	float		angle;
-	float		pitch;
+	int						x;
+	int						y;
+	char					direction;
+	float					pos_x;
+	float					pos_y;
+	float					angle;
+	float					pitch;
 }	t_player;
 
 typedef struct s_texture
 {
-	void		*img;
-	char		*addr;
-	int			bits_per_pixel;
-	int			line_length;
-	int			endian;
-	int			width;
-	int			height;
+	void					*img;
+	char					*addr;
+	int						bits_per_pixel;
+	int						line_length;
+	int						endian;
+	int						width;
+	int						height;
 }	t_texture;
 
 typedef struct s_tex
 {
-	t_texture	north;
-	t_texture	south;
-	t_texture	west;
-	t_texture	east;
-	t_texture	floor;
-	t_texture	ceiling;
+	t_texture				north;
+	t_texture				south;
+	t_texture				west;
+	t_texture				east;
+	t_texture				floor;
+	t_texture				ceiling;
+	t_texture				door_unlocked;
+	t_texture				door_locked;
+	t_texture				door_open;
+	t_texture				lever_off_north;
+	t_texture				lever_off_south;
+	t_texture				lever_off_base;
+	t_texture				lever_on_north;
+	t_texture				lever_on_south;
+	t_texture				lever_on_base;
 }	t_tex;
 
 typedef struct s_config
 {
-	char		*north_texture;
-	char		*south_texture;
-	char		*west_texture;
-	char		*east_texture;
-	char		*floor_texture;
-	char		*ceiling_texture;
-	char		**map;
-	int			map_width;
-	int			map_height;
-	t_tex		tex;
-	t_player	player;
+	char					*north_texture;
+	char					*south_texture;
+	char					*west_texture;
+	char					*east_texture;
+	char					*floor_texture;
+	char					*ceiling_texture;
+	char					*door_locked_texture;
+	char					*door_unlocked_texture;
+	char					*door_open_texture;
+	char					*lever_off_north_texture;
+	char					*lever_off_south_texture;
+	char					*lever_off_base_texture;
+	char					*lever_on_north_texture;
+	char					*lever_on_south_texture;
+	char					*lever_on_base_texture;
+	char					**map;
+	int						map_width;
+	int						map_height;
+	t_tex					tex;
+	t_player				player;
+	t_game_state			game_state;
 }	t_config;
 
 typedef struct s_parse_state
 {
-	int			north_found;
-	int			south_found;
-	int			west_found;
-	int			east_found;
-	int			floor_found;
-	int			ceiling_found;
-	int			all_config_found;
+	int						north_found;
+	int						south_found;
+	int						west_found;
+	int						east_found;
+	int						floor_found;
+	int						ceiling_found;
+	int						all_config_found;
 }	t_parse_state;
 
 typedef struct s_data
 {
-	void		*img;
-	char		*addr;
-	int			bits_per_pixel;
-	int			line_length;
-	int			endian;
+	void					*img;
+	char					*addr;
+	int						bits_per_pixel;
+	int						line_length;
+	int						endian;
 }	t_data;
 
 typedef struct s_wall_draw
 {
-	int			wall_height;
-	int			wall_start;
-	int			wall_end;
-	int			draw_start;
-	int			draw_end;
-	int			tex_x;
+	int						wall_height;
+	int						wall_start;
+	int						wall_end;
+	int						draw_start;
+	int						draw_end;
+	int						tex_x;
 }	t_wall_draw;
 
 typedef struct s_texture_draw
 {
-	float		step;
-	float		tex_pos;
+	float					step;
+	float					tex_pos;
 }	t_texture_draw;
 
 typedef struct s_column_params
 {
-	t_data		*img;
-	int			x;
-	t_wall_draw	*draw;
-	t_texture	*texture;
-	float		distance;
+	t_data					*img;
+	int						x;
+	t_wall_draw				*draw;
+	t_texture				*texture;
+	float					distance;
 }	t_column_params;
 
 typedef struct s_ray
 {
-	float		distance;
-	int			side;
-	float		wall_x;
-	int			wall_dir;
+	float					distance;
+	int						side;
+	float					wall_x;
+	int						wall_dir;
+	int						map_x;
+	int						map_y;
+	float					angle;
 }	t_ray;
 
 typedef struct s_ray_data
 {
-	float		ray_dir_x;
-	float		ray_dir_y;
-	float		ray_x;
-	float		ray_y;
-	int			map_x;
-	int			map_y;
-	float		side_dist_x;
-	float		side_dist_y;
-	float		delta_dist_x;
-	float		delta_dist_y;
-	int			step_x;
-	int			step_y;
-	int			hit;
-	int			side;
+	float					ray_dir_x;
+	float					ray_dir_y;
+	float					ray_x;
+	float					ray_y;
+	int						map_x;
+	int						map_y;
+	float					side_dist_x;
+	float					side_dist_y;
+	float					delta_dist_x;
+	float					delta_dist_y;
+	int						step_x;
+	int						step_y;
+	int						hit;
+	int						side;
 }	t_ray_data;
 
 typedef struct s_game
 {
-	void		*mlx;
-	void		*win;
-	t_data		img;
-	t_config	*config;
-	int			key_w;
-	int			key_a;
-	int			key_s;
-	int			key_d;
-	int			key_left;
-	int			key_right;
-	int			key_up;
-	int			key_down;
+	void					*mlx;
+	void					*win;
+	t_data					img;
+	t_config				*config;
+	int						key_w;
+	int						key_a;
+	int						key_s;
+	int						key_d;
+	int						key_interact;
+	int						key_left;
+	int						key_right;
+	int						key_up;
+	int						key_down;
 }	t_game;
 
 typedef struct s_floor_cast
 {
-	float		ray_dir_x0;
-	float		ray_dir_y0;
-	float		ray_dir_x1;
-	float		ray_dir_y1;
-	float		pos_z;
-	float		row_distance;
-	float		floor_step_x;
-	float		floor_step_y;
-	float		floor_x;
-	float		floor_y;
+	float					ray_dir_x0;
+	float					ray_dir_y0;
+	float					ray_dir_x1;
+	float					ray_dir_y1;
+	float					pos_z;
+	float					row_distance;
+	float					floor_step_x;
+	float					floor_step_y;
+	float					floor_x;
+	float					floor_y;
 }	t_floor_cast;
 
 /* ------------	*/
@@ -209,6 +285,7 @@ int				exit_error(const char *message, t_config *config);
 // cleanup.c
 void			cleanup_config(t_config *config);
 void			ft_free_split(char **split);
+void 			cleanup_interactives(t_config *config);
 
 /*	UTILS	*/
 // utils1.c
@@ -254,6 +331,11 @@ int				validate_map_characters(t_config *config);
 int				find_player(t_config *config);
 void			set_player_angle(t_config *config);
 
+// parse_map2.c
+t_interactive   *create_interactive(int x, int y, t_interactive_type type);
+void            add_interactive_to_list(t_config *config, t_interactive *new_elem);
+void            scan_for_interactive_elements(t_config *config);
+
 // map_validation.c
 int				check_walls_around_spaces(t_config *config);
 
@@ -280,11 +362,22 @@ void			my_mlx_pixel_put(t_data *data, int x, int y, int color);
 int				game_loop_hook(t_game *game);
 void			print_game_info(t_config *config);
 
+// interactive.c
+t_interactive   *get_nearby_interactive(t_config *config);
+void            activate_lever(t_config *config, t_interactive *lever);
+void            unlock_all_doors(t_config *config);
+void            interact_with_door(t_config *config, t_interactive *door);
+void            check_door_win_condition(t_config *config);
+void            handle_interaction(t_config *config);
+
 // raycasting.c
 int				is_wall(t_config *config, int map_x, int map_y);
 t_texture		*get_wall_texture(t_config *config, int wall_dir);
 float			normalize_angle(float angle);
 void			render_raycast(t_config *config, t_data *img);
+t_interactive	*find_interactive_at(t_config *config, int x, int y);
+t_texture		*get_door_texture(t_config *config, t_interactive *door);
+t_texture		*get_lever_texture(t_config *config, t_interactive *lever, int wall_dir);
 
 // dda_calculation.c
 t_ray			dda_cast_ray(t_config *config, float ray_angle);
@@ -296,16 +389,18 @@ void			calculate_step_and_side_dist_x(t_ray_data *data);
 
 // render_wall.c
 void			render_textured_wall(t_config *config, t_data *img, int x, t_ray ray);
-
+t_texture		*get_cell_texture(t_config *config, int map_x, int map_y, int wall_dir);
 // render_wall_utils.c
 unsigned int	apply_distance_shading(unsigned int color, float distance);
 void			draw_textured_column(t_column_params *params);
 
 // movement.c
-int				is_valid_position(t_config *config, float x, float y);
+// int				is_valid_position(t_config *config, float x, float y);
 void			move_player(t_config *config, float move_x, float move_y);
 void			rotate_player(t_config *config, float rotation);
 void			change_pitch(t_config *config, float pitch_change);
+int				is_movement_blocked(t_config *config, float x, float y);
+
 
 // events.c
 int				handle_keypress(int keycode, t_game *game);
@@ -315,6 +410,6 @@ void			update_game(t_game *game);
 
 // floor_ceiling_render.c
 void			render_floor_ceiling_column(t_config *config, t_data *img, int x, 
-                                  int wall_start, int wall_end);
+								  int wall_start, int wall_end);
 
 #endif

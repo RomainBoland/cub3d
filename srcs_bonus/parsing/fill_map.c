@@ -18,6 +18,7 @@ int	is_map_line(const char *line)
 	{
 		if (*line != '1' && *line != '0' && *line != 'N'
 			&& *line != 'S' && *line != 'E' && *line != 'W'
+			&& *line != 'D' && *line != 'L'
 			&& !ft_isspace((unsigned char)*line))
 			return (0);
 		line++;

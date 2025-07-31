@@ -15,7 +15,8 @@
 int	is_valid_char(char c)
 {
 	return (c == '1' || c == '0' || c == 'N' || c == 'S'
-		|| c == 'E' || c == 'W' || ft_isspace((unsigned char)c));
+		|| c == 'E' || c == 'W' || c == 'D' || c == 'L'
+		|| ft_isspace((unsigned char)c));
 }
 
 int	is_position_valid(t_config *config, int x, int y)
