@@ -29,7 +29,7 @@
 # define MOVE_SPEED 0.07f
 # define ROT_SPEED 0.05f
 # define TEXTURE_SIZE 64
-# define FOV_HALF_TAN 1.25396033766f
+# define FOV_HALF_TAN 1.05f
 # define MAX_PITCH 1.0f
 # define PITCH_SPEED 0.05f
 

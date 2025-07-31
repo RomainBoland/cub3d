@@ -1,9 +1,9 @@
-NO textures/texture_north.xpm
-SO textures/texture_south.xpm
-W textures/texture_base.xpm
-E textures/texture_base.xpm
+NO textures/texture_north_test.xpm
+SO textures/texture_south_test.xpm
+W textures/texture_base_test.xpm
+E textures/texture_base_test.xpm
 
-F textures/texture_floor.xpm
+F textures/texture_floor_test.xpm
 C textures/texture_ceiling.xpm
 
 		1111111111111111111111111
