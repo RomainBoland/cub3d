@@ -18,7 +18,7 @@ t_interactive *get_nearby_interactive(t_config *config)
     t_interactive *current;
     float player_x, player_y;
     float distance;
-    float interaction_range = 1.5f;
+    float interaction_range = 1.2f;
 
     player_x = config->player.pos_x;
     player_y = config->player.pos_y;
@@ -142,15 +142,16 @@ void handle_interaction(t_config *config)
         return;
     }
 
-    if (nearby->type == INTERACTIVE_LEVER)
+	printf("%d\n", nearby->type);
+	if (nearby->type == INTERACTIVE_DOOR)
+    {
+        interact_with_door(config, nearby);
+    }
+    else if (nearby->type == INTERACTIVE_LEVER)
     {
         if (nearby->is_activated)
             printf("🔧 This lever is already activated.\n");
         else
             activate_lever(config, nearby);
-    }
-    else if (nearby->type == INTERACTIVE_DOOR)
-    {
-        interact_with_door(config, nearby);
     }
 }
