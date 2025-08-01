@@ -6,7 +6,7 @@
 /*   By: nsaillez <nsaillez@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/29 09:46:37 by nsaillez          #+#    #+#             */
-/*   Updated: 2025/07/29 15:28:51 by nsaillez         ###   ########.fr       */
+/*   Updated: 2025/08/01 13:35:17 by nsaillez         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,10 +30,17 @@ void draw_square(t_game *game, int sq_x, int sq_y)
 		y++;
 	}
 }
+int is_inside_circle(int x, int y, int r)
+{
+	if (((x) * (x)) + ((y) * (y)) <= r * r)
+		return (1);
+	else
+		return (0);
+}
 
 void	update_mini_map(t_game *game)
 {
-	int r = 80;
+	int r = 50;
 	int size = r * 2;
 	int x;
 	int y;
@@ -69,26 +76,25 @@ void	update_mini_map(t_game *game)
 			Angle = atan2(y - r,x - r) * (180/PI);
 			if (Angle < 0)
 				Angle += 360;
-			// Background (black)
-			if ((x-r) * (x-r) + (y-r) * (y-r) <= r*r)
+			if (is_inside_circle(x-r, y-r, r))
+			{
 				my_mlx_pixel_put(&game->img, x+10, y+10, 0x000000);
-
-			if (startAngle < endAngle)
-			{
-				if ((x-r) * (x-r) + (y-r) * (y-r) <= r*r  && Angle>=startAngle && Angle<=endAngle)
-					my_mlx_pixel_put(&game->img, x+10, y+10, 0xaa0000ff);
+				if (startAngle < endAngle)
+				{
+					if (Angle>=startAngle && Angle<=endAngle)
+						my_mlx_pixel_put(&game->img, x+10, y+10, 0xaa0000ff);
+				}
+				else
+				{
+					if((Angle >= startAngle || Angle <= endAngle))
+						my_mlx_pixel_put(&game->img, x+10, y+10, 0xaa0000ff);
+				}
+				if (((x-r) * (x-r) + (y-r) * (y-r)) >= r*r-500)
+					my_mlx_pixel_put(&game->img, x+10, y+10, 0xff00ff);
+				if (is_inside_circle(x-r, y-r, 10))
+					my_mlx_pixel_put(&game->img, x+10, y+10, 0x00ff00);
 			}
-			else
-			{
-				if((x-r) * (x-r) + (y-r) * (y-r) <= r*r  && (Angle >= startAngle || Angle <= endAngle))
-					my_mlx_pixel_put(&game->img, x+10, y+10, 0xaa0000ff);
-			}
-			// Border (purple)
-			if (((x-r) * (x-r) + (y-r) * (y-r)) <= r*r && ((x-r) * (x-r) + (y-r) * (y-r)) >= r*r-500)
-				my_mlx_pixel_put(&game->img, x+10, y+10, 0xff00ff);
 			// Player (green)
-			if ((x-r) * (x-r) + (y-r) * (y-r) <= 20)
-				my_mlx_pixel_put(&game->img, x+10, y+10, 0x00ff00);
 			x++;
 			//printf("player: %d %d\n", (int)player.pos_x,(int)player.pos_y);
 			// if ((x-r) * (x-r) + (y-r) * (y-r) <= r*r && game->config->map[(int)player.pos_y][(int)player.pos_x] == '0')

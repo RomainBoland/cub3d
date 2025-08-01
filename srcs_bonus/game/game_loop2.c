@@ -29,7 +29,6 @@ int	game_loop_hook(t_game *game)
 	render_raycast(game->config, &game->img);
 	update_mini_map(game);
 	mlx_put_image_to_window(game->mlx, game->win, game->img.img, 0, 0);
-	// mlx_put_image_to_window(game->mlx, game->win, game->mini_map.img, 0, 0);
 	return (0);
 }
 
