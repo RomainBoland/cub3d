@@ -26,12 +26,12 @@
 # define WINDOW_WIDTH 1920
 # define WINDOW_HEIGHT 1080
 # define PI 3.14159265359
-# define MOVE_SPEED 0.09f
-# define ROT_SPEED 0.05f
+# define MOVE_SPEED 0.12f
+# define ROT_SPEED 0.07f
 # define TEXTURE_SIZE 64
 # define FOV_HALF_TAN 1.05f
-# define MAX_PITCH 1.0f
-# define PITCH_SPEED 0.05f
+# define MAX_PITCH 3.14f
+# define PITCH_SPEED 0.15f
 
 # define MINIMAP_RADIUS (WINDOW_WIDTH / 12)
 # define MINIMAP_SIZE (MINIMAP_RADIUS * 2)
@@ -40,17 +40,17 @@
 # define MINIMAP_OFFSET_Y 10
 
 // Couleurs de la minimap
-#define COLOR_BACKGROUND 0x2A2A2A    // Gris
-#define COLOR_WALL 0x1f1f70         // Bleu foncé
-#define COLOR_EMPTY 0x000000       // noir
-#define COLOR_PLAYER 0x00FF00       // Vert
-#define COLOR_FOV 0x440000FF        // Bleu semi-transparent
-#define COLOR_BORDER 0xFF00FF       // Violet
-#define COLOR_DOOR_LOCKED 0xFF0000   // Rouge
-#define COLOR_DOOR_UNLOCKED 0xFFFF00 // Jaune
-#define COLOR_DOOR_OPEN 0x00FFFF    // Cyan
-#define COLOR_LEVER_OFF 0xFF8000    // Orange
-#define COLOR_LEVER_ON 0x8000FF     // Violet
+#define COLOR_BACKGROUND 0x2A2A2A
+#define COLOR_WALL 0x1f1f70
+#define COLOR_EMPTY 0x000000
+#define COLOR_PLAYER 0x00FF00
+#define COLOR_FOV 0x440000FF
+#define COLOR_BORDER 0xFF00FF
+#define COLOR_DOOR_LOCKED 0xFF0000
+#define COLOR_DOOR_UNLOCKED 0xFFFF00
+#define COLOR_DOOR_OPEN 0x00FF00
+#define COLOR_LEVER_OFF 0xFF8000
+#define COLOR_LEVER_ON 0x00FF00
 
 # define ESC_KEY 65307
 # define W_KEY 119
