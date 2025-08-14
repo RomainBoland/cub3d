@@ -23,8 +23,8 @@
 # include <math.h>
 # include <stdio.h>
 
-# define WINDOW_WIDTH 1920
-# define WINDOW_HEIGHT 1080
+# define WINDOW_WIDTH 1000
+# define WINDOW_HEIGHT 480
 # define PI 3.14159265359
 # define MOVE_SPEED 0.07f
 # define ROT_SPEED 0.05f
@@ -242,19 +242,19 @@ typedef struct s_ray_data
 
 typedef struct s_game
 {
-	void					*mlx;
-	void					*win;
-	t_data					img;
-	t_config				*config;
-	int						key_w;
-	int						key_a;
-	int						key_s;
-	int						key_d;
-	int						key_interact;
-	int						key_left;
-	int						key_right;
-	int						key_up;
-	int						key_down;
+	void		*mlx;
+	void		*win;
+	t_data		img;
+	t_data		minimap_img;
+	t_config	*config;
+	int			key_w;
+	int			key_a;
+	int			key_s;
+	int			key_d;
+	int			key_left;
+	int			key_right;
+	int			key_up;
+	int			key_down;
 }	t_game;
 
 typedef struct s_floor_cast
@@ -411,5 +411,8 @@ void			update_game(t_game *game);
 // floor_ceiling_render.c
 void			render_floor_ceiling_column(t_config *config, t_data *img, int x, 
 								  int wall_start, int wall_end);
+
+// mini_map.c
+void	update_mini_map(t_game *game);
 
 #endif
