@@ -18,7 +18,7 @@ t_interactive *get_nearby_interactive(t_config *config)
     t_interactive *current;
     float player_x, player_y;
     float distance;
-    float interaction_range = 1.2f;
+    float interaction_range = 1.5f;
 
     player_x = config->player.pos_x;
     player_y = config->player.pos_y;
@@ -142,7 +142,6 @@ void handle_interaction(t_config *config)
         return;
     }
 
-	printf("%d\n", nearby->type);
 	if (nearby->type == INTERACTIVE_DOOR)
     {
         interact_with_door(config, nearby);

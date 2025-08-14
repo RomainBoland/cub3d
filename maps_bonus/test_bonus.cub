@@ -1,7 +1,7 @@
 NO textures/wall_north.xpm
 SO textures/wall_south.xpm
-W textures/wall_base.xpm
-E textures/wall_base.xpm
+WE textures/wall_base.xpm
+EA textures/wall_base.xpm
 
 F textures/floor.xpm
 C textures/ceiling.xpm
@@ -16,10 +16,10 @@ LNN textures/lever_on_north.xpm
 LNS textures/lever_on_south.xpm
 LNB textures/lever_on_base.xpm
 
-11111D11L11
+11111D1L111
 10000000001
 10000000001
-L000000000L
+10000000001
 10000000001
 1000000N001
-11111L11111
+11111111111
