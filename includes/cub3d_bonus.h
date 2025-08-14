@@ -23,15 +23,34 @@
 # include <math.h>
 # include <stdio.h>
 
-# define WINDOW_WIDTH 1000
-# define WINDOW_HEIGHT 480
+# define WINDOW_WIDTH 1920
+# define WINDOW_HEIGHT 1080
 # define PI 3.14159265359
-# define MOVE_SPEED 0.07f
+# define MOVE_SPEED 0.09f
 # define ROT_SPEED 0.05f
 # define TEXTURE_SIZE 64
 # define FOV_HALF_TAN 1.05f
 # define MAX_PITCH 1.0f
 # define PITCH_SPEED 0.05f
+
+# define MINIMAP_RADIUS (WINDOW_WIDTH / 12)
+# define MINIMAP_SIZE (MINIMAP_RADIUS * 2)
+# define MINIMAP_TILES_RADIUS 6.0f
+# define MINIMAP_OFFSET_X 10
+# define MINIMAP_OFFSET_Y 10
+
+// Couleurs de la minimap
+# define COLOR_BACKGROUND 0x000000    // Noir
+# define COLOR_WALL 0xFFFFFF         // Blanc
+# define COLOR_EMPTY 0x404040        // Gris foncé
+# define COLOR_PLAYER 0x00FF00       // Vert
+# define COLOR_FOV 0x880000FF        // Bleu semi-transparent
+# define COLOR_BORDER 0xFF00FF       // Violet
+# define COLOR_DOOR_LOCKED 0xFF0000   // Rouge
+# define COLOR_DOOR_UNLOCKED 0xFFFF00 // Jaune
+# define COLOR_DOOR_OPEN 0x00FFFF    // Cyan
+# define COLOR_LEVER_OFF 0xFF8000    // Orange
+# define COLOR_LEVER_ON 0x8000FF     // Violet
 
 # define ESC_KEY 65307
 # define W_KEY 119
@@ -47,6 +66,18 @@
 /* ------------	*/
 /* 	STRUCTURES 	*/
 /* ------------	*/
+
+typedef struct s_minimap_data
+{
+    float player_x;
+    float player_y;
+    float player_angle;
+    float fov_start;
+    float fov_end;
+    int center_x;
+    int center_y;
+    float scale;  // pixels par tile
+} t_minimap_data;
 
 typedef enum e_door_state
 {
@@ -255,6 +286,7 @@ typedef struct s_game
 	int			key_right;
 	int			key_up;
 	int			key_down;
+	int						key_interact;
 }	t_game;
 
 typedef struct s_floor_cast
