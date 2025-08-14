@@ -40,17 +40,17 @@
 # define MINIMAP_OFFSET_Y 10
 
 // Couleurs de la minimap
-# define COLOR_BACKGROUND 0x000000    // Noir
-# define COLOR_WALL 0xFFFFFF         // Blanc
-# define COLOR_EMPTY 0x404040        // Gris foncé
-# define COLOR_PLAYER 0x00FF00       // Vert
-# define COLOR_FOV 0x880000FF        // Bleu semi-transparent
-# define COLOR_BORDER 0xFF00FF       // Violet
-# define COLOR_DOOR_LOCKED 0xFF0000   // Rouge
-# define COLOR_DOOR_UNLOCKED 0xFFFF00 // Jaune
-# define COLOR_DOOR_OPEN 0x00FFFF    // Cyan
-# define COLOR_LEVER_OFF 0xFF8000    // Orange
-# define COLOR_LEVER_ON 0x8000FF     // Violet
+#define COLOR_BACKGROUND 0x2A2A2A    // Gris
+#define COLOR_WALL 0x1f1f70         // Bleu foncé
+#define COLOR_EMPTY 0x000000       // noir
+#define COLOR_PLAYER 0x00FF00       // Vert
+#define COLOR_FOV 0x440000FF        // Bleu semi-transparent
+#define COLOR_BORDER 0xFF00FF       // Violet
+#define COLOR_DOOR_LOCKED 0xFF0000   // Rouge
+#define COLOR_DOOR_UNLOCKED 0xFFFF00 // Jaune
+#define COLOR_DOOR_OPEN 0x00FFFF    // Cyan
+#define COLOR_LEVER_OFF 0xFF8000    // Orange
+#define COLOR_LEVER_ON 0x8000FF     // Violet
 
 # define ESC_KEY 65307
 # define W_KEY 119

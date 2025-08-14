@@ -6,7 +6,7 @@
 /*   By: rboland <rboland@student.s19.be>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/29 09:46:37 by nsaillez          #+#    #+#             */
-/*   Updated: 2025/08/14 10:23:07 by rboland          ###   ########.fr       */
+/*   Updated: 2025/08/14 10:32:34 by rboland          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,9 +35,10 @@ static void init_minimap_data(t_minimap_data *data, t_config *config)
     data->center_y = MINIMAP_RADIUS;
     data->scale = (float)MINIMAP_RADIUS / MINIMAP_TILES_RADIUS;
     
-    // Calcul du champ de vision en radians
-    data->fov_start = normalize_angle(data->player_angle - FOV_HALF_TAN);
-    data->fov_end = normalize_angle(data->player_angle + FOV_HALF_TAN);
+    // Calcul du champ de vision en radians (FOV réduit)
+    float reduced_fov = FOV_HALF_TAN * 0.7f;  // Réduction à 70% du FOV original
+    data->fov_start = normalize_angle(data->player_angle - reduced_fov);
+    data->fov_end = normalize_angle(data->player_angle + reduced_fov);
 }
 
 // Convertit les coordonnées écran de la minimap en coordonnées monde
@@ -104,34 +105,30 @@ static unsigned int get_map_cell_color(t_config *config, int map_x, int map_y)
     }
 }
 
+// Mélange deux couleurs de manière simple
+static unsigned int blend_colors(unsigned int base_color, unsigned int overlay_color)
+{
+    unsigned int r_base = (base_color >> 16) & 0xFF;
+    unsigned int g_base = (base_color >> 8) & 0xFF;
+    unsigned int b_base = base_color & 0xFF;
+    
+    unsigned int r_overlay = (overlay_color >> 16) & 0xFF;
+    unsigned int g_overlay = (overlay_color >> 8) & 0xFF;
+    unsigned int b_overlay = overlay_color & 0xFF;
+    
+    // Mélange 50/50 pour que les deux couleurs soient visibles
+    unsigned int r = (r_base + r_overlay) / 2;
+    unsigned int g = (g_base + g_overlay) / 2;
+    unsigned int b = (b_base + b_overlay) / 2;
+    
+    return ((r << 16) | (g << 8) | b);
+}
+
 // Dessine un pixel sur la minimap avec les coordonnées d'écran
 static void draw_minimap_pixel(t_game *game, int x, int y, unsigned int color)
 {
     my_mlx_pixel_put(&game->img, x + MINIMAP_OFFSET_X, y + MINIMAP_OFFSET_Y, color);
 }
-
-// Mélange deux couleurs (pour la surimpression du FOV)
-// static unsigned int blend_colors(unsigned int base_color, unsigned int overlay_color)
-// {
-//     unsigned int alpha = (overlay_color >> 24) & 0xFF;
-//     if (alpha == 0)
-//         return (base_color);
-    
-//     unsigned int r_base = (base_color >> 16) & 0xFF;
-//     unsigned int g_base = (base_color >> 8) & 0xFF;
-//     unsigned int b_base = base_color & 0xFF;
-    
-//     unsigned int r_overlay = (overlay_color >> 16) & 0xFF;
-//     unsigned int g_overlay = (overlay_color >> 8) & 0xFF;
-//     unsigned int b_overlay = overlay_color & 0xFF;
-    
-//     // Mélange simple avec alpha
-//     unsigned int r = (r_overlay * alpha + r_base * (255 - alpha)) / 255;
-//     unsigned int g = (g_overlay * alpha + g_base * (255 - alpha)) / 255;
-//     unsigned int b = (b_overlay * alpha + b_base * (255 - alpha)) / 255;
-    
-//     return ((r << 16) | (g << 8) | b);
-// }
 
 // Dessine la géométrie de la carte sur la minimap
 static void draw_map_geometry(t_game *game, t_minimap_data *data)
@@ -174,6 +171,8 @@ static void draw_fov_overlay(t_game *game, t_minimap_data *data)
     float distance_sq;
     float angle_to_pixel;
     float dx, dy;
+    unsigned int current_color, blended_color;
+    char *pixel_addr;
     
     for (y = 0; y < MINIMAP_SIZE; y++)
     {
@@ -192,8 +191,14 @@ static void draw_fov_overlay(t_game *game, t_minimap_data *data)
                 // Vérifier si l'angle est dans le FOV
                 if (is_angle_in_fov(angle_to_pixel, data->fov_start, data->fov_end))
                 {
-                    // Appliquer une surimpression bleue semi-transparente
-                    draw_minimap_pixel(game, x, y, COLOR_FOV);
+                    // Récupérer la couleur actuelle du pixel
+                    pixel_addr = game->img.addr + ((y + MINIMAP_OFFSET_Y) * game->img.line_length + 
+                                                  (x + MINIMAP_OFFSET_X) * (game->img.bits_per_pixel / 8));
+                    current_color = *(unsigned int *)pixel_addr;
+                    
+                    // Mélanger avec la couleur du FOV
+                    blended_color = blend_colors(current_color, COLOR_FOV);
+                    draw_minimap_pixel(game, x, y, blended_color);
                 }
             }
         }
