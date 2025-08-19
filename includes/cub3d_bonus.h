@@ -311,6 +311,7 @@ typedef struct s_floor_cast
 int				main(int argc, char **argv);
 
 /*	ERROR	*/
+
 // print_error.c
 void			print_error(const char *message);
 int				exit_error(const char *message, t_config *config);
@@ -320,6 +321,7 @@ void			ft_free_split(char **split);
 void 			cleanup_interactives(t_config *config);
 
 /*	UTILS	*/
+
 // utils1.c
 int				ft_isspace(int c);
 size_t			get_line_width(const char *line);
@@ -328,6 +330,7 @@ size_t			get_line_width(const char *line);
 char			*normalize_line(const char *line);
 
 /*	INIT	*/
+
 // init.c
 void			init_config(t_config *config);
 void			init_parse_state(t_parse_state *state);
@@ -339,6 +342,7 @@ void			cleanup_textures(void *mlx, t_config *config);
 unsigned int	get_texture_pixel(t_texture *texture, int x, int y);
 
 /*	PARSING	*/
+
 // parse_file.c
 int				file_checker(const char *file_path, int argc, t_config *config);
 int				parse_file(int fd, t_config *config, t_parse_state *state);
@@ -386,6 +390,7 @@ int				validate_all_textures(t_config *config);
 int				validate_texture_path(void *mlx, char *path);
 
 /*	GAME	*/
+
 // game_loop.c
 void			game_loop(t_config *config);
 
@@ -422,12 +427,12 @@ void			calculate_step_and_side_dist_x(t_ray_data *data);
 // render_wall.c
 void			render_textured_wall(t_config *config, t_data *img, int x, t_ray ray);
 t_texture		*get_cell_texture(t_config *config, int map_x, int map_y, int wall_dir);
+
 // render_wall_utils.c
 unsigned int	apply_distance_shading(unsigned int color, float distance);
 void			draw_textured_column(t_column_params *params);
 
 // movement.c
-// int				is_valid_position(t_config *config, float x, float y);
 void			move_player(t_config *config, float move_x, float move_y);
 void			rotate_player(t_config *config, float rotation);
 void			change_pitch(t_config *config, float pitch_change);
@@ -445,6 +450,6 @@ void			render_floor_ceiling_column(t_config *config, t_data *img, int x,
 								  int wall_start, int wall_end);
 
 // mini_map.c
-void	update_mini_map(t_game *game);
+void			update_mini_map(t_game *game);
 
 #endif

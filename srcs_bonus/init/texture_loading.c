@@ -33,10 +33,7 @@ int	load_texture(void *mlx, t_texture *texture, char *path)
 }
 
 int load_all_textures(void *mlx, t_config *config)
-{
-    printf("DEBUG: Starting texture loading...\n");
-    
-    // Load basic wall/floor/ceiling textures
+{    
     if (!load_texture(mlx, &config->tex.north, config->north_texture))
         return (0);
     if (!load_texture(mlx, &config->tex.south, config->south_texture))
@@ -49,9 +46,6 @@ int load_all_textures(void *mlx, t_config *config)
         return (0);
     if (!load_texture(mlx, &config->tex.ceiling, config->ceiling_texture))
         return (0);
-    
-    printf("DEBUG: Basic textures loaded. Loading interactive textures...\n");
-    
     // Load interactive textures (only if paths are provided)
     if (config->door_locked_texture && 
         !load_texture(mlx, &config->tex.door_locked, config->door_locked_texture))
@@ -81,7 +75,6 @@ int load_all_textures(void *mlx, t_config *config)
         !load_texture(mlx, &config->tex.lever_on_base, config->lever_on_base_texture))
         return (0);
     
-    printf("DEBUG: All textures loaded successfully!\n");
     return (1);
 }
 
@@ -119,7 +112,6 @@ void cleanup_textures(void *mlx, t_config *config)
     if (config->tex.lever_on_base.img)
         mlx_destroy_image(mlx, config->tex.lever_on_base.img);
     
-    // Reset all texture pointers
     config->tex.north.img = NULL;
     config->tex.south.img = NULL;
     config->tex.west.img = NULL;

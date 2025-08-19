@@ -14,51 +14,29 @@
 
 int is_movement_blocked(t_config *config, float x, float y)
 {
-    int map_x = (int)x;
-    int map_y = (int)y;
-    
-    if (map_y < 0 || map_y >= config->map_height)
-        return (1);
-    if (map_x < 0 || map_x >= (int)ft_strlen(config->map[map_y]))
-        return (1);
-    
-    char cell = config->map[map_y][map_x];
-    
-    // Regular walls block movement
-    if (cell == '1')
-        return (1);
-    
-    // Levers block movement
-    if (cell == 'L')
-        return (1);
-    
-    // Only CLOSED doors block movement
-    if (cell == 'D')
-    {
-        t_interactive *door = find_interactive_at(config, map_x, map_y);
-        if (door && door->door_state == DOOR_OPENED_UNLOCKED)
-            return (0);  // Open doors don't block movement
-        return (1);      // Closed doors block movement
-    }
-    
-    return (0);  // Everything else is passable
+	int map_x = (int)x;
+	int map_y = (int)y;
+	
+	if (map_y < 0 || map_y >= config->map_height)
+		return (1);
+	if (map_x < 0 || map_x >= (int)ft_strlen(config->map[map_y]))
+		return (1);
+	
+	char cell = config->map[map_y][map_x];
+	
+	if (cell == '1')
+		return (1);
+	if (cell == 'L')
+		return (1);
+	if (cell == 'D')
+	{
+		t_interactive *door = find_interactive_at(config, map_x, map_y);
+		if (door && door->door_state == DOOR_OPENED_UNLOCKED)
+			return (0);
+		return (1);
+	}
+	return (0);
 }
-
-// int	is_valid_position(t_config *config, float x, float y)
-// {
-// 	int	map_x;
-// 	int	map_y;
-
-// 	map_x = (int)x;
-// 	map_y = (int)y;
-// 	if (map_y < 0 || map_y >= config->map_height)
-// 		return (0);
-// 	if (map_x < 0 || map_x >= (int)ft_strlen(config->map[map_y]))
-// 		return (0);
-// 	if (config->map[map_y][map_x] == '1')
-// 		return (0);
-// 	return (1);
-// }
 
 void	change_pitch(t_config *config, float pitch_change)
 {

@@ -121,7 +121,6 @@ void check_door_win_condition(t_config *config)
             {
                 config->game_state.game_won = 1;
                 printf("🎉 CONGRATULATIONS! YOU WON! 🎉\n");
-                printf("You successfully activated all levers and escaped through the door!\n");
                 // You could add a win screen or exit here
                 return;
             }

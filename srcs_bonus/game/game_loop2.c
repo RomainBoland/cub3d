@@ -35,10 +35,10 @@ int	game_loop_hook(t_game *game)
 
 void	print_game_info(t_config *config)
 {
+	(void)config;
 	printf("🎮 Cub3D - Textured Raycaster Controls:\n");
-	printf("   WASD: Move player\n");
-	printf("   Arrow Keys: Rotate view\n");
-	printf("   ESC: Exit\n\n");
-	printf("Player starting at (%.2f, %.2f) facing %.2f radians\n",
-		config->player.pos_x, config->player.pos_y, config->player.angle);
+	printf("   WASD:	Move player\n");
+	printf("   E:		Interact\n");
+	printf("   Arrow Keys:	Rotate view\n");
+	printf("   ESC:		Exit\n\n");
 }
