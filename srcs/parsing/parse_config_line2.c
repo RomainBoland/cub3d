@@ -48,7 +48,7 @@ int	parse_ceiling_color(char **tokens, t_config *config,
 	{
 		ft_free_split(tokens);
 		ft_free_split(c_rgb);
-		return (0);
+		return (print_error("Invalid RGB format for ceiling color"), 0);
 	}
 	affect_rgb(1, config, c_rgb);
 	if (!validate_rgb(config->ceiling_color[0], config->ceiling_color[1],

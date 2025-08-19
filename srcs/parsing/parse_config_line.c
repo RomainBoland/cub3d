@@ -40,14 +40,15 @@ int	parse_floor_color(char **tokens, t_config *config,
 	{
 		ft_free_split(tokens);
 		ft_free_split(f_rgb);
-		return (0);
+		return (print_error("Invalid RGB format for floor color"), 0);
 	}
 	affect_rgb(0, config, f_rgb);
 	if (!validate_rgb(config->floor_color[0], config->floor_color[1],
 			config->floor_color[2]))
 	{
 		ft_free_split(f_rgb);
-		return (0);
+		ft_free_split(tokens);
+		return (print_error("RGB value must be between 0 and 255"), 0);	
 	}
 	state->floor_found = 1;
 	ft_free_split(f_rgb);
@@ -74,8 +75,6 @@ int	parse_config_line2(char **tokens, t_config *config,
 void	handle_config_line(char *key, char *value, t_config *config,
 	t_parse_state *state)
 {
-	if (!value)
-		return ;
 	if (!ft_strncmp(key, "NO", 2) || !ft_strncmp(key, "N", 1))
 	{
 		config->north_texture = ft_strdup(value);

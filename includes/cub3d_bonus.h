@@ -23,8 +23,8 @@
 # include <math.h>
 # include <stdio.h>
 
-# define WINDOW_WIDTH 1920
-# define WINDOW_HEIGHT 1080
+# define WINDOW_WIDTH 1280
+# define WINDOW_HEIGHT 720
 # define PI 3.14159265359
 # define MOVE_SPEED 0.12f
 # define ROT_SPEED 0.07f
