@@ -23,8 +23,8 @@
 # include <math.h>
 # include <stdio.h>
 
-# define WINDOW_WIDTH 1280
-# define WINDOW_HEIGHT 720
+# define WINDOW_WIDTH 1920
+# define WINDOW_HEIGHT 1080
 # define PI 3.14159265359
 # define MOVE_SPEED 0.12f
 # define ROT_SPEED 0.07f
@@ -33,6 +33,10 @@
 # define MAX_PITCH 3.14f
 # define PITCH_SPEED 0.15f
 
+# define STATE_MENU 0
+# define STATE_PLAYING 1
+# define STATE_VICTORY 2
+
 # define MINIMAP_RADIUS (WINDOW_WIDTH / 12)
 # define MINIMAP_SIZE (MINIMAP_RADIUS * 2)
 # define MINIMAP_TILES_RADIUS 6.0f
@@ -40,12 +44,12 @@
 # define MINIMAP_OFFSET_Y 10
 
 // Couleurs de la minimap
-#define COLOR_BACKGROUND 0x2A2A2A
-#define COLOR_WALL 0x1f1f70
-#define COLOR_EMPTY 0x000000
+#define COLOR_BACKGROUND 0x000000
+#define COLOR_WALL 0x000000
+#define COLOR_EMPTY 0x5A5E6B
 #define COLOR_PLAYER 0x00FF00
-#define COLOR_FOV 0x440000FF
-#define COLOR_BORDER 0xFF00FF
+#define COLOR_FOV 0x44FFFFFF
+#define COLOR_BORDER 0x1F51FF
 #define COLOR_DOOR_LOCKED 0xFF0000
 #define COLOR_DOOR_UNLOCKED 0xFFFF00
 #define COLOR_DOOR_OPEN 0x00FF00
@@ -170,6 +174,8 @@ typedef struct s_tex
 	t_texture				lever_on_north;
 	t_texture				lever_on_south;
 	t_texture				lever_on_base;
+	t_texture				menu_screen;
+	t_texture				victory_screen;
 }	t_tex;
 
 typedef struct s_config
@@ -286,7 +292,8 @@ typedef struct s_game
 	int			key_right;
 	int			key_up;
 	int			key_down;
-	int						key_interact;
+	int			key_interact;
+	int			game_state;
 }	t_game;
 
 typedef struct s_floor_cast
@@ -451,5 +458,12 @@ void			render_floor_ceiling_column(t_config *config, t_data *img, int x,
 
 // mini_map.c
 void			update_mini_map(t_game *game);
+
+// menu.c
+void			render_menu_screen(t_game *game);
+void			render_victory_screen(t_game *game);
+void			render_scaled_image(t_game *game, t_texture *texture);
+int				handle_menu_input(int keycode, t_game *game);
+int				handle_victory_input(int keycode, t_game *game);
 
 #endif

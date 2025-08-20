@@ -68,6 +68,7 @@ static void init_key_states(t_game *game)
     game->key_up = 0;
     game->key_down = 0;
     game->key_interact = 0;
+	game->game_state = STATE_MENU;
 }
 
 static void	setup_hooks(t_game *game)

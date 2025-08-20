@@ -14,50 +14,54 @@
 
 int handle_keypress(int keycode, t_game *game)
 {
-    if (keycode == W_KEY)
-        game->key_w = 1;
-    else if (keycode == A_KEY)
-        game->key_a = 1;
-    else if (keycode == S_KEY)
-        game->key_s = 1;
-    else if (keycode == D_KEY)
-        game->key_d = 1;
-    else if (keycode == LEFT_ARROW)
-        game->key_left = 1;
-    else if (keycode == RIGHT_ARROW)
-        game->key_right = 1;
-    else if (keycode == UP_ARROW)
-        game->key_up = 1;
-    else if (keycode == DOWN_ARROW)
-        game->key_down = 1;
-    else if (keycode == E_KEY)
-        game->key_interact = 1;
-    else if (keycode == ESC_KEY)
-        close_window(game);
-    return (0);
+	if (game->game_state == STATE_MENU)
+		return (handle_menu_input(keycode, game));
+	else if (game->game_state == STATE_VICTORY)
+		return (handle_victory_input(keycode, game));
+	if (keycode == W_KEY)
+		game->key_w = 1;
+	else if (keycode == A_KEY)
+		game->key_a = 1;
+	else if (keycode == S_KEY)
+		game->key_s = 1;
+	else if (keycode == D_KEY)
+		game->key_d = 1;
+	else if (keycode == LEFT_ARROW)
+		game->key_left = 1;
+	else if (keycode == RIGHT_ARROW)
+		game->key_right = 1;
+	else if (keycode == UP_ARROW)
+		game->key_up = 1;
+	else if (keycode == DOWN_ARROW)
+		game->key_down = 1;
+	else if (keycode == E_KEY)
+		game->key_interact = 1;
+	else if (keycode == ESC_KEY)
+		close_window(game);
+	return (0);
 }
 
 int handle_keyrelease(int keycode, t_game *game)
 {
-    if (keycode == W_KEY)
-        game->key_w = 0;
-    else if (keycode == A_KEY)
-        game->key_a = 0;
-    else if (keycode == S_KEY)
-        game->key_s = 0;
-    else if (keycode == D_KEY)
-        game->key_d = 0;
-    else if (keycode == LEFT_ARROW)
-        game->key_left = 0;
-    else if (keycode == RIGHT_ARROW)
-        game->key_right = 0;
-    else if (keycode == UP_ARROW)
-        game->key_up = 0;
-    else if (keycode == DOWN_ARROW)
-        game->key_down = 0;
-    else if (keycode == E_KEY)
-        game->key_interact = 0;
-    return (0);
+	if (keycode == W_KEY)
+		game->key_w = 0;
+	else if (keycode == A_KEY)
+		game->key_a = 0;
+	else if (keycode == S_KEY)
+		game->key_s = 0;
+	else if (keycode == D_KEY)
+		game->key_d = 0;
+	else if (keycode == LEFT_ARROW)
+		game->key_left = 0;
+	else if (keycode == RIGHT_ARROW)
+		game->key_right = 0;
+	else if (keycode == UP_ARROW)
+		game->key_up = 0;
+	else if (keycode == DOWN_ARROW)
+		game->key_down = 0;
+	else if (keycode == E_KEY)
+		game->key_interact = 0;
+	return (0);
 }
 
 int	close_window(t_game *game)
@@ -103,46 +107,47 @@ void	update_game2(t_game *game, float *move, float *angle, t_config *config)
 
 void update_game(t_game *game)
 {
-    t_config    *config;
-    float       move[2];
-    float       angle[2];
-    static int  last_interact_state = 0;
+	t_config    *config;
+	float       move[2];
+	float       angle[2];
+	static int  last_interact_state = 0;
 
-    config = game->config;
-    
-    // Check for win condition first
-    if (config->game_state.game_won)
-    {
-		// Ecran de fin ??
-		close_window(game);
-        return	;
-    }
-    
-    move[0] = 0;
-    move[1] = 0;
-    angle[0] = cos(config->player.angle);
-    angle[1] = sin(config->player.angle);
+	config = game->config;
+	
+	// Check for win condition first
+	if (game->game_state != STATE_PLAYING)
+		return;
+	if (config->game_state.game_won && game->game_state == STATE_PLAYING)
+	{
+		game->game_state = STATE_VICTORY;
+		return;
+	}
+	
+	move[0] = 0;
+	move[1] = 0;
+	angle[0] = cos(config->player.angle);
+	angle[1] = sin(config->player.angle);
 
-    if (game->key_w)
-    {
-        move[0] += angle[0] * MOVE_SPEED;
-        move[1] += angle[1] * MOVE_SPEED;
-    }
-    if (game->key_s)
-    {
-        move[0] -= angle[0] * MOVE_SPEED;
-        move[1] -= angle[1] * MOVE_SPEED;
-    }
+	if (game->key_w)
+	{
+		move[0] += angle[0] * MOVE_SPEED;
+		move[1] += angle[1] * MOVE_SPEED;
+	}
+	if (game->key_s)
+	{
+		move[0] -= angle[0] * MOVE_SPEED;
+		move[1] -= angle[1] * MOVE_SPEED;
+	}
 
-    update_game2(game, move, angle, config);
-    
-    // Handle interaction (only on key press, not hold)
-    if (game->key_interact && !last_interact_state)
-    {
-        handle_interaction(config);
-    }
-    last_interact_state = game->key_interact;
-    
-    // Check for door win condition
-    check_door_win_condition(config);
+	update_game2(game, move, angle, config);
+	
+	// Handle interaction (only on key press, not hold)
+	if (game->key_interact && !last_interact_state)
+	{
+		handle_interaction(config);
+	}
+	last_interact_state = game->key_interact;
+	
+	// Check for door win condition
+	check_door_win_condition(config);
 }

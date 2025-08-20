@@ -22,15 +22,27 @@ void	my_mlx_pixel_put(t_data *data, int x, int y, int color)
 	*(unsigned int *)dst = color;
 }
 
-int	game_loop_hook(t_game *game)
+int game_loop_hook(t_game *game)
 {
-	update_game(game);
-	ft_memset(game->img.addr, 0, WINDOW_HEIGHT * game->img.line_length);
-	render_raycast(game->config, &game->img);
-	update_mini_map(game);
-	mlx_put_image_to_window(game->mlx, game->win, game->img.img, 0, 0);
-	// mlx_put_image_to_window(game->mlx, game->win, game->mini_map.img, 0, 0);
-	return (0);
+    // Handle different game states
+    if (game->game_state == STATE_MENU)
+    {
+        render_menu_screen(game);
+    }
+    else if (game->game_state == STATE_VICTORY)
+    {
+        render_victory_screen(game);
+    }
+    else // STATE_PLAYING
+    {
+        update_game(game);
+        ft_memset(game->img.addr, 0, WINDOW_HEIGHT * game->img.line_length);
+        render_raycast(game->config, &game->img);
+        update_mini_map(game);
+        mlx_put_image_to_window(game->mlx, game->win, game->img.img, 0, 0);
+    }
+    
+    return (0);
 }
 
 void	print_game_info(t_config *config)

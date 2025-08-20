@@ -85,10 +85,7 @@ void interact_with_door(t_config *config, t_interactive *door)
         printf("🔒 Door is locked! Find and activate all levers first.\n");
     }
     else if (door->door_state == DOOR_CLOSED_UNLOCKED)
-    {
         door->door_state = DOOR_OPENED_UNLOCKED;
-        printf("🚪 Door opened!\n");
-    }
     else
     {
         printf("🚪 Door is already open! Walk through to win!\n");
@@ -120,8 +117,6 @@ void check_door_win_condition(t_config *config)
             if (distance <= 0.7f)  // Very close to door center
             {
                 config->game_state.game_won = 1;
-                printf("🎉 CONGRATULATIONS! YOU WON! 🎉\n");
-                // You could add a win screen or exit here
                 return;
             }
         }

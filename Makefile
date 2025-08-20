@@ -78,6 +78,7 @@ SRC_BONUS	= srcs_bonus/main.c \
 			  srcs_bonus/game/render_ceiling_floor.c \
 			  srcs_bonus/game/movement.c \
 			  srcs_bonus/game/events.c \
+			  srcs_bonus/game/menu.c \
 			  srcs_bonus/utils/utils1.c \
 			  srcs_bonus/utils/normalize_line.c \
 			  srcs_bonus/utils/mini_map.c

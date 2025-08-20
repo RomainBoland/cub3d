@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   mini_map.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rboland <romain.boland@hotmail.com>        +#+  +:+       +#+        */
+/*   By: rboland <rboland@student.s19.be>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/29 09:46:37 by nsaillez          #+#    #+#             */
-/*   Updated: 2025/08/19 12:20:08 by rboland          ###   ########.fr       */
+/*   Updated: 2025/08/20 11:03:44 by rboland          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -208,9 +208,9 @@ static void draw_fov_overlay(t_game *game, t_minimap_data *data)
 static void draw_minimap_border(t_game *game, t_minimap_data *data)
 {
 	int x, y;
-	float distance_sq;
-	float inner_radius_sq = (MINIMAP_RADIUS - 2) * (MINIMAP_RADIUS - 2);
-	float outer_radius_sq = MINIMAP_RADIUS * MINIMAP_RADIUS;
+	float	distance_sq;
+	float	inner_radius_sq = (MINIMAP_RADIUS - 4) * (MINIMAP_RADIUS - 4);
+	float	outer_radius_sq = MINIMAP_RADIUS * MINIMAP_RADIUS;
 	
 	for (y = 0; y < MINIMAP_SIZE; y++)
 	{
@@ -232,8 +232,7 @@ static void draw_player(t_game *game, t_minimap_data *data)
 {
 	int x, y;
 	float distance_sq;
-	int player_radius = 3;
-	int i;
+	int player_radius = 5;
 	
 	// Dessiner le point du joueur
 	for (y = data->center_y - player_radius; y <= data->center_y + player_radius; y++)
@@ -250,19 +249,6 @@ static void draw_player(t_game *game, t_minimap_data *data)
 					draw_minimap_pixel(game, x, y, COLOR_PLAYER);
 				}
 			}
-		}
-	}
-	
-	// Dessiner une ligne indiquant la direction du regard
-	int dir_length = 12;
-	for (i = 0; i <= dir_length; i++)
-	{
-		int px = data->center_x + (int)(i * cos(data->player_angle));
-		int py = data->center_y + (int)(i * sin(data->player_angle));
-		
-		if (px >= 0 && px < MINIMAP_SIZE && py >= 0 && py < MINIMAP_SIZE)
-		{
-			draw_minimap_pixel(game, px, py, COLOR_PLAYER);
 		}
 	}
 }
