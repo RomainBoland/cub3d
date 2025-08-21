@@ -48,7 +48,7 @@ int	parse_floor_color(char **tokens, t_config *config,
 	{
 		ft_free_split(f_rgb);
 		ft_free_split(tokens);
-		return (print_error("RGB value must be between 0 and 255"), 0);	
+		return (print_error("RGB value must be between 0 and 255"), 0);
 	}
 	state->floor_found = 1;
 	ft_free_split(f_rgb);
