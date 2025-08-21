@@ -57,17 +57,17 @@ static int	create_window_and_image(t_game *game)
 	return (1);
 }
 
-static void init_key_states(t_game *game)
+static void	init_key_states(t_game *game)
 {
-    game->key_w = 0;
-    game->key_a = 0;
-    game->key_s = 0;
-    game->key_d = 0;
-    game->key_left = 0;
-    game->key_right = 0;
-    game->key_up = 0;
-    game->key_down = 0;
-    game->key_interact = 0;
+	game->key_w = 0;
+	game->key_a = 0;
+	game->key_s = 0;
+	game->key_d = 0;
+	game->key_left = 0;
+	game->key_right = 0;
+	game->key_up = 0;
+	game->key_down = 0;
+	game->key_interact = 0;
 	game->game_state = STATE_MENU;
 }
 

@@ -12,7 +12,7 @@
 
 #include "cub3d_bonus.h"
 
-int handle_keypress(int keycode, t_game *game)
+int	handle_keypress(int keycode, t_game *game)
 {
 	if (game->game_state == STATE_MENU)
 		return (handle_menu_input(keycode, game));
@@ -41,7 +41,7 @@ int handle_keypress(int keycode, t_game *game)
 	return (0);
 }
 
-int handle_keyrelease(int keycode, t_game *game)
+int	handle_keyrelease(int keycode, t_game *game)
 {
 	if (keycode == W_KEY)
 		game->key_w = 0;
@@ -105,29 +105,27 @@ void	update_game2(t_game *game, float *move, float *angle, t_config *config)
 		change_pitch(config, -PITCH_SPEED);
 }
 
-void update_game(t_game *game)
+static void	handle_interaction_logic(t_game *game, t_config *config)
 {
-	t_config    *config;
-	float       move[2];
-	float       angle[2];
-	static int  last_interact_state = 0;
+	static int	last_interact_state = 0;
 
-	config = game->config;
-	
-	// Check for win condition first
-	if (game->game_state != STATE_PLAYING)
-		return;
-	if (config->game_state.game_won && game->game_state == STATE_PLAYING)
+	if (game->key_interact && !last_interact_state)
 	{
-		game->game_state = STATE_VICTORY;
-		return;
+		handle_interaction(config);
 	}
-	
+	last_interact_state = game->key_interact;
+	check_door_win_condition(config);
+}
+
+static void	handle_movement(t_game *game, t_config *config)
+{
+	float	move[2];
+	float	angle[2];
+
 	move[0] = 0;
 	move[1] = 0;
 	angle[0] = cos(config->player.angle);
 	angle[1] = sin(config->player.angle);
-
 	if (game->key_w)
 	{
 		move[0] += angle[0] * MOVE_SPEED;
@@ -138,16 +136,21 @@ void update_game(t_game *game)
 		move[0] -= angle[0] * MOVE_SPEED;
 		move[1] -= angle[1] * MOVE_SPEED;
 	}
-
 	update_game2(game, move, angle, config);
-	
-	// Handle interaction (only on key press, not hold)
-	if (game->key_interact && !last_interact_state)
+}
+
+void	update_game(t_game *game)
+{
+	t_config	*config;
+
+	config = game->config;
+	if (game->game_state != STATE_PLAYING)
+		return ;
+	if (config->game_state.game_won && game->game_state == STATE_PLAYING)
 	{
-		handle_interaction(config);
+		game->game_state = STATE_VICTORY;
+		return ;
 	}
-	last_interact_state = game->key_interact;
-	
-	// Check for door win condition
-	check_door_win_condition(config);
+	handle_movement(game, config);
+	handle_interaction_logic(game, config);
 }

@@ -12,85 +12,82 @@
 
 #include "cub3d_bonus.h"
 
-// Render an image scaled to fit the window
-void render_scaled_image(t_game *game, t_texture *texture)
+static void	scale_and_draw_pixel(t_game *game, t_texture *texture,
+				int x, int y)
 {
-    int x, y;
-    int src_x, src_y;
-    float scale_x, scale_y;
-    unsigned int color;
-    
-    if (!texture || !texture->img)
-        return;
-    
-    // Calculate scaling factors
-    scale_x = (float)texture->width / WINDOW_WIDTH;
-    scale_y = (float)texture->height / WINDOW_HEIGHT;
-    
-    // Clear the screen first
-    ft_memset(game->img.addr, 0, WINDOW_HEIGHT * game->img.line_length);
-    
-    // Scale and draw the image
-    for (y = 0; y < WINDOW_HEIGHT; y++)
-    {
-        for (x = 0; x < WINDOW_WIDTH; x++)
-        {
-            src_x = (int)(x * scale_x);
-            src_y = (int)(y * scale_y);
-            
-            // Ensure we don't go out of bounds
-            if (src_x >= texture->width)
-                src_x = texture->width - 1;
-            if (src_y >= texture->height)
-                src_y = texture->height - 1;
-            
-            color = get_texture_pixel(texture, src_x, src_y);
-            my_mlx_pixel_put(&game->img, x, y, color);
-        }
-    }
+	int				src_x;
+	int				src_y;
+	float			scale_x;
+	float			scale_y;
+	unsigned int	color;
+
+	scale_x = (float)texture->width / WINDOW_WIDTH;
+	scale_y = (float)texture->height / WINDOW_HEIGHT;
+	src_x = (int)(x * scale_x);
+	src_y = (int)(y * scale_y);
+	if (src_x >= texture->width)
+		src_x = texture->width - 1;
+	if (src_y >= texture->height)
+		src_y = texture->height - 1;
+	color = get_texture_pixel(texture, src_x, src_y);
+	my_mlx_pixel_put(&game->img, x, y, color);
 }
 
-void render_menu_screen(t_game *game)
+void	render_scaled_image(t_game *game, t_texture *texture)
 {
-    render_scaled_image(game, &game->config->tex.menu_screen);
-    mlx_put_image_to_window(game->mlx, game->win, game->img.img, 0, 0);
+	int	x;
+	int	y;
+
+	if (!texture || !texture->img)
+		return ;
+	ft_memset(game->img.addr, 0, WINDOW_HEIGHT * game->img.line_length);
+	y = 0;
+	while (y < WINDOW_HEIGHT)
+	{
+		x = 0;
+		while (x < WINDOW_WIDTH)
+		{
+			scale_and_draw_pixel(game, texture, x, y);
+			x++;
+		}
+		y++;
+	}
 }
 
-void render_victory_screen(t_game *game)
+void	render_menu_screen(t_game *game)
 {
-    render_scaled_image(game, &game->config->tex.victory_screen);
-    mlx_put_image_to_window(game->mlx, game->win, game->img.img, 0, 0);
+	render_scaled_image(game, &game->config->tex.menu_screen);
+	mlx_put_image_to_window(game->mlx, game->win, game->img.img, 0, 0);
 }
 
-int handle_menu_input(int keycode, t_game *game)
+void	render_victory_screen(t_game *game)
 {
-    (void)keycode; // Any key starts the game
-    
-    if (keycode == ESC_KEY)
-    {
-        close_window(game);
-        return (0);
-    }
-    
-    // Start the game
-    game->game_state = STATE_PLAYING;
-    printf("🎮 Game started! Good luck!\n");
-    return (0);
+	render_scaled_image(game, &game->config->tex.victory_screen);
+	mlx_put_image_to_window(game->mlx, game->win, game->img.img, 0, 0);
 }
 
-int handle_victory_input(int keycode, t_game *game)
+int	handle_menu_input(int keycode, t_game *game)
 {
-    (void)keycode; // Any key exits or restarts
-    
-    if (keycode == ESC_KEY)
-    {
-        close_window(game);
-        return (0);
-    }
-    
-    // You can either restart the game or close it
-    // For now, let's close the game
-    printf("🎉 Thanks for playing!\n");
-    close_window(game);
-    return (0);
+	(void)keycode;
+	if (keycode == ESC_KEY)
+	{
+		close_window(game);
+		return (0);
+	}
+	game->game_state = STATE_PLAYING;
+	printf("🎮 Game started! Good luck!\n");
+	return (0);
+}
+
+int	handle_victory_input(int keycode, t_game *game)
+{
+	(void)keycode;
+	if (keycode == ESC_KEY)
+	{
+		close_window(game);
+		return (0);
+	}
+	printf("🎉 Thanks for playing!\n");
+	close_window(game);
+	return (0);
 }

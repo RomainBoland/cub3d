@@ -27,71 +27,99 @@ int	validate_texture_path(void *mlx, char *path)
 	return (1);
 }
 
-static int validate_interactive_textures(void *mlx, t_config *config)
+static int	validate_door_textures(void *mlx, t_config *config)
 {
-    int valid = 1;
-    
-    // Only validate interactive textures if they're provided
-    if (config->door_locked_texture && 
-        !validate_texture_path(mlx, config->door_locked_texture))
-    {
-        print_error("Invalid Door Locked texture path");
-        valid = 0;
-    }
-    if (config->door_unlocked_texture && 
-        !validate_texture_path(mlx, config->door_unlocked_texture))
-    {
-        print_error("Invalid Door Unlocked texture path");
-        valid = 0;
-    }
-    if (config->door_open_texture && 
-        !validate_texture_path(mlx, config->door_open_texture))
-    {
-        print_error("Invalid Door Open texture path");
-        valid = 0;
-    }
-    if (config->lever_off_north_texture && 
-        !validate_texture_path(mlx, config->lever_off_north_texture))
-    {
-        print_error("Invalid Lever Off North texture path");
-        valid = 0;
-    }
-    if (config->lever_off_south_texture && 
-        !validate_texture_path(mlx, config->lever_off_south_texture))
-    {
-        print_error("Invalid Lever Off South texture path");
-        valid = 0;
-    }
-    if (config->lever_off_base_texture && 
-        !validate_texture_path(mlx, config->lever_off_base_texture))
-    {
-        print_error("Invalid Lever Off Base texture path");
-        valid = 0;
-    }
-    if (config->lever_on_north_texture && 
-        !validate_texture_path(mlx, config->lever_on_north_texture))
-    {
-        print_error("Invalid Lever On North texture path");
-        valid = 0;
-    }
-    if (config->lever_on_south_texture && 
-        !validate_texture_path(mlx, config->lever_on_south_texture))
-    {
-        print_error("Invalid Lever On South texture path");
-        valid = 0;
-    }
-    if (config->lever_on_base_texture && 
-        !validate_texture_path(mlx, config->lever_on_base_texture))
-    {
-        print_error("Invalid Lever On Base texture path");
-        valid = 0;
-    }
-    
-    return (valid);
+	int	valid;
+
+	valid = 1;
+	if (config->door_locked_texture
+		&& !validate_texture_path(mlx, config->door_locked_texture))
+	{
+		print_error("Invalid Door Locked texture path");
+		valid = 0;
+	}
+	if (config->door_unlocked_texture
+		&& !validate_texture_path(mlx, config->door_unlocked_texture))
+	{
+		print_error("Invalid Door Unlocked texture path");
+		valid = 0;
+	}
+	if (config->door_open_texture
+		&& !validate_texture_path(mlx, config->door_open_texture))
+	{
+		print_error("Invalid Door Open texture path");
+		valid = 0;
+	}
+	return (valid);
 }
 
-static int	is_valid_texture2(void *mlx, t_config *config,
-	int valid)
+static int	validate_lever_off_textures(void *mlx, t_config *config)
+{
+	int	valid;
+
+	valid = 1;
+	if (config->lever_off_north_texture
+		&& !validate_texture_path(mlx, config->lever_off_north_texture))
+	{
+		print_error("Invalid Lever Off North texture path");
+		valid = 0;
+	}
+	if (config->lever_off_south_texture
+		&& !validate_texture_path(mlx, config->lever_off_south_texture))
+	{
+		print_error("Invalid Lever Off South texture path");
+		valid = 0;
+	}
+	if (config->lever_off_base_texture
+		&& !validate_texture_path(mlx, config->lever_off_base_texture))
+	{
+		print_error("Invalid Lever Off Base texture path");
+		valid = 0;
+	}
+	return (valid);
+}
+
+static int	validate_lever_on_textures(void *mlx, t_config *config)
+{
+	int	valid;
+
+	valid = 1;
+	if (config->lever_on_north_texture
+		&& !validate_texture_path(mlx, config->lever_on_north_texture))
+	{
+		print_error("Invalid Lever On North texture path");
+		valid = 0;
+	}
+	if (config->lever_on_south_texture
+		&& !validate_texture_path(mlx, config->lever_on_south_texture))
+	{
+		print_error("Invalid Lever On South texture path");
+		valid = 0;
+	}
+	if (config->lever_on_base_texture
+		&& !validate_texture_path(mlx, config->lever_on_base_texture))
+	{
+		print_error("Invalid Lever On Base texture path");
+		valid = 0;
+	}
+	return (valid);
+}
+
+static int	validate_interactive_textures(void *mlx, t_config *config)
+{
+	int	valid;
+
+	valid = 1;
+	if (!validate_door_textures(mlx, config))
+		valid = 0;
+	if (!validate_lever_off_textures(mlx, config))
+		valid = 0;
+	if (!validate_lever_on_textures(mlx, config))
+		valid = 0;
+	return (valid);
+}
+
+static int	is_valid_texture2(void *mlx, t_config *config, int valid)
 {
 	int	is_valid;
 

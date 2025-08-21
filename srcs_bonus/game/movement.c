@@ -12,18 +12,19 @@
 
 #include "cub3d_bonus.h"
 
-int is_movement_blocked(t_config *config, float x, float y)
+int	is_movement_blocked(t_config *config, float x, float y)
 {
-	int map_x = (int)x;
-	int map_y = (int)y;
-	
+	int		map_x;
+	int		map_y;
+	char	cell;
+
+	map_x = (int)x;
+	map_y = (int)y;
 	if (map_y < 0 || map_y >= config->map_height)
 		return (1);
 	if (map_x < 0 || map_x >= (int)ft_strlen(config->map[map_y]))
 		return (1);
-	
-	char cell = config->map[map_y][map_x];
-	
+	cell = config->map[map_y][map_x];
 	if (cell == '1')
 		return (1);
 	if (cell == 'L')

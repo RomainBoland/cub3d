@@ -32,8 +32,8 @@ int	load_texture(void *mlx, t_texture *texture, char *path)
 	return (1);
 }
 
-int load_all_textures(void *mlx, t_config *config)
-{    
+static int	load_basic_textures(void *mlx, t_config *config)
+{
 	if (!load_texture(mlx, &config->tex.north, config->north_texture))
 		return (0);
 	if (!load_texture(mlx, &config->tex.south, config->south_texture))
@@ -46,52 +46,91 @@ int load_all_textures(void *mlx, t_config *config)
 		return (0);
 	if (!load_texture(mlx, &config->tex.ceiling, config->ceiling_texture))
 		return (0);
-	// Load interactive textures (only if paths are provided)
-	if (config->door_locked_texture && 
-		!load_texture(mlx, &config->tex.door_locked, config->door_locked_texture))
-		return (0);
-	if (config->door_unlocked_texture && 
-		!load_texture(mlx, &config->tex.door_unlocked, config->door_unlocked_texture))
-		return (0);
-	if (config->door_open_texture && 
-		!load_texture(mlx, &config->tex.door_open, config->door_open_texture))
-		return (0);
-	if (config->lever_off_north_texture && 
-		!load_texture(mlx, &config->tex.lever_off_north, config->lever_off_north_texture))
-		return (0);
-	if (config->lever_off_south_texture && 
-		!load_texture(mlx, &config->tex.lever_off_south, config->lever_off_south_texture))
-		return (0);
-	if (config->lever_off_base_texture && 
-		!load_texture(mlx, &config->tex.lever_off_base, config->lever_off_base_texture))
-		return (0);
-	if (config->lever_on_north_texture && 
-		!load_texture(mlx, &config->tex.lever_on_north, config->lever_on_north_texture))
-		return (0);
-	if (config->lever_on_south_texture && 
-		!load_texture(mlx, &config->tex.lever_on_south, config->lever_on_south_texture))
-		return (0);
-	if (config->lever_on_base_texture && 
-		!load_texture(mlx, &config->tex.lever_on_base, config->lever_on_base_texture))
-		return (0);
-	if (!load_texture(mlx, &config->tex.menu_screen, "textures/menu_screen.xpm"))
-	{
-		printf("Warning: Could not load menu screen, using fallback\n");
-		// could create a simple fallback or continue without it
-	}
-	
-	if (!load_texture(mlx, &config->tex.victory_screen, "textures/victory_screen.xpm"))
-	{
-		printf("Warning: Could not load victory screen, using fallback\n");
-		// could create a simple fallback or continue without it
-	}
-	
 	return (1);
 }
 
-void cleanup_textures(void *mlx, t_config *config)
+static int	load_door_textures(void *mlx, t_config *config)
 {
-	// Cleanup basic textures
+	if (config->door_locked_texture
+		&& !load_texture(mlx, &config->tex.door_locked,
+			config->door_locked_texture))
+		return (0);
+	if (config->door_unlocked_texture
+		&& !load_texture(mlx, &config->tex.door_unlocked,
+			config->door_unlocked_texture))
+		return (0);
+	if (config->door_open_texture
+		&& !load_texture(mlx, &config->tex.door_open,
+			config->door_open_texture))
+		return (0);
+	return (1);
+}
+
+static int	load_lever_textures(void *mlx, t_config *config)
+{
+	if (config->lever_off_north_texture
+		&& !load_texture(mlx, &config->tex.lever_off_north,
+			config->lever_off_north_texture))
+		return (0);
+	if (config->lever_off_south_texture
+		&& !load_texture(mlx, &config->tex.lever_off_south,
+			config->lever_off_south_texture))
+		return (0);
+	if (config->lever_off_base_texture
+		&& !load_texture(mlx, &config->tex.lever_off_base,
+			config->lever_off_base_texture))
+		return (0);
+	return (1);
+}
+
+static int	load_lever_textures2(void *mlx, t_config *config)
+{
+	if (config->lever_on_north_texture
+		&& !load_texture(mlx, &config->tex.lever_on_north,
+			config->lever_on_north_texture))
+		return (0);
+	if (config->lever_on_south_texture
+		&& !load_texture(mlx, &config->tex.lever_on_south,
+			config->lever_on_south_texture))
+		return (0);
+	if (config->lever_on_base_texture
+		&& !load_texture(mlx, &config->tex.lever_on_base,
+			config->lever_on_base_texture))
+		return (0);
+	return (1);
+}
+
+static int	load_menu_textures(void *mlx, t_config *config)
+{
+	if (!load_texture(mlx, &config->tex.menu_screen,
+			"textures/menu_screen.xpm"))
+	{
+		printf("Warning: Could not load menu screen, using fallback\n");
+	}
+	if (!load_texture(mlx, &config->tex.victory_screen,
+			"textures/victory_screen.xpm"))
+	{
+		printf("Warning: Could not load victory screen, using fallback\n");
+	}
+	return (1);
+}
+
+int	load_all_textures(void *mlx, t_config *config)
+{
+	if (!load_basic_textures(mlx, config))
+		return (0);
+	if (!load_door_textures(mlx, config))
+		return (0);
+	if (!load_lever_textures(mlx, config))
+		return (0);
+	if (!load_lever_textures2(mlx, config))
+		return (0);
+	load_menu_textures(mlx, config);
+	return (1);
+}
+
+static void	cleanup_basic_textures(void *mlx, t_config *config)
+{
 	if (config->tex.north.img)
 		mlx_destroy_image(mlx, config->tex.north.img);
 	if (config->tex.south.img)
@@ -102,6 +141,15 @@ void cleanup_textures(void *mlx, t_config *config)
 		mlx_destroy_image(mlx, config->tex.east.img);
 	if (config->tex.floor.img)
 		mlx_destroy_image(mlx, config->tex.floor.img);
+	config->tex.north.img = NULL;
+	config->tex.south.img = NULL;
+	config->tex.west.img = NULL;
+	config->tex.east.img = NULL;
+	config->tex.floor.img = NULL;
+}
+
+static void	cleanup_door_textures(void *mlx, t_config *config)
+{
 	if (config->tex.ceiling.img)
 		mlx_destroy_image(mlx, config->tex.ceiling.img);
 	if (config->tex.door_locked.img)
@@ -110,6 +158,14 @@ void cleanup_textures(void *mlx, t_config *config)
 		mlx_destroy_image(mlx, config->tex.door_unlocked.img);
 	if (config->tex.door_open.img)
 		mlx_destroy_image(mlx, config->tex.door_open.img);
+	config->tex.ceiling.img = NULL;
+	config->tex.door_locked.img = NULL;
+	config->tex.door_unlocked.img = NULL;
+	config->tex.door_open.img = NULL;
+}
+
+static void	cleanup_lever_textures(void *mlx, t_config *config)
+{
 	if (config->tex.lever_off_north.img)
 		mlx_destroy_image(mlx, config->tex.lever_off_north.img);
 	if (config->tex.lever_off_south.img)
@@ -120,30 +176,32 @@ void cleanup_textures(void *mlx, t_config *config)
 		mlx_destroy_image(mlx, config->tex.lever_on_north.img);
 	if (config->tex.lever_on_south.img)
 		mlx_destroy_image(mlx, config->tex.lever_on_south.img);
+	config->tex.lever_off_north.img = NULL;
+	config->tex.lever_off_south.img = NULL;
+	config->tex.lever_off_base.img = NULL;
+	config->tex.lever_on_north.img = NULL;
+	config->tex.lever_on_south.img = NULL;
+}
+
+static void	cleanup_menu_textures(void *mlx, t_config *config)
+{
 	if (config->tex.lever_on_base.img)
 		mlx_destroy_image(mlx, config->tex.lever_on_base.img);
 	if (config->tex.menu_screen.img)
 		mlx_destroy_image(mlx, config->tex.menu_screen.img);
 	if (config->tex.victory_screen.img)
 		mlx_destroy_image(mlx, config->tex.victory_screen.img);
-	
-	config->tex.north.img = NULL;
-	config->tex.south.img = NULL;
-	config->tex.west.img = NULL;
-	config->tex.east.img = NULL;
-	config->tex.floor.img = NULL;
-	config->tex.ceiling.img = NULL;
-	config->tex.door_locked.img = NULL;
-	config->tex.door_unlocked.img = NULL;
-	config->tex.door_open.img = NULL;
-	config->tex.lever_off_north.img = NULL;
-	config->tex.lever_off_south.img = NULL;
-	config->tex.lever_off_base.img = NULL;
-	config->tex.lever_on_north.img = NULL;
-	config->tex.lever_on_south.img = NULL;
 	config->tex.lever_on_base.img = NULL;
 	config->tex.menu_screen.img = NULL;
 	config->tex.victory_screen.img = NULL;
+}
+
+void	cleanup_textures(void *mlx, t_config *config)
+{
+	cleanup_basic_textures(mlx, config);
+	cleanup_door_textures(mlx, config);
+	cleanup_lever_textures(mlx, config);
+	cleanup_menu_textures(mlx, config);
 }
 
 unsigned int	get_texture_pixel(t_texture *texture, int x, int y)

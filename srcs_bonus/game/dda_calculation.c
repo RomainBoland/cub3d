@@ -49,7 +49,7 @@ static void	perform_dda(t_config *config, t_ray_data *data)
 }
 
 static void	distance_direction_utils(t_ray_data *data, t_ray *result,
-	float perp_wall_dist)
+			float perp_wall_dist)
 {
 	if (result->wall_x < 0)
 		result->wall_x += 1.0;
@@ -61,7 +61,7 @@ static void	distance_direction_utils(t_ray_data *data, t_ray *result,
 }
 
 static void	calculate_wall_distance_and_direction(t_ray_data *data,
-	t_ray *result)
+			t_ray *result)
 {
 	float	perp_wall_dist;
 
@@ -89,23 +89,20 @@ static void	calculate_wall_distance_and_direction(t_ray_data *data,
 	distance_direction_utils(data, result, perp_wall_dist);
 }
 
-t_ray dda_cast_ray(t_config *config, float ray_angle)
+t_ray	dda_cast_ray(t_config *config, float ray_angle)
 {
-    t_ray       result;
-    t_ray_data  data;
+	t_ray		result;
+	t_ray_data	data;
 
-    ft_memset(&result, 0, sizeof(t_ray));
-    init_ray_data(&data, config, ray_angle);
-    calculate_delta_dist(&data);
-    calculate_step_and_side_dist_x(&data);
-    calculate_step_and_side_dist_y(&data);
-    perform_dda(config, &data);
-    calculate_wall_distance_and_direction(&data, &result);
-    
-    // NEW: Store map position and angle
-    result.map_x = data.map_x;
-    result.map_y = data.map_y;
-    result.angle = ray_angle;
-    
-    return (result);
+	ft_memset(&result, 0, sizeof(t_ray));
+	init_ray_data(&data, config, ray_angle);
+	calculate_delta_dist(&data);
+	calculate_step_and_side_dist_x(&data);
+	calculate_step_and_side_dist_y(&data);
+	perform_dda(config, &data);
+	calculate_wall_distance_and_direction(&data, &result);
+	result.map_x = data.map_x;
+	result.map_y = data.map_y;
+	result.angle = ray_angle;
+	return (result);
 }
