@@ -80,7 +80,9 @@ typedef struct s_minimap_data
     float fov_end;
     int center_x;
     int center_y;
-    float scale;  // pixels par tile
+	float world_x;
+	float world_y;
+    float scale;
 } t_minimap_data;
 
 typedef enum e_door_state
