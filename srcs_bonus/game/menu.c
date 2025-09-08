@@ -65,29 +65,3 @@ void	render_victory_screen(t_game *game)
 	render_scaled_image(game, &game->config->tex.victory_screen);
 	mlx_put_image_to_window(game->mlx, game->win, game->img.img, 0, 0);
 }
-
-int	handle_menu_input(int keycode, t_game *game)
-{
-	(void)keycode;
-	if (keycode == ESC_KEY)
-	{
-		close_window(game);
-		return (0);
-	}
-	game->game_state = STATE_PLAYING;
-	printf("🎮 Game started! Good luck!\n");
-	return (0);
-}
-
-int	handle_victory_input(int keycode, t_game *game)
-{
-	(void)keycode;
-	if (keycode == ESC_KEY)
-	{
-		close_window(game);
-		return (0);
-	}
-	printf("🎉 Thanks for playing!\n");
-	close_window(game);
-	return (0);
-}

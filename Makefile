@@ -65,12 +65,14 @@ SRC_BONUS	= srcs_bonus/main.c \
 			  srcs_bonus/parsing/validate_textures.c \
 			  srcs_bonus/error/print_error.c \
 			  srcs_bonus/error/cleanup.c \
+			  srcs_bonus/error/ft_free_split.c \
 			  srcs_bonus/init/init.c \
 			  srcs_bonus/init/texture_loading.c \
 			  srcs_bonus/game/game_loop.c \
 			  srcs_bonus/game/game_loop2.c \
 			  srcs_bonus/game/interactive.c \
 			  srcs_bonus/game/raycasting.c \
+			  srcs_bonus/game/raycasting_get_texture.c \
 			  srcs_bonus/game/dda_calculation.c \
 			  srcs_bonus/game/dda_calculation_utils.c \
 			  srcs_bonus/game/render_wall.c \
@@ -79,9 +81,15 @@ SRC_BONUS	= srcs_bonus/main.c \
 			  srcs_bonus/game/movement.c \
 			  srcs_bonus/game/events.c \
 			  srcs_bonus/game/menu.c \
+			  srcs_bonus/game/update_game.c \
+			  srcs_bonus/game/check_door_win_cond.c \
+			  srcs_bonus/game/handle_menu_input.c \
 			  srcs_bonus/utils/utils1.c \
 			  srcs_bonus/utils/normalize_line.c \
-			  srcs_bonus/utils/mini_map.c
+			  srcs_bonus/utils/mini_map.c \
+			  srcs_bonus/utils/mini_map_draw.c \
+			  srcs_bonus/utils/mini_map_draw2.c \
+			  srcs_bonus/utils/mini_map_get_color.c 
 
 OBJ_DIR		= objects/
 OBJ_BONUS_DIR = objects_bonus/

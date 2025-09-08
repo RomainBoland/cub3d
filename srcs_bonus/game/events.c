@@ -81,31 +81,7 @@ int	close_window(t_game *game)
 	return (0);
 }
 
-void	update_game2(t_game *game, float *move, float *angle, t_config *config)
-{
-	if (game->key_a)
-	{
-		move[0] += angle[1] * MOVE_SPEED;
-		move[1] -= angle[0] * MOVE_SPEED;
-	}
-	if (game->key_d)
-	{
-		move[0] -= angle[1] * MOVE_SPEED;
-		move[1] += angle[0] * MOVE_SPEED;
-	}
-	if (move[0] != 0 || move[1] != 0)
-		move_player(config, move[0], move[1]);
-	if (game->key_left)
-		rotate_player(config, -ROT_SPEED);
-	if (game->key_right)
-		rotate_player(config, ROT_SPEED);
-	if (game->key_up)
-		change_pitch(config, PITCH_SPEED);
-	if (game->key_down)
-		change_pitch(config, -PITCH_SPEED);
-}
-
-static void	handle_interaction_logic(t_game *game, t_config *config)
+void	handle_interaction_logic(t_game *game, t_config *config)
 {
 	static int	last_interact_state = 0;
 
@@ -117,7 +93,7 @@ static void	handle_interaction_logic(t_game *game, t_config *config)
 	check_door_win_condition(config);
 }
 
-static void	handle_movement(t_game *game, t_config *config)
+void	handle_movement(t_game *game, t_config *config)
 {
 	float	move[2];
 	float	angle[2];
@@ -137,20 +113,4 @@ static void	handle_movement(t_game *game, t_config *config)
 		move[1] -= angle[1] * MOVE_SPEED;
 	}
 	update_game2(game, move, angle, config);
-}
-
-void	update_game(t_game *game)
-{
-	t_config	*config;
-
-	config = game->config;
-	if (game->game_state != STATE_PLAYING)
-		return ;
-	if (config->game_state.game_won && game->game_state == STATE_PLAYING)
-	{
-		game->game_state = STATE_VICTORY;
-		return ;
-	}
-	handle_movement(game, config);
-	handle_interaction_logic(game, config);
 }

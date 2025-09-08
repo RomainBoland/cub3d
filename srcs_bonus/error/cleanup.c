@@ -29,21 +29,6 @@ void	cleanup_interactives(t_config *config)
 	config->game_state.interactives = NULL;
 }
 
-void	ft_free_split(char **split)
-{
-	int	i;
-
-	if (!split)
-		return ;
-	i = 0;
-	while (split[i])
-	{
-		free(split[i]);
-		i++;
-	}
-	free(split);
-}
-
 static void	cleanup_basic_textures(t_config *config)
 {
 	if (config->north_texture)

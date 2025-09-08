@@ -85,37 +85,6 @@ void	interact_with_door(t_config *config, t_interactive *door)
 	}
 }
 
-void	check_door_win_condition(t_config *config)
-{
-	t_interactive	*current;
-	float			player_x;
-	float			player_y;
-	float			distance;
-
-	if (config->game_state.game_won)
-		return ;
-	player_x = config->player.pos_x;
-	player_y = config->player.pos_y;
-	current = config->game_state.interactives;
-	while (current)
-	{
-		if (current->type == INTERACTIVE_DOOR
-			&& current->door_state == DOOR_OPENED_UNLOCKED)
-		{
-			distance = sqrt((player_x - current->x - 0.5f)
-					* (player_x - current->x - 0.5f)
-					+ (player_y - current->y - 0.5f)
-					* (player_y - current->y - 0.5f));
-			if (distance <= 0.7f)
-			{
-				config->game_state.game_won = 1;
-				return ;
-			}
-		}
-		current = current->next;
-	}
-}
-
 void	handle_interaction(t_config *config)
 {
 	t_interactive	*nearby;

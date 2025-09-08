@@ -414,6 +414,7 @@ void            activate_lever(t_config *config, t_interactive *lever);
 void            unlock_all_doors(t_config *config);
 void            interact_with_door(t_config *config, t_interactive *door);
 void            check_door_win_condition(t_config *config);
+void			door_win_cond2(t_interactive *crt, float p_x, float p_y, t_config *cfg);
 void            handle_interaction(t_config *config);
 
 // raycasting.c
@@ -449,9 +450,12 @@ int				is_movement_blocked(t_config *config, float x, float y);
 
 
 // events.c
+void		handle_movement(t_game *game, t_config *config);
+void		handle_interaction_logic(t_game *game, t_config *config);
 int				handle_keypress(int keycode, t_game *game);
 int				handle_keyrelease(int keycode, t_game *game);
 int				close_window(t_game *game);
+void			update_game2(t_game *game, float *move, float *angle, t_config *config);
 void			update_game(t_game *game);
 
 // floor_ceiling_render.c
@@ -459,7 +463,33 @@ void			render_floor_ceiling_column(t_config *config, t_data *img, int x,
 								  int wall_start, int wall_end);
 
 // mini_map.c
-void			update_mini_map(t_game *game);
+int	is_angle_in_fov(float angle, float fov_start, float fov_end);
+int	is_within_circle(int x, int y, t_minimap_data *data);
+int	is_border_pixel(int x, int y, t_minimap_data *data);
+int	is_player_pixel(int x, int y, t_minimap_data *data);
+void	update_mini_map(t_game *game);
+
+// mini_map_draw.c
+void	draw_map_geometry(t_game *game, t_minimap_data *data);
+void	draw_fov_pixel_if_needed(t_game *game, int x, int y, t_minimap_data *data);
+void	draw_fov_overlay(t_game *game, t_minimap_data *data);
+void	draw_minimap_border(t_game *game, t_minimap_data *data);
+void	draw_player(t_game *game, t_minimap_data *data);
+
+// mini_map_draw2.c
+void	init_minimap_data(t_minimap_data *data, t_config *config);
+void	screen_to_world(t_minimap_data *data, int screen_x, int screen_y);
+unsigned int	blend_colors(unsigned int base_color, unsigned int overlay_color);
+void	draw_minimap_pixel(t_game *game, int x, int y, unsigned int color);
+int	should_draw_fov_pixel(int x, int y, t_minimap_data *data);
+
+// mini_map_get_color.c
+unsigned int	get_current_pixel_color(t_game *game, int x, int y);
+unsigned int	get_map_cell_color(t_config *config, int map_x, int map_y);
+unsigned int	get_interactive_color(t_config *config,	int map_x, int map_y);
+unsigned int	get_lever_color(t_interactive *interactive);
+unsigned int	get_door_color(t_interactive *interactive);
+
 
 // menu.c
 void			render_menu_screen(t_game *game);
@@ -467,5 +497,6 @@ void			render_victory_screen(t_game *game);
 void			render_scaled_image(t_game *game, t_texture *texture);
 int				handle_menu_input(int keycode, t_game *game);
 int				handle_victory_input(int keycode, t_game *game);
+
 
 #endif

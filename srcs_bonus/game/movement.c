@@ -14,9 +14,10 @@
 
 int	is_movement_blocked(t_config *config, float x, float y)
 {
-	int		map_x;
-	int		map_y;
-	char	cell;
+	int				map_x;
+	int				map_y;
+	char			cell;
+	t_interactive	*door;
 
 	map_x = (int)x;
 	map_y = (int)y;
@@ -31,7 +32,7 @@ int	is_movement_blocked(t_config *config, float x, float y)
 		return (1);
 	if (cell == 'D')
 	{
-		t_interactive *door = find_interactive_at(config, map_x, map_y);
+		door = find_interactive_at(config, map_x, map_y);
 		if (door && door->door_state == DOOR_OPENED_UNLOCKED)
 			return (0);
 		return (1);
