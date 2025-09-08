@@ -89,7 +89,7 @@ void	render_textured_wall(t_config *config, t_data *img, int x, t_ray ray)
 		&draw.draw_start, &draw.draw_end);
 	texture = get_cell_texture(config, ray.map_x, ray.map_y, ray.wall_dir);
 	draw.tex_x = get_texture_x(texture, ray.wall_x);
-	render_floor_ceiling_column(config, img, x, draw.draw_start, draw.draw_end);
+	render_floor_ceiling_column(config, img, x, draw);
 	params.img = img;
 	params.x = x;
 	params.draw = &draw;

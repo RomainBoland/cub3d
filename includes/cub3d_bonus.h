@@ -159,6 +159,22 @@ typedef struct s_texture
 	int						height;
 }	t_texture;
 
+typedef struct s_f_c
+{
+	int				y;
+	float			world_x;
+	float			world_y;
+	float			distance;
+	int				tex_x;
+	int				tex_y;
+	unsigned int	color;
+	float			dx;
+	float			dy;
+	float			cos_angle;
+	float			sin_angle;
+	int				pitch_offset;
+}	t_f_l;
+
 typedef struct s_tex
 {
 	t_texture				north;
@@ -466,9 +482,14 @@ int				close_window(t_game *game);
 void			update_game2(t_game *game, float *move, float *angle, t_config *config);
 void			update_game(t_game *game);
 
+unsigned	int	get_txt_pxl(t_texture *texture, int x, int y);
+float	abs_val(float x);
+float	fast_distance_approximation(float dx, float dy);
+void	clc_wrld_pos(t_config *cfg, int s_x, int s_y, t_f_l *f_l);
+
 // floor_ceiling_render.c
-void			render_floor_ceiling_column(t_config *config, t_data *img, int x, 
-								  int wall_start, int wall_end);
+void			render_floor_ceiling_column(t_config *config, t_data *img, int x, t_wall_draw draw);
+//void			render_floor_ceiling_column(t_config *config, t_data *img, int x, int wall_start, int wall_end);
 
 // mini_map.c
 int	is_angle_in_fov(float angle, float fov_start, float fov_end);
