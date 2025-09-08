@@ -6,7 +6,7 @@
 /*   By: nsaillez <nsaillez@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/08 09:30:36 by nsaillez          #+#    #+#             */
-/*   Updated: 2025/09/08 10:20:46 by nsaillez         ###   ########.fr       */
+/*   Updated: 2025/09/08 11:20:11 by nsaillez         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,6 +89,7 @@ void	draw_minimap_border(t_game *game, t_minimap_data *data)
 		y++;
 	}
 }
+
 void	draw_player(t_game *game, t_minimap_data *data)
 {
 	int	x;

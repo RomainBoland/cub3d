@@ -344,8 +344,13 @@ char			*normalize_line(const char *line);
 void			init_config(t_config *config);
 void			init_parse_state(t_parse_state *state);
 
+// texture_loading2.c
+
+int	load_texture(void *mlx, t_texture *texture, char *path);
+int	load_basic_textures(void *mlx, t_config *config);
+int	load_door_textures(void *mlx, t_config *config);
+
 // texture_loading.c
-int				load_texture(void *mlx, t_texture *texture, char *path);
 int				load_all_textures(void *mlx, t_config *config);
 void			cleanup_textures(void *mlx, t_config *config);
 unsigned int	get_texture_pixel(t_texture *texture, int x, int y);
@@ -379,6 +384,8 @@ void			set_player_angle(t_config *config);
 // parse_map2.c
 t_interactive   *create_interactive(int x, int y, t_interactive_type type);
 void            add_interactive_to_list(t_config *config, t_interactive *new_elem);
+void			elements_lever(t_interactive *new_elem, int x, int y, t_config *config);
+void			elements_door(t_interactive *new_elem, int x, int y, t_config *config);
 void            scan_for_interactive_elements(t_config *config);
 
 // map_validation.c
@@ -395,6 +402,7 @@ int				all_config_complete(t_parse_state *state);
 int				validate_complete_config(t_config *config);
 
 // validate_textures.c
+int				validate_interactive_textures(void *mlx, t_config *config);
 int				validate_all_textures(t_config *config);
 int				validate_texture_path(void *mlx, char *path);
 

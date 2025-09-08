@@ -63,10 +63,14 @@ SRC_BONUS	= srcs_bonus/main.c \
 			  srcs_bonus/parsing/parse_map_utils.c \
 			  srcs_bonus/parsing/map_validation.c \
 			  srcs_bonus/parsing/validate_textures.c \
+			  srcs_bonus/parsing/validate_config.c \
+			  srcs_bonus/parsing/is_valid.c \
 			  srcs_bonus/error/print_error.c \
 			  srcs_bonus/error/cleanup.c \
 			  srcs_bonus/error/ft_free_split.c \
 			  srcs_bonus/init/init.c \
+			  srcs_bonus/init/cleanup_textures.c \
+			  srcs_bonus/init/texture_loading2.c \
 			  srcs_bonus/init/texture_loading.c \
 			  srcs_bonus/game/game_loop.c \
 			  srcs_bonus/game/game_loop2.c \

@@ -19,28 +19,28 @@ void	update_config_status(t_parse_state *state)
 		&& state->floor_found && state->ceiling_found;
 }
 
-static void handle_config_line3(char *key, char *value, t_config *config,
-    t_parse_state *state)
+static void	handle_config_line3(char *key, char *value, t_config *config,
+	t_parse_state *state)
 {
 	(void)state;
-    if (!ft_strncmp(key, "DL", 2))
-        config->door_locked_texture = ft_strdup(value);
-    else if (!ft_strncmp(key, "DU", 2))
-        config->door_unlocked_texture = ft_strdup(value);
-    else if (!ft_strncmp(key, "DO", 2))
-        config->door_open_texture = ft_strdup(value);
-    else if (!ft_strncmp(key, "LON", 3))
-        config->lever_off_north_texture = ft_strdup(value);
-    else if (!ft_strncmp(key, "LOS", 3))
-        config->lever_off_south_texture = ft_strdup(value);
-    else if (!ft_strncmp(key, "LOB", 3))
-        config->lever_off_base_texture = ft_strdup(value);
-    else if (!ft_strncmp(key, "LNN", 3))
-        config->lever_on_north_texture = ft_strdup(value);
-    else if (!ft_strncmp(key, "LNS", 3))
-        config->lever_on_south_texture = ft_strdup(value);
-    else if (!ft_strncmp(key, "LNB", 3))
-        config->lever_on_base_texture = ft_strdup(value);
+	if (!ft_strncmp(key, "DL", 2))
+		config->door_locked_texture = ft_strdup(value);
+	else if (!ft_strncmp(key, "DU", 2))
+		config->door_unlocked_texture = ft_strdup(value);
+	else if (!ft_strncmp(key, "DO", 2))
+		config->door_open_texture = ft_strdup(value);
+	else if (!ft_strncmp(key, "LON", 3))
+		config->lever_off_north_texture = ft_strdup(value);
+	else if (!ft_strncmp(key, "LOS", 3))
+		config->lever_off_south_texture = ft_strdup(value);
+	else if (!ft_strncmp(key, "LOB", 3))
+		config->lever_off_base_texture = ft_strdup(value);
+	else if (!ft_strncmp(key, "LNN", 3))
+		config->lever_on_north_texture = ft_strdup(value);
+	else if (!ft_strncmp(key, "LNS", 3))
+		config->lever_on_south_texture = ft_strdup(value);
+	else if (!ft_strncmp(key, "LNB", 3))
+		config->lever_on_base_texture = ft_strdup(value);
 }
 
 static void	handle_config_line2(char *key, char *value, t_config *config,

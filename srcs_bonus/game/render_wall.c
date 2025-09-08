@@ -12,49 +12,45 @@
 
 #include "cub3d_bonus.h"
 
-t_texture *get_cell_texture(t_config *config, int map_x, int map_y, int wall_dir)
+t_texture	*get_cell_texture(t_config *config, int map_x,
+							int map_y, int wall_dir)
 {
-    char cell;
-    t_interactive *interactive;
-    
-    // Bounds check
-    if (map_y < 0 || map_y >= config->map_height ||
-        map_x < 0 || map_x >= (int)ft_strlen(config->map[map_y]))
-        return get_wall_texture(config, wall_dir);
-    
-    cell = config->map[map_y][map_x];
-    
-    // Handle interactive elements
-    if (cell == 'D') // Door
-    {
-        interactive = find_interactive_at(config, map_x, map_y);
-        if (interactive)
-            return get_door_texture(config, interactive);
-    }
-    else if (cell == 'L') // Lever
-    {
-        interactive = find_interactive_at(config, map_x, map_y);
-        if (interactive)
-            return get_lever_texture(config, interactive, wall_dir); // Use wall_dir instead of player_angle
-    }
-    
-    // Regular wall textures
-    return get_wall_texture(config, wall_dir);
+	char			cell;
+	t_interactive	*interactive;
+
+	if (map_y < 0 || map_y >= config->map_height
+		|| map_x < 0 || map_x >= (int)ft_strlen(config->map[map_y]))
+		return (get_wall_texture(config, wall_dir));
+	cell = config->map[map_y][map_x];
+	if (cell == 'D')
+	{
+		interactive = find_interactive_at(config, map_x, map_y);
+		if (interactive)
+			return (get_door_texture(config, interactive));
+	}
+	else if (cell == 'L')
+	{
+		interactive = find_interactive_at(config, map_x, map_y);
+		if (interactive)
+			return (get_lever_texture(config, interactive, wall_dir));
+	}
+	return (get_wall_texture(config, wall_dir));
 }
 
-static void	calculate_wall_bounds(t_ray ray, t_config *config,
-							int *wall_height, int *wall_start, int *wall_end)
+static t_wall_draw	calculate_wall_bounds(t_ray ray, t_config *config)
 {
-	int	pitch_offset;
+	int				pitch_offset;
+	t_wall_draw		draw;
 
-	*wall_height = (int)(WINDOW_HEIGHT / ray.distance);
-	if (*wall_height > WINDOW_HEIGHT * 3)
-		*wall_height = WINDOW_HEIGHT * 3;
-	if (*wall_height < 1)
-		*wall_height = 1;
+	draw.wall_height = (int)(WINDOW_HEIGHT / ray.distance);
+	if (draw.wall_height > WINDOW_HEIGHT * 3)
+		draw.wall_height = WINDOW_HEIGHT * 3;
+	if (draw.wall_height < 1)
+		draw.wall_height = 1;
 	pitch_offset = (int)(config->player.pitch * WINDOW_HEIGHT * 0.5f);
-	*wall_start = (WINDOW_HEIGHT - *wall_height) / 2 + pitch_offset;
-	*wall_end = *wall_start + *wall_height;
+	draw.wall_start = (WINDOW_HEIGHT - draw.wall_height) / 2 + pitch_offset;
+	draw.wall_end = draw.wall_start + draw.wall_height;
+	return (draw);
 }
 
 static void	calculate_draw_bounds(int wall_start, int wall_end,
@@ -84,12 +80,11 @@ static int	get_texture_x(t_texture *texture, float wall_x)
 
 void	render_textured_wall(t_config *config, t_data *img, int x, t_ray ray)
 {
-	t_wall_draw		draw;
 	t_texture		*texture;
 	t_column_params	params;
+	t_wall_draw		draw;
 
-	calculate_wall_bounds(ray, config, &draw.wall_height,
-		&draw.wall_start, &draw.wall_end);
+	draw = calculate_wall_bounds(ray, config);
 	calculate_draw_bounds(draw.wall_start, draw.wall_end,
 		&draw.draw_start, &draw.draw_end);
 	texture = get_cell_texture(config, ray.map_x, ray.map_y, ray.wall_dir);
