@@ -26,8 +26,8 @@
 # define WINDOW_WIDTH 1920
 # define WINDOW_HEIGHT 1080
 # define PI 3.14159265359
-# define MOVE_SPEED 0.04f
-# define ROT_SPEED 0.03f
+# define MOVE_SPEED 0.12f
+# define ROT_SPEED 0.09f
 # define TEXTURE_SIZE 64
 
 # define ESC_KEY 65307

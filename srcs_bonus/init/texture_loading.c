@@ -49,12 +49,12 @@ static int	load_lever_textures2(void *mlx, t_config *config)
 static int	load_menu_textures(void *mlx, t_config *config)
 {
 	if (!load_texture(mlx, &config->tex.menu_screen,
-			"textures/menu_screen.xpm"))
+			"textures/door_red.xpm"))
 	{
 		printf("Warning: Could not load menu screen, using fallback\n");
 	}
 	if (!load_texture(mlx, &config->tex.victory_screen,
-			"textures/victory_screen.xpm"))
+			"textures/door_red.xpm"))
 	{
 		printf("Warning: Could not load victory screen, using fallback\n");
 	}

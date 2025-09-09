@@ -26,8 +26,8 @@
 # define WINDOW_WIDTH 1280
 # define WINDOW_HEIGHT 720
 # define PI 3.14159265359
-# define MOVE_SPEED 0.07f
-# define ROT_SPEED 0.06f
+# define MOVE_SPEED 0.12f
+# define ROT_SPEED 0.09f
 # define TEXTURE_SIZE 64
 # define FOV_HALF_TAN 1.05f
 # define MAX_PITCH 3.14f
@@ -37,24 +37,24 @@
 # define STATE_PLAYING 1
 # define STATE_VICTORY 2
 
-# define MINIMAP_RADIUS (WINDOW_WIDTH / 12)
-# define MINIMAP_SIZE (MINIMAP_RADIUS * 2)
+# define MINIMAP_RADIUS 106.66f
+# define MINIMAP_SIZE 213.33f
 # define MINIMAP_TILES_RADIUS 6.0f
 # define MINIMAP_OFFSET_X 10
 # define MINIMAP_OFFSET_Y 10
 
 // Couleurs de la minimap
-#define COLOR_BACKGROUND 0x000000
-#define COLOR_WALL 0x000000
-#define COLOR_EMPTY 0x5A5E6B
-#define COLOR_PLAYER 0x00FF00
-#define COLOR_FOV 0x44FFFFFF
-#define COLOR_BORDER 0x1F51FF
-#define COLOR_DOOR_LOCKED 0xFF0000
-#define COLOR_DOOR_UNLOCKED 0xFFFF00
-#define COLOR_DOOR_OPEN 0x00FF00
-#define COLOR_LEVER_OFF 0xFF8000
-#define COLOR_LEVER_ON 0x00FF00
+# define COLOR_BACKGROUND 0x000000
+# define COLOR_WALL 0x000000
+# define COLOR_EMPTY 0x5A5E6B
+# define COLOR_PLAYER 0x00FF00
+# define COLOR_FOV 0x44FFFFFF
+# define COLOR_BORDER 0x1F51FF
+# define COLOR_DOOR_LOCKED 0xFF0000
+# define COLOR_DOOR_UNLOCKED 0xFFFF00
+# define COLOR_DOOR_OPEN 0x00FF00
+# define COLOR_LEVER_OFF 0xFF8000
+# define COLOR_LEVER_ON 0x00FF00
 
 # define ESC_KEY 65307
 # define W_KEY 119
@@ -73,17 +73,17 @@
 
 typedef struct s_minimap_data
 {
-    float player_x;
-    float player_y;
-    float player_angle;
-    float fov_start;
-    float fov_end;
-    int center_x;
-    int center_y;
-	float world_x;
-	float world_y;
-    float scale;
-} t_minimap_data;
+	float	player_x;
+	float	player_y;
+	float	player_angle;
+	float	fov_start;
+	float	fov_end;
+	int		center_x;
+	int		center_y;
+	float	world_x;
+	float	world_y;
+	float	scale;
+}	t_minimap_data;
 
 typedef enum e_door_state
 {
@@ -101,23 +101,23 @@ typedef enum e_interactive_type
 
 typedef enum e_texture_id
 {
-    TEX_NORTH,
-    TEX_SOUTH,
-    TEX_EAST,
-    TEX_WEST,
-    TEX_FLOOR,
-    TEX_CEILING,
-    TEX_DOOR_LOCKED,
-    TEX_DOOR_UNLOCKED,
-    TEX_DOOR_OPEN,
-    TEX_LEVER_OFF_NORTH,
-    TEX_LEVER_OFF_SOUTH,
-    TEX_LEVER_OFF_BASE,
-    TEX_LEVER_ON_NORTH,
-    TEX_LEVER_ON_SOUTH,
-    TEX_LEVER_ON_BASE,
-    TEX_COUNT
-}   t_texture_id;
+	TEX_NORTH,
+	TEX_SOUTH,
+	TEX_EAST,
+	TEX_WEST,
+	TEX_FLOOR,
+	TEX_CEILING,
+	TEX_DOOR_LOCKED,
+	TEX_DOOR_UNLOCKED,
+	TEX_DOOR_OPEN,
+	TEX_LEVER_OFF_NORTH,
+	TEX_LEVER_OFF_SOUTH,
+	TEX_LEVER_OFF_BASE,
+	TEX_LEVER_ON_NORTH,
+	TEX_LEVER_ON_SOUTH,
+	TEX_LEVER_ON_BASE,
+	TEX_COUNT
+}	t_texture_id;
 
 typedef struct s_interactive
 {
@@ -161,18 +161,18 @@ typedef struct s_texture
 
 typedef struct s_f_c
 {
-	int				y;
-	float			world_x;
-	float			world_y;
-	float			distance;
-	int				tex_x;
-	int				tex_y;
-	unsigned int	color;
-	float			dx;
-	float			dy;
-	float			cos_angle;
-	float			sin_angle;
-	int				pitch_offset;
+	int						y;
+	float					world_x;
+	float					world_y;
+	float					distance;
+	int						tex_x;
+	int						tex_y;
+	unsigned int			color;
+	float					dx;
+	float					dy;
+	float					cos_angle;
+	float					sin_angle;
+	int						pitch_offset;
 }	t_f_l;
 
 typedef struct s_tex
@@ -297,21 +297,21 @@ typedef struct s_ray_data
 
 typedef struct s_game
 {
-	void		*mlx;
-	void		*win;
-	t_data		img;
-	t_data		minimap_img;
-	t_config	*config;
-	int			key_w;
-	int			key_a;
-	int			key_s;
-	int			key_d;
-	int			key_left;
-	int			key_right;
-	int			key_up;
-	int			key_down;
-	int			key_interact;
-	int			game_state;
+	void					*mlx;
+	void					*win;
+	t_data					img;
+	t_data					minimap_img;
+	t_config				*config;
+	int						key_w;
+	int						key_a;
+	int						key_s;
+	int						key_d;
+	int						key_left;
+	int						key_right;
+	int						key_up;
+	int						key_down;
+	int						key_interact;
+	int						game_state;
 }	t_game;
 
 typedef struct s_floor_cast
@@ -343,7 +343,7 @@ int				exit_error(const char *message, t_config *config);
 // cleanup.c
 void			cleanup_config(t_config *config);
 void			ft_free_split(char **split);
-void 			cleanup_interactives(t_config *config);
+void			cleanup_interactives(t_config *config);
 
 /*	UTILS	*/
 
@@ -362,9 +362,9 @@ void			init_parse_state(t_parse_state *state);
 
 // texture_loading2.c
 
-int	load_texture(void *mlx, t_texture *texture, char *path);
-int	load_basic_textures(void *mlx, t_config *config);
-int	load_door_textures(void *mlx, t_config *config);
+int				load_texture(void *mlx, t_texture *texture, char *path);
+int				load_basic_textures(void *mlx, t_config *config);
+int				load_door_textures(void *mlx, t_config *config);
 
 // texture_loading.c
 int				load_all_textures(void *mlx, t_config *config);
@@ -374,7 +374,8 @@ unsigned int	get_texture_pixel(t_texture *texture, int x, int y);
 /*	PARSING	*/
 
 // parse_file.c
-int				file_checker(const char *file_path, int argc, t_config *config);
+int				file_checker(const char *file_path,
+					int argc, t_config *config);
 int				parse_file(int fd, t_config *config, t_parse_state *state);
 
 // fill_map.c
@@ -383,7 +384,8 @@ int				add_line_to_map(const char *line, t_config *config);
 int				is_map_line(const char *line);
 
 // parse_config_line.c
-int				parse_config_line(char *line, t_config *config, t_parse_state *state);
+int				parse_config_line(char *line,
+					t_config *config, t_parse_state *state);
 void			update_config_status(t_parse_state *state);
 
 // parse_arg.c
@@ -398,11 +400,14 @@ int				find_player(t_config *config);
 void			set_player_angle(t_config *config);
 
 // parse_map2.c
-t_interactive   *create_interactive(int x, int y, t_interactive_type type);
-void            add_interactive_to_list(t_config *config, t_interactive *new_elem);
-void			elements_lever(t_interactive *new_elem, int x, int y, t_config *config);
-void			elements_door(t_interactive *new_elem, int x, int y, t_config *config);
-void            scan_for_interactive_elements(t_config *config);
+t_interactive	*create_interactive(int x, int y, t_interactive_type type);
+void			add_interactive_to_list(t_config *config,
+					t_interactive *new_elem);
+void			elements_lever(t_interactive *new_elem,
+					int x, int y, t_config *config);
+void			elements_door(t_interactive *new_elem,
+					int x, int y, t_config *config);
+void			scan_for_interactive_elements(t_config *config);
 
 // map_validation.c
 int				check_walls_around_spaces(t_config *config);
@@ -433,13 +438,14 @@ int				game_loop_hook(t_game *game);
 void			print_game_info(t_config *config);
 
 // interactive.c
-t_interactive   *get_nearby_interactive(t_config *config);
-void            activate_lever(t_config *config, t_interactive *lever);
-void            unlock_all_doors(t_config *config);
-void            interact_with_door(t_config *config, t_interactive *door);
-void            check_door_win_condition(t_config *config);
-void			door_win_cond2(t_interactive *crt, float p_x, float p_y, t_config *cfg);
-void            handle_interaction(t_config *config);
+t_interactive	*get_nearby_interactive(t_config *config);
+void			activate_lever(t_config *config, t_interactive *lever);
+void			unlock_all_doors(t_config *config);
+void			interact_with_door(t_config *config, t_interactive *door);
+void			check_door_win_condition(t_config *config);
+void			door_win_cond2(t_interactive *crt,
+					float p_x, float p_y, t_config *cfg);
+void			handle_interaction(t_config *config);
 
 // raycasting.c
 int				is_wall(t_config *config, int map_x, int map_y);
@@ -448,19 +454,23 @@ float			normalize_angle(float angle);
 void			render_raycast(t_config *config, t_data *img);
 t_interactive	*find_interactive_at(t_config *config, int x, int y);
 t_texture		*get_door_texture(t_config *config, t_interactive *door);
-t_texture		*get_lever_texture(t_config *config, t_interactive *lever, int wall_dir);
+t_texture		*get_lever_texture(t_config *config,
+					t_interactive *lever, int wall_dir);
 
 // dda_calculation.c
 t_ray			dda_cast_ray(t_config *config, float ray_angle);
 
 // dda_calculation_utils.c
-void			init_ray_data(t_ray_data *data, t_config *config, float ray_angle);
+void			init_ray_data(t_ray_data *data,
+					t_config *config, float ray_angle);
 void			calculate_delta_dist(t_ray_data *data);
 void			calculate_step_and_side_dist_x(t_ray_data *data);
 
 // render_wall.c
-void			render_textured_wall(t_config *config, t_data *img, int x, t_ray ray);
-t_texture		*get_cell_texture(t_config *config, int map_x, int map_y, int wall_dir);
+void			render_textured_wall(t_config *config,
+					t_data *img, int x, t_ray ray);
+t_texture		*get_cell_texture(t_config *config,
+					int map_x, int map_y, int wall_dir);
 
 // render_wall_utils.c
 unsigned int	apply_distance_shading(unsigned int color, float distance);
@@ -472,45 +482,48 @@ void			rotate_player(t_config *config, float rotation);
 void			change_pitch(t_config *config, float pitch_change);
 int				is_movement_blocked(t_config *config, float x, float y);
 
-
 // events.c
-void		handle_movement(t_game *game, t_config *config);
-void		handle_interaction_logic(t_game *game, t_config *config);
+void			handle_movement(t_game *game, t_config *config);
+void			handle_interaction_logic(t_game *game, t_config *config);
 int				handle_keypress(int keycode, t_game *game);
 int				handle_keyrelease(int keycode, t_game *game);
 int				close_window(t_game *game);
-void			update_game2(t_game *game, float *move, float *angle, t_config *config);
+void			update_game2(t_game *game, float *move,
+					float *angle, t_config *config);
 void			update_game(t_game *game);
-
-unsigned	int	get_txt_pxl(t_texture *texture, int x, int y);
-float	abs_val(float x);
-float	fast_distance_approximation(float dx, float dy);
-void	clc_wrld_pos(t_config *cfg, int s_x, int s_y, t_f_l *f_l);
+unsigned int	get_txt_pxl(t_texture *texture, int x, int y);
+float			abs_val(float x);
+float			fast_distance_approximation(float dx, float dy);
+void			clc_wrld_pos(t_config *cfg, int s_x, int s_y, t_f_l *f_l);
 
 // floor_ceiling_render.c
-void			render_floor_ceiling_column(t_config *config, t_data *img, int x, t_wall_draw draw);
-//void			render_floor_ceiling_column(t_config *config, t_data *img, int x, int wall_start, int wall_end);
+void			render_floor_ceiling_column(t_config *config,
+					t_data *img, int x, t_wall_draw draw);
 
 // mini_map.c
-int	is_angle_in_fov(float angle, float fov_start, float fov_end);
-int	is_within_circle(int x, int y, t_minimap_data *data);
-int	is_border_pixel(int x, int y, t_minimap_data *data);
-int	is_player_pixel(int x, int y, t_minimap_data *data);
-void	update_mini_map(t_game *game);
+int				is_angle_in_fov(float angle, float fov_start, float fov_end);
+int				is_within_circle(int x, int y, t_minimap_data *data);
+int				is_border_pixel(int x, int y, t_minimap_data *data);
+int				is_player_pixel(int x, int y, t_minimap_data *data);
+void			update_mini_map(t_game *game);
 
 // mini_map_draw.c
-void	draw_map_geometry(t_game *game, t_minimap_data *data);
-void	draw_fov_pixel_if_needed(t_game *game, int x, int y, t_minimap_data *data);
-void	draw_fov_overlay(t_game *game, t_minimap_data *data);
-void	draw_minimap_border(t_game *game, t_minimap_data *data);
-void	draw_player(t_game *game, t_minimap_data *data);
+void			draw_map_geometry(t_game *game, t_minimap_data *data);
+void			draw_fov_pixel_if_needed(t_game *game, int x,
+					int y, t_minimap_data *data);
+void			draw_fov_overlay(t_game *game, t_minimap_data *data);
+void			draw_minimap_border(t_game *game, t_minimap_data *data);
+void			draw_player(t_game *game, t_minimap_data *data);
 
 // mini_map_draw2.c
-void	init_minimap_data(t_minimap_data *data, t_config *config);
-void	screen_to_world(t_minimap_data *data, int screen_x, int screen_y);
-unsigned int	blend_colors(unsigned int base_color, unsigned int overlay_color);
-void	draw_minimap_pixel(t_game *game, int x, int y, unsigned int color);
-int	should_draw_fov_pixel(int x, int y, t_minimap_data *data);
+void			init_minimap_data(t_minimap_data *data, t_config *config);
+void			screen_to_world(t_minimap_data *data,
+					int screen_x, int screen_y);
+unsigned int	blend_colors(unsigned int base_color,
+					unsigned int overlay_color);
+void			draw_minimap_pixel(t_game *game, int x,
+					int y, unsigned int color);
+int				should_draw_fov_pixel(int x, int y, t_minimap_data *data);
 
 // mini_map_get_color.c
 unsigned int	get_current_pixel_color(t_game *game, int x, int y);
@@ -519,13 +532,11 @@ unsigned int	get_interactive_color(t_config *config,	int map_x, int map_y);
 unsigned int	get_lever_color(t_interactive *interactive);
 unsigned int	get_door_color(t_interactive *interactive);
 
-
 // menu.c
 void			render_menu_screen(t_game *game);
 void			render_victory_screen(t_game *game);
 void			render_scaled_image(t_game *game, t_texture *texture);
 int				handle_menu_input(int keycode, t_game *game);
 int				handle_victory_input(int keycode, t_game *game);
-
 
 #endif
