@@ -66,6 +66,7 @@ int	handle_keyrelease(int keycode, t_game *game)
 
 int	close_window(t_game *game)
 {
+	cleanup_textures(game->mlx, game->config);
 	if (game->img.img)
 		mlx_destroy_image(game->mlx, game->img.img);
 	if (game->win)
