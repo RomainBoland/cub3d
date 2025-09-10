@@ -230,12 +230,6 @@ make DEBUG=1
 - **LON/LOS/LOB**: Lever off textures (North/South/Base)
 - **LNN/LNS/LNB**: Lever on textures (North/South/Base)
 
-## 🙏 Acknowledgments
-
-- **42 School** for the project specifications
-- **MiniLibX** graphics library developers
-- **Wolfenstein 3D** for the original raycasting inspiration
-
 ---
 
 *Built with ❤️ for 42 School*
